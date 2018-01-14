@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,7 +16,7 @@ public class Iso extends PointFigure{
     private final ArrayList<PointFigure> points;
 
 
-    Iso(int x, int y, ArrayList<Figure> figures) {
+    public Iso(int x, int y, ArrayList<Figure> figures) {
         super(x, y);
         this.points = new ArrayList<>();
         for(Figure f : figures){

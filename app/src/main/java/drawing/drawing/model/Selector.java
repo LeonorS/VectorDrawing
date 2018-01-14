@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

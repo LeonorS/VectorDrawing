@@ -1,9 +1,8 @@
-package drawing.drawing;
+package drawing.drawing.model;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.view.MotionEvent;
 
 import java.util.Vector;
 
@@ -15,7 +14,7 @@ public abstract class Figure {
 
     protected static    Paint           myPaint;
     private             Vector<Point>   points;
-    protected           boolean         selected = false;
+    public boolean         selected = false;
 
     public Figure() {
         points = new Vector<>();

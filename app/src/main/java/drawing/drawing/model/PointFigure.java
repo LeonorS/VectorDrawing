@@ -1,9 +1,10 @@
-package drawing.drawing;
+package drawing.drawing.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,10 +14,11 @@ import java.util.ArrayList;
 
 public class PointFigure extends Figure {
 
-    protected   int               widthPoint = 10;
-    private     ArrayList<Iso>    barycenters;
+    protected int               widthPoint = 10;
+    private ArrayList<Iso>    barycenters;
+    private int margin = 0;
 
-    PointFigure(int x, int y) {
+    public PointFigure(int x, int y) {
         super();
         addPoint(new Point(x, y));
         barycenters = new ArrayList<>();
@@ -39,7 +41,15 @@ public class PointFigure extends Figure {
 
     @Override
     public boolean contains(float x, float y) {
-        if ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y) <= widthPoint * widthPoint) {
+
+        Log.d("DEBUG", "margin : " + margin);
+
+        Log.d("DEBUG", "calcul : " + ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y)));
+
+        Log.d("DEBUG", "width * width : " + (margin * margin));
+
+
+        if ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y) <= (margin + widthPoint) * (margin + widthPoint)) {
             return true;
         }
         return false;
@@ -61,5 +71,9 @@ public class PointFigure extends Figure {
 
     public void addBarycenter(Iso i){
         barycenters.add(i);
+    }
+
+    public void setMargin(int value){
+        margin = value;
     }
 }

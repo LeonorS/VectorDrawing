@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.model;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,9 +16,12 @@ import java.util.ArrayList;
 public class Segment extends Figure{
 
     private float x1, y1, x2, y2;
+    private double margin = 8;
 
-    Segment(float x1, float y1, float x2, float y2){
+    public Segment(float x1, float y1, float x2, float y2){
         super();
+        addPoint(new Point((int)x1, (int)y1));
+        addPoint(new Point((int)x2, (int)y2));
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -31,22 +34,22 @@ public class Segment extends Figure{
         int x2 = (int)Math.max(this.x1, this.x2);
         int y1 = (int)Math.min(this.y1, this.y1);
         int y2 = (int)Math.max(this.y1, this.y2);
-        double coeff = 8;
+
         if(x1 == x2){
-            Log.d("DEBUG", "1 " + (x >= x1 - coeff && x <= x1 + coeff && y >= y1 && y <= y2));
-            return x >= x1 - coeff && x <= x1 + coeff && y >= y1 && y <= y2;
+            Log.d("DEBUG", "1 " + (x >= x1 - margin && x <= x1 + margin && y >= y1 && y <= y2));
+            return x >= x1 - margin && x <= x1 + margin && y >= y1 && y <= y2;
         }
         if(y1 == y2){
-            Log.d("deBUG", "2 " + (x >= x1 && x <= x2 && y >= y1 - coeff && y <= y1 + coeff));
-            return x >= x1 && x <= x2 && y >= y1 - coeff && y <= y1 + coeff;
+            Log.d("deBUG", "2 " + (x >= x1 && x <= x2 && y >= y1 - margin && y <= y1 + margin));
+            return x >= x1 && x <= x2 && y >= y1 - margin && y <= y1 + margin;
         }
         if(x >= x1 && x <= x2 && y >= y1 && y <= y2){
             double m = (this.y1 - this.y2) / (this.x1 - this.x2);
             double m1 = (this.y1 - y) / (this.x1 - x);
             double m2 = (this.y2 - y) / (this.x2 - x);
-            coeff = 16/(double)(x2 - x1 + y2 - y1);
-            Log.d("DEBUG", "3 " + (m >= m1 - coeff && m <= m1 + coeff || m >= m2 - coeff && m <= m2 + coeff));
-            return m >= m1 - coeff && m <= m1 + coeff || m >= m2 - coeff && m <= m2 + coeff;
+            double margin_2 = (margin * 2)/(double)(x2 - x1 + y2 - y1);
+            Log.d("DEBUG", "3 " + (m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2));
+            return m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2;
         }
         return false;
     }
@@ -66,10 +69,6 @@ public class Segment extends Figure{
     @Override
     public Point move(int x, int y, Point anchor) {
 
-        Log.d("DEBUG", "x : " + x);
-        Log.d("DEBUG", "y : " + y);
-        Log.d("DEBUG", "anchor x : " + anchor.x);
-        Log.d("DEBUG", "anchor y : " + anchor.y);
         x1 += x - anchor.x;
         y1 += y - anchor.y;
         x2 += x - anchor.x;
@@ -124,5 +123,9 @@ public class Segment extends Figure{
         a.add(x2);
         a.add(y2);
         return a;
+    }
+
+    public void setMargin(double value){
+        margin = value;
     }
 }

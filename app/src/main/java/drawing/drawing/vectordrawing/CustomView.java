@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.vectordrawing;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,19 +8,25 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import drawing.drawing.model.Figure;
+import drawing.drawing.model.Iso;
+import drawing.drawing.model.PointFigure;
+import drawing.drawing.model.Segment;
+import drawing.drawing.model.Selector;
+
 /**
  * Created by leo on 03/12/17.
  */
 
-class CustomView extends View {
+public class CustomView extends View {
 
     public  static final    int     DEFAULT_ACTION      = -1;
     public  static final    int     POINT_ACTION        = 1;
     public  static final    int     SELECT_ACTION       = 2;
     public  static final    int     SEG_ACTION          = 3;
     public                  int     current_action      = DEFAULT_ACTION;
-    private     Figure              touched             = null;
-    private     Selector            selector            = null;
+    private Figure touched             = null;
+    private Selector selector            = null;
     private     ArrayList<Figure>   figures, selected;
     protected   Point               anchor;
     private     Figure              currentFigure;
@@ -29,29 +35,25 @@ class CustomView extends View {
         super(context);
         figures     = new ArrayList<>();
         selected    = new ArrayList<>();
-
-
-        figures.add(new Segment(100, 1000, 300, 1000));
-        invalidate();
     }
 
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
             touched = null;
-            makeAchor(event);
+            makeAchor(event.getX(), event.getY());
             if (current_action == DEFAULT_ACTION) {
-                touched = getFigure(event);
+                touched = getFigure(event.getX(), event.getY());
             } if (current_action == POINT_ACTION || (current_action == DEFAULT_ACTION && touched == null)) {
-                makePoint(event);
+                makePoint(event.getX(), event.getY());
             } break;
         case MotionEvent.ACTION_MOVE:
             if (current_action == DEFAULT_ACTION) {
-                moveFigure(event);
+                moveFigure(event.getX(), event.getY());
             } else if (current_action == SELECT_ACTION){
-                makeSelector(event);
+                makeSelector(event.getX(), event.getY());
             } else if (current_action == SEG_ACTION){
-                makeLine(event);
+                makeLine(event.getX(), event.getY());
             } break;
         case MotionEvent.ACTION_UP:
             if (current_action == DEFAULT_ACTION) {
@@ -77,10 +79,10 @@ class CustomView extends View {
         }
     }
 
-    public Figure getFigure(MotionEvent event) {
+    public Figure getFigure(float x, float y) {
         Figure f = null;
         for (int i = 0; i < figures.size(); i++) {
-            if (figures.get(i).contains(event.getX(), event.getY())) {
+            if (figures.get(i).contains(x, y)) {
                 f = figures.get(i);
                 f.selected = true;
                 break;
@@ -89,16 +91,16 @@ class CustomView extends View {
         return f;
     }
 
-    public void moveFigure(MotionEvent event){
+    public void moveFigure(float x, float y){
         if (touched != null) {
-            anchor = touched.move((int) event.getX(), (int) event.getY(), anchor);
+            anchor = touched.move((int) x, (int) y, anchor);
             invalidate();
         }
     }
 
-    public void makeSelector(MotionEvent event){
+    public void makeSelector(float x, float y){
         resetSelection();
-        selector = new Selector(anchor, (int) event.getX(), (int) event.getY());
+        selector = new Selector(anchor, (int) x, (int) y);
         makeSelectetion();
         invalidate();
     }
@@ -121,12 +123,12 @@ class CustomView extends View {
         invalidate();
     }
 
-    public  void makeAchor(MotionEvent event){
-        anchor = new Point((int) event.getX(), (int) event.getY());
+    public  void makeAchor(float x, float y){
+        anchor = new Point((int) x, (int) y);
     }
 
-    public void makePoint(MotionEvent event){
-        figures.add(new PointFigure((int) event.getX(), (int) event.getY()));
+    public void makePoint(float x, float y){
+        figures.add(new PointFigure((int) x, (int) y));
         current_action = DEFAULT_ACTION;
         invalidate();
     }
@@ -157,10 +159,10 @@ class CustomView extends View {
         invalidate();
     }
 
-    public void makeLine(MotionEvent event){
+    public void makeLine(float x, float y){
         if (currentFigure == null || currentFigure instanceof Segment) {
             figures.remove(currentFigure);
-            currentFigure = new Segment(anchor.x, anchor.y, event.getX(), event.getY());
+            currentFigure = new Segment(anchor.x, anchor.y, x, y);
             figures.add(currentFigure);
             invalidate();
         }
@@ -175,9 +177,5 @@ class CustomView extends View {
         selector = null;
         current_action = DEFAULT_ACTION;
         invalidate();
-    }
-
-    public ArrayList<Figure> getFigures(){
-        return figures;
     }
 }

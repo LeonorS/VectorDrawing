@@ -1,10 +1,12 @@
-package drawing.drawing;
+package drawing.drawing.vectordrawing;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import drawing.drawing.R;
 
 public class VectorDrawing extends AppCompatActivity {
 
