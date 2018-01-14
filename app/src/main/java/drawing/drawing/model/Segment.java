@@ -36,11 +36,9 @@ public class Segment extends Figure{
         int y2 = (int)Math.max(this.y1, this.y2);
 
         if(x1 == x2){
-            Log.d("DEBUG", "1 " + (x >= x1 - margin && x <= x1 + margin && y >= y1 && y <= y2));
             return x >= x1 - margin && x <= x1 + margin && y >= y1 && y <= y2;
         }
         if(y1 == y2){
-            Log.d("deBUG", "2 " + (x >= x1 && x <= x2 && y >= y1 - margin && y <= y1 + margin));
             return x >= x1 && x <= x2 && y >= y1 - margin && y <= y1 + margin;
         }
         if(x >= x1 && x <= x2 && y >= y1 && y <= y2){
@@ -48,7 +46,6 @@ public class Segment extends Figure{
             double m1 = (this.y1 - y) / (this.x1 - x);
             double m2 = (this.y2 - y) / (this.x2 - x);
             double margin_2 = (margin * 2)/(double)(x2 - x1 + y2 - y1);
-            Log.d("DEBUG", "3 " + (m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2));
             return m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2;
         }
         return false;

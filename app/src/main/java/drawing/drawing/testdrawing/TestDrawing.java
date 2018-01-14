@@ -1,19 +1,13 @@
 package drawing.drawing.testdrawing;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import drawing.drawing.R;
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Segment;
@@ -24,6 +18,12 @@ import drawing.drawing.model.Segment;
 
 public class TestDrawing extends View{
 
+    public interface MyCustomObjectListener {
+        public void endingTest(int point_margin, int seg_margin);
+    }
+
+    private MyCustomObjectListener listener;
+
     public static final int POINT_TEST = 0;
     public static final int SEG_TEST = 1;
     public int CURRENT_TEST = -1;
@@ -32,7 +32,10 @@ public class TestDrawing extends View{
     private PointFigure p;
     private Segment s;
     private Figure touched;
-    protected Point anchor;
+    private Point anchor;
+
+    private int point_margin;
+    private int seg_margin;
 
     public TestDrawing(Context context) {
         super(context);
@@ -43,76 +46,45 @@ public class TestDrawing extends View{
         invalidate();
     }
 
+    public void setCustomObjectListener(MyCustomObjectListener listener) {
+        this.listener = listener;
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
                 makeAchor(event.getX(), event.getY());
-                //Log.d("DEBUG", "event : " + anchor.x + "; " + anchor.y);
-
                 touched = null;
-
                 if (CURRENT_TEST == POINT_TEST) {
-                    int value = Math.max(Math.abs(anchor.x - p.getPoints().get(0).x), Math.abs(anchor.y - p.getPoints().get(0).y));
-                    Log.d("DEBUG", "value : " + value);
-
-                    if (value <= 50) {
-
-                        p.setMargin(value);
-
+                    point_margin = Math.max(Math.abs(anchor.x - p.getPoints().get(0).x), Math.abs(anchor.y - p.getPoints().get(0).y));
+                    if (point_margin <= 50) {
+                        p.setMargin(point_margin);
                         touched = getFigure(anchor.x, anchor.y);
-                        if (touched != null) {
-                            Log.d("DEBUG", "touché");
-                        } else {
-                            Log.d("DEBUG", "null");
-                        }
                     }
-
-                } else {
-                    if (CURRENT_TEST == SEG_TEST) {
-
-
-                        int value = Math.abs(anchor.y - s.getPoints().get(0).y);
-
-                        Log.d("DEBUG", "value : " + value);
-
-                        if (value <= 25) {
-                            s.setMargin(value);
-
-                            p.setMargin(value);
-
+                } else if (CURRENT_TEST == SEG_TEST) {
+                        seg_margin = Math.abs(anchor.y - s.getPoints().get(0).y);
+                        if (seg_margin <= 25) {
+                            s.setMargin(seg_margin);
                             touched = getFigure(anchor.x, anchor.y);
-                            if (touched != null) {
-                                Log.d("DEBUG", "touché");
-                            } else {
-                                Log.d("DEBUG", "null");
-                            }
                         }
-                    }
                 }
-
-            break;
+                break;
             case MotionEvent.ACTION_MOVE:
-                    moveFigure(event.getX(), event.getY());
+                moveFigure(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
-
                 if (CURRENT_TEST == POINT_TEST && touched != null){
                     CURRENT_TEST = SEG_TEST;
                     figures = new ArrayList<>();
                     s = new Segment(100,300, 600, 300);
                     figures.add(s);
                     invalidate();
-                    break;
+
+                } else if (CURRENT_TEST == SEG_TEST && touched != null){
+                    if (listener != null){
+                        listener.endingTest(point_margin, seg_margin);
+                    }
                 }
-
-                if (CURRENT_TEST == SEG_TEST && touched != null){
-
-                    this.setVisibility(View.GONE);
-
-                }
-
-            case MotionEvent.ACTION_CANCEL:
                 break;
         }
         return (true);

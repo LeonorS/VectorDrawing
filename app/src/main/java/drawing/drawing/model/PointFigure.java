@@ -41,15 +41,7 @@ public class PointFigure extends Figure {
 
     @Override
     public boolean contains(float x, float y) {
-
-        Log.d("DEBUG", "margin : " + margin);
-
-        Log.d("DEBUG", "calcul : " + ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y)));
-
-        Log.d("DEBUG", "width * width : " + (margin * margin));
-
-
-        if ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y) <= (margin + widthPoint) * (margin + widthPoint)) {
+         if ((getPoint().x - x) * (getPoint().x - x) + (getPoint().y - y) * (getPoint().y - y) <= (margin + widthPoint) * (margin + widthPoint)) {
             return true;
         }
         return false;
