@@ -5,7 +5,11 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="ColoredButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:colorButtonNormal">#2196f3</item>
     </style>
 
 </resources>

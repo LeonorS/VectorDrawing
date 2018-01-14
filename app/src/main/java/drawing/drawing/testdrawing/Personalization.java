@@ -27,6 +27,8 @@ import drawing.drawing.vectordrawing.VectorDrawing;
 public class Personalization extends AppCompatActivity {
 
     private TestDrawing customView;
+    private LinearLayout layout;
+    private boolean drawingViewVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +39,19 @@ public class Personalization extends AppCompatActivity {
 
         final Button ctn_btn = findViewById(R.id.ctn_btn);
         final TextView tv = findViewById(R.id.text);
-        final LinearLayout layout = findViewById(R.id.drawingSpace);
         final boolean[] endingTest = {false};
 
-        customView = new TestDrawing(Personalization.this);
-        layout.addView(customView);
+        layout = findViewById(R.id.layout);
+        customView = findViewById(R.id.drawing_view);
 
-        layout.setVisibility(View.GONE);
+        initVisibility();
 
         ctn_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (endingTest[0] == false) {
-                    ctn_btn.setVisibility(View.GONE);
-                    tv.setVisibility(View.GONE);
-                    layout.setVisibility(View.VISIBLE);
+                    toggleVisibility();
                 } else {
                     Intent intent = new Intent(Personalization.this, VectorDrawing.class);
                     startActivity(intent);
@@ -76,11 +75,26 @@ public class Personalization extends AppCompatActivity {
 
                 endingTest[0] = true;
                 ctn_btn.setText("start");
-                ctn_btn.setVisibility(View.VISIBLE);
                 tv.setText("Very good ! You can start drawing.");
-                tv.setVisibility(View.VISIBLE);
-                layout.setVisibility(View.GONE);
+                toggleVisibility();
             }
         });
+    }
+
+    private void initVisibility() {
+        drawingViewVisible = false;
+        customView.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
+    }
+
+    private void toggleVisibility() {
+        if (drawingViewVisible) {
+            customView.setVisibility(View.GONE);
+            layout.setVisibility(View.VISIBLE);
+        } else {
+            customView.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+        }
+        drawingViewVisible = !drawingViewVisible;
     }
 }

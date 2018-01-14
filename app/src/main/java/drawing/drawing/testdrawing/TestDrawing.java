@@ -3,6 +3,7 @@ package drawing.drawing.testdrawing;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,7 +17,7 @@ import drawing.drawing.model.Segment;
  * Created by leo on 14/01/18.
  */
 
-public class TestDrawing extends View{
+public class TestDrawing extends View {
 
     public interface MyCustomObjectListener {
         public void endingTest(int point_margin, int seg_margin);
@@ -26,9 +27,9 @@ public class TestDrawing extends View{
 
     public static final int POINT_TEST = 0;
     public static final int SEG_TEST = 1;
-    public int CURRENT_TEST = -1;
+    public int CURRENT_TEST;
 
-    private ArrayList<Figure> figures;
+    private ArrayList<Figure> figures = new ArrayList<>();
     private PointFigure p;
     private Segment s;
     private Figure touched;
@@ -37,13 +38,12 @@ public class TestDrawing extends View{
     private int point_margin;
     private int seg_margin;
 
-    public TestDrawing(Context context) {
-        super(context);
+    public TestDrawing(Context context, AttributeSet attrs) {
+        super(context, attrs);
         figures = new ArrayList<>();
         p = new PointFigure(200, 200, 0);
         figures.add(p);
         CURRENT_TEST = POINT_TEST;
-        invalidate();
     }
 
     public void setCustomObjectListener(MyCustomObjectListener listener) {
