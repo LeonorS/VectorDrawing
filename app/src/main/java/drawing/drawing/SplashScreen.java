@@ -1,6 +1,9 @@
 package drawing.drawing;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -24,5 +27,12 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(myIntent);
             }
         }, SPLASH_SCREEN_DELAY);
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        if (sharedPref.contains(getString(R.string.preference_file_key))) {
+
+        } else {
+
+        }
     }
 }

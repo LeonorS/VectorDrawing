@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Drawing</string>
+
+    <!-- SHARED PREFS -->
+    <string name="preference_file_key">drawing.drawing.sharedPreferenceFile</string>
+    <string name="preference_first_launch">firstLaunch</string>
 </resources>
