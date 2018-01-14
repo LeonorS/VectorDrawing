@@ -1,7 +1,9 @@
 package drawing.drawing.testdrawing;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,8 @@ public class Personalization extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personalization);
 
+
+
         final Button ctn_btn = findViewById(R.id.ctn_btn);
         final TextView tv = findViewById(R.id.text);
         final LinearLayout layout = findViewById(R.id.drawingSpace);
@@ -52,6 +56,7 @@ public class Personalization extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(Personalization.this, VectorDrawing.class);
                     startActivity(intent);
+                    Personalization.this.finish();
                 }
             }
         });
@@ -61,6 +66,14 @@ public class Personalization extends AppCompatActivity {
             @Override
             public void endingTest(int point_margin, int seg_margin) {
                 Log.d("DEBUG", "point_margin : " + point_margin + "; seg_margin : " + seg_margin);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
+                SharedPreferences.Editor edit = preferences.edit();
+                edit.putInt("point_margin", point_margin);
+                edit.apply();
+                edit.putInt("seg_margin", seg_margin);
+                edit.apply();
+
                 endingTest[0] = true;
                 ctn_btn.setText("start");
                 ctn_btn.setVisibility(View.VISIBLE);

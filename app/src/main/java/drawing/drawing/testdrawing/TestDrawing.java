@@ -40,7 +40,7 @@ public class TestDrawing extends View{
     public TestDrawing(Context context) {
         super(context);
         figures = new ArrayList<>();
-        p = new PointFigure(200, 200);
+        p = new PointFigure(200, 200, 0);
         figures.add(p);
         CURRENT_TEST = POINT_TEST;
         invalidate();
@@ -76,7 +76,7 @@ public class TestDrawing extends View{
                 if (CURRENT_TEST == POINT_TEST && touched != null){
                     CURRENT_TEST = SEG_TEST;
                     figures = new ArrayList<>();
-                    s = new Segment(100,300, 600, 300);
+                    s = new Segment(100,300, 600, 300, 0);
                     figures.add(s);
                     invalidate();
 

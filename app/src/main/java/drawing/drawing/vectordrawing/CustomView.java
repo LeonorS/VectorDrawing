@@ -25,16 +25,19 @@ public class CustomView extends View {
     public  static final    int     SELECT_ACTION       = 2;
     public  static final    int     SEG_ACTION          = 3;
     public                  int     current_action      = DEFAULT_ACTION;
-    private Figure touched             = null;
-    private Selector selector            = null;
-    private     ArrayList<Figure>   figures, selected;
-    protected   Point               anchor;
-    private     Figure              currentFigure;
+    private Figure touched = null;
+    private Selector selector = null;
+    private ArrayList<Figure> figures, selected;
+    protected Point  anchor;
+    private Figure currentFigure;
+    private int point_margin, seg_margin;
 
-    public CustomView(Context context) {
+    public CustomView(Context context, int point_margin, int seg_margin) {
         super(context);
         figures     = new ArrayList<>();
         selected    = new ArrayList<>();
+        this.point_margin = point_margin;
+        this.seg_margin = seg_margin;
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -128,7 +131,7 @@ public class CustomView extends View {
     }
 
     public void makePoint(float x, float y){
-        figures.add(new PointFigure((int) x, (int) y));
+        figures.add(new PointFigure((int) x, (int) y, point_margin));
         current_action = DEFAULT_ACTION;
         invalidate();
     }
@@ -154,7 +157,7 @@ public class CustomView extends View {
         }
         sx /= selected.size();
         sy /= selected.size();
-        figures.add(new Iso(sx, sy, selected));
+        figures.add(new Iso(sx, sy, point_margin, selected));
         resetSelection();
         invalidate();
     }
@@ -162,7 +165,7 @@ public class CustomView extends View {
     public void makeLine(float x, float y){
         if (currentFigure == null || currentFigure instanceof Segment) {
             figures.remove(currentFigure);
-            currentFigure = new Segment(anchor.x, anchor.y, x, y);
+            currentFigure = new Segment(anchor.x, anchor.y, x, y, (double)seg_margin);
             figures.add(currentFigure);
             invalidate();
         }

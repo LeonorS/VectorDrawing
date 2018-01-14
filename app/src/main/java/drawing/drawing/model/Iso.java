@@ -16,8 +16,8 @@ public class Iso extends PointFigure{
     private final ArrayList<PointFigure> points;
 
 
-    public Iso(int x, int y, ArrayList<Figure> figures) {
-        super(x, y);
+    public Iso(int x, int y, int margin, ArrayList<Figure> figures) {
+        super(x, y, margin);
         this.points = new ArrayList<>();
         for(Figure f : figures){
             points.add((PointFigure)f);

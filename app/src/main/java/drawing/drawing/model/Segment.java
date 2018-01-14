@@ -18,7 +18,7 @@ public class Segment extends Figure{
     private float x1, y1, x2, y2;
     private double margin = 8;
 
-    public Segment(float x1, float y1, float x2, float y2){
+    public Segment(float x1, float y1, float x2, float y2, double margin){
         super();
         addPoint(new Point((int)x1, (int)y1));
         addPoint(new Point((int)x2, (int)y2));
@@ -26,6 +26,7 @@ public class Segment extends Figure{
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
+        this.margin = margin;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class Segment extends Figure{
             double m = (this.y1 - this.y2) / (this.x1 - this.x2);
             double m1 = (this.y1 - y) / (this.x1 - x);
             double m2 = (this.y2 - y) / (this.x2 - x);
-            double margin_2 = (margin * 2)/(double)(x2 - x1 + y2 - y1);
+            double margin_2 = (margin * 2.5)/(double)(x2 - x1 + y2 - y1);
             return m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2;
         }
         return false;
@@ -77,10 +78,10 @@ public class Segment extends Figure{
     @Override
     public boolean intersects(Selector selector) {
         Rect r = selector.rectangle;
-        Segment top = new Segment(r.left, r.top, r.right, r.top);
-        Segment left = new Segment(r.left, r.top, r.left, r.bottom);
-        Segment bottom = new Segment(r.left, r.bottom, r.right, r.bottom);
-        Segment right = new Segment(r.right, r.top, r.right, r.bottom);
+        Segment top = new Segment(r.left, r.top, r.right, r.top, margin);
+        Segment left = new Segment(r.left, r.top, r.left, r.bottom, margin);
+        Segment bottom = new Segment(r.left, r.bottom, r.right, r.bottom, margin);
+        Segment right = new Segment(r.right, r.top, r.right, r.bottom, margin);
         boolean topp = intersects(top);
         if (topp) {
             return true;

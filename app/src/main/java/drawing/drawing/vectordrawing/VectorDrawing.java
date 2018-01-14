@@ -1,5 +1,7 @@
 package drawing.drawing.vectordrawing;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +20,12 @@ public class VectorDrawing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vector_drawing);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
+        final int point_margin = preferences.getInt("point_margin", 0);
+        final int seg_margin = preferences.getInt("seg_margin", 0);
+
         final LinearLayout layout=(LinearLayout)findViewById(R.id.drawingSpace);
-        customView = new CustomView(VectorDrawing.this);
+        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin);
         layout.addView(customView);
 
         Button clearBtn = (Button) findViewById(R.id.clearBtn);
@@ -69,7 +75,7 @@ public class VectorDrawing extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 layout.removeAllViews();
-                customView = new CustomView(VectorDrawing.this);
+                customView = new CustomView(VectorDrawing.this, point_margin, seg_margin);
                 layout.addView(customView);
                 customView.current_action = customView.DEFAULT_ACTION;
             }
