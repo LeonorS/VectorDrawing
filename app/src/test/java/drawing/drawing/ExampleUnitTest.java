@@ -1,4 +1,4 @@
-package com.sirottigmail.leonor.vectordrawing;
+package drawing.drawing;
 
 import org.junit.Test;
 
