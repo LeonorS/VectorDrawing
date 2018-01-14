@@ -32,7 +32,11 @@ public class SplashScreen extends AppCompatActivity {
         if (sharedPref.contains(getString(R.string.preference_file_key))) {
 
         } else {
-
+            /*
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.preference_first_launch), false);
+            editor.apply();
+            */
         }
     }
 }
