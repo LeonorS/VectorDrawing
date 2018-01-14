@@ -53,6 +53,11 @@ public class Personalization extends AppCompatActivity {
                 if (endingTest[0] == false) {
                     toggleVisibility();
                 } else {
+                    final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(getString(R.string.preference_first_launch), false);
+                    editor.commit();
+
                     Intent intent = new Intent(Personalization.this, VectorDrawing.class);
                     startActivity(intent);
                     Personalization.this.finish();

@@ -1,14 +1,13 @@
 package drawing.drawing;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import drawing.drawing.testdrawing.MainActivity;
+import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -19,24 +18,21 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        final boolean firstLaunch = !sharedPref.contains(getString(R.string.preference_first_launch));
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(myIntent);
+                if (firstLaunch) {
+                    Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
+                    startActivity(myIntent);
+                } else {
+                    Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
+                    startActivity(myIntent);
+                }
             }
         }, SPLASH_SCREEN_DELAY);
-
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        if (sharedPref.contains(getString(R.string.preference_file_key))) {
-
-        } else {
-            /*
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.preference_first_launch), false);
-            editor.apply();
-            */
-        }
     }
 }
