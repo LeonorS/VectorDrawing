@@ -36,36 +36,7 @@ public class VectorDrawing extends AppCompatActivity {
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, width, height);
         layout.addView(customView);
 
-        /*
-        Button undoBtn = (Button) findViewById(R.id.undoBtn);
-        undoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.undo();
-            }
-        });
-
-        Button redoBtn = findViewById(R.id.redoBtn);
-        redoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.redo();
-            }
-        });
-
-        Button cleanBtn = (Button) findViewById(R.id.cleanBtn);
-        cleanBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.current_action = customView.DEFAULT_ACTION;
-                customView.resetSelection();
-                customView.figures = new ArrayList<Figure>();
-            }
-        });
-        */
-
-        Button clearBtn = (Button) findViewById(R.id.clearBtn);
-
+        Button clearBtn = findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,8 +65,8 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                customView.current_action = customView.ISO_ACTION;
                 customView.makeIso();
-                customView.current_action = customView.DEFAULT_ACTION;
             }
         });
 
@@ -107,8 +78,7 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button lineBtn = (Button) findViewById(R.id.lineBtn);
-
+        Button lineBtn = findViewById(R.id.lineBtn);
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,9 +107,7 @@ public class VectorDrawing extends AppCompatActivity {
                 return true;
 
             case R.id.action_reset:
-                customView.current_action = customView.DEFAULT_ACTION;
-                customView.resetSelection();
-                customView.figures = new ArrayList<Figure>();
+                customView.reset();
                 return true;
 
             default:
