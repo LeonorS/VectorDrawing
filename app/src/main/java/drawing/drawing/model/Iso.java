@@ -35,21 +35,6 @@ public class Iso extends PointFigure{
         return anchor;
     }
 
-    @Override
-    public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.GRAY);
-        myPaint.setStyle(Paint.Style.FILL);
-        myPaint.setStrokeWidth(1);
-        for(PointFigure p : points){
-            canvas.drawLine(getPoint().x, getPoint().y, p.getPoint().x, p.getPoint().y, myPaint);
-        }
-        if(selected == true){
-            myPaint.setColor(Color.RED);
-            myPaint.setStyle(Paint.Style.FILL);
-        }
-        canvas.drawCircle(getPoint().x, getPoint().y, widthPoint, myPaint);
-    }
-
     public void movePoint(Point anchor){
         int sx = 0;
         int sy = 0;
@@ -60,5 +45,9 @@ public class Iso extends PointFigure{
         sx /= points.size();
         sy /= points.size();
         super.move(sx, sy, anchor);
+    }
+
+    public ArrayList<PointFigure> getPointsFigure(){
+        return points;
     }
 }

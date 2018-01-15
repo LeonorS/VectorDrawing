@@ -30,19 +30,8 @@ public class PointFigure extends Figure {
         this.margin = margin;
     }
 
-    Point getPoint(){
+    public Point getPoint(){
         return super.getPoints().get(0);
-    }
-
-    @Override
-    public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.BLACK);
-        myPaint.setStyle(Paint.Style.FILL);
-        if(selected == true){
-            myPaint.setColor(Color.RED);
-            myPaint.setStyle(Paint.Style.FILL);
-        }
-        canvas.drawCircle(getPoint().x, getPoint().y, widthPoint, myPaint);
     }
 
     @Override
@@ -73,5 +62,9 @@ public class PointFigure extends Figure {
 
     public void setMargin(int value){
         margin = value;
+    }
+
+    public int getWidthPoint(){
+        return widthPoint;
     }
 }

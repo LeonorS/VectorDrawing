@@ -2,7 +2,10 @@ package drawing.drawing.vectordrawing;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -10,7 +13,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
+import drawing.drawing.model.Iso;
+import drawing.drawing.model.Line;
 import drawing.drawing.model.Model;
+import drawing.drawing.model.PointFigure;
+import drawing.drawing.model.Segment;
 import drawing.drawing.model.Selector;
 
 /**
@@ -29,16 +36,18 @@ public class CustomView extends View {
 
     private Figure touched = null;
     private Selector selector = null;
-    protected Point  anchor;
+    private Point  anchor;
 
     private ArrayList<Figure> selected;
 
     private Model model;
+    private Designer designer;
 
     public CustomView(Context context, int point_margin, int seg_margin, double width, double height) {
         super(context);
         selected = new ArrayList<>();
         model = new Model(width, height, point_margin, seg_margin);
+        designer = new Designer();
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -93,15 +102,9 @@ public class CustomView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-
         super.onDraw(canvas);
         ArrayList<Figure> figures = model.getFigures();
-        for (Figure f : figures) {
-            f.onDraw(canvas);
-        }
-        if (selector != null){
-           selector.onDraw(canvas);
-        }
+        designer.onDraw(canvas, figures, selector);
     }
 
     private void makeSelector(float x, float y){

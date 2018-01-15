@@ -13,24 +13,10 @@ import android.view.MotionEvent;
 
 public class Selector {
 
-    protected static    Paint   myPaint;
-    protected           Rect    rectangle;
+    protected Rect rectangle;
 
     public Selector(Point anchor, int x, int y){
-        myPaint     = new Paint();
         rectangle = makeRectangle(anchor, x, y);
-    }
-
-    public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.RED);
-        myPaint.setStrokeWidth(3);
-        myPaint.setAlpha(20);
-        myPaint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(rectangle, myPaint);
-        myPaint.setColor(Color.RED);
-        myPaint.setAlpha(100);
-        myPaint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(rectangle, myPaint);
     }
 
     public boolean contains(float x, float y) {
@@ -45,5 +31,9 @@ public class Selector {
         int y2 = Math.max(anchor.y, y);
         r =  new Rect(x1, y1, x2, y2);
         return r;
+    }
+
+    public Rect getRectangle(){
+        return rectangle;
     }
 }

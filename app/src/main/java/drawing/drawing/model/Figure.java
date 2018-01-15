@@ -12,16 +12,11 @@ import java.util.Vector;
 
 public abstract class Figure {
 
-    protected static    Paint           myPaint;
-    private             Vector<Point>   points;
-    public boolean         selected = false;
+    private Vector<Point> points;
+    public boolean selected = false;
 
     public Figure() {
         points = new Vector<>();
-        if (myPaint == null) {
-            myPaint = new Paint();
-            myPaint.setAntiAlias(true);
-        }
     }
 
     public void addPoint(Point point){
@@ -38,7 +33,6 @@ public abstract class Figure {
     }
 
     public abstract boolean contains(float x, float y);
-    public abstract void onDraw(Canvas canvas);
     public abstract Point move(int x, int y, Point anchor);
     public abstract boolean intersects(Selector selector);
 }

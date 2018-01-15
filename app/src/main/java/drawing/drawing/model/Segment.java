@@ -55,18 +55,6 @@ public class Segment extends Figure{
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.BLACK);
-        myPaint.setStyle(Paint.Style.FILL);
-        if(selected == true){
-            myPaint.setColor(Color.RED);
-            myPaint.setStyle(Paint.Style.FILL);
-        }
-        myPaint.setStrokeWidth(3);
-        canvas.drawLine(getP1().x, getP1().y, getP2().x, getP2().y, myPaint);
-    }
-
-    @Override
     public Point move(int x, int y, Point anchor) {
 
         Point p1 = getP1();
