@@ -6,12 +6,13 @@
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@android:color/primary_text_dark</item>
         <item name="android:textColorPrimaryInverse">@android:color/primary_text_light</item>
         <item name="android:textColorSecondary">@android:color/secondary_text_dark</item>
         <item name="android:textColorSecondaryInverse">@android:color/secondary_text_light</item>
         <item name="android:buttonStyle">@style/ColoredButton</item>
+        <item name="android:textAppearance">@style/MyDefaultTextAppearance</item>
     </style>
 
 
@@ -21,10 +22,18 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:buttonStyle">@style/ColoredButton</item>
+        <item name="android:textAppearance">@style/MyDefaultTextAppearance</item>
     </style>
 
     <style name="ColoredButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">#2196f3</item>
+        <item name="android:colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="MyDefaultTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">#000000</item>
     </style>
 
 </resources>

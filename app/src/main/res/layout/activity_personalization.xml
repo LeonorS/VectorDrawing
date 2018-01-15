@@ -27,18 +27,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center" />
+            android:textAlignment="textStart"
+            android:textAppearance="@style/MyDefaultTextAppearance" />
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Move the figures by touching them and slide your finger on the screen."
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textAppearance="@style/MyDefaultTextAppearance" />
 
         <Button
             android:id="@+id/ctn_btn"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@style/ColoredButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

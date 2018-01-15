@@ -13,66 +13,66 @@
 
         <Button
             android:id="@+id/cleanBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="reset"/>
+            android:text="reset" />
 
         <Button
             android:id="@+id/clearBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="clear"/>
+            android:text="clear" />
 
         <Button
             android:id="@+id/undoBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="undo"/>
+            android:text="undo" />
 
         <Button
             android:id="@+id/redoBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="redo"/>
+            android:text="redo" />
 
         <Button
             android:id="@+id/selectBtn"
+            style="@style/ColoredButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="select"/>
+            android:text="select" />
 
         <Button
             android:id="@+id/pointBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="point"/>
+            android:text="point" />
 
         <Button
             android:id="@+id/isoBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="iso"/>
+            android:text="iso" />
 
         <Button
             android:id="@+id/segBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="seg"/>
+            android:text="seg" />
 
         <Button
             android:id="@+id/lineBtn"
-            android:layout_width="wrap_content"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:text="Line"/>
+            android:text="Line" />
 
     </LinearLayout>
 

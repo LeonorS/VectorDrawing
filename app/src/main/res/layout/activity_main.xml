@@ -15,17 +15,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Welcome !!!"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textAppearance="@style/MyDefaultTextAppearance" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Let's measure your touch on the screen."
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textAppearance="@style/MyDefaultTextAppearance" />
 
     <Button
         android:id="@+id/start_btn"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/ColoredButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
