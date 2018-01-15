@@ -25,8 +25,18 @@ import org.json.JSONObject;
 
 public class ReCaptcha {
     private static final String TAG = "KJKP6_RECAPTCHA";
+    private OnSuccessListener successListener;
+    private OnFailureListener failureListener;
 
     private ReCaptcha(){};
+
+    public interface OnSuccessListener {
+        void onSuccess();
+    }
+
+    public interface OnFailureListener {
+        void onFailure();
+    }
 
     public static class Builder {
         private ReCaptcha reCaptcha;
@@ -35,11 +45,13 @@ public class ReCaptcha {
             reCaptcha = new ReCaptcha();
         }
 
-        public Builder addOnSuccessListener() {
+        public Builder addOnSuccessListener(OnSuccessListener listener) {
+            reCaptcha.successListener = listener;
             return this;
         }
 
-        public Builder addOnFailureListener() {
+        public Builder addOnFailureListener(OnFailureListener listener) {
+            reCaptcha.failureListener = listener;
             return this;
         }
 
@@ -51,7 +63,7 @@ public class ReCaptcha {
     public void verify(final Activity acitvity) {
         SafetyNet.getClient(acitvity)
                 .verifyWithRecaptcha(acitvity.getString(R.string.reCaptcha_SiteKey))
-                .addOnSuccessListener(new OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
+                .addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
                     @Override
                     public void onSuccess(SafetyNetApi.RecaptchaTokenResponse recaptchaTokenResponse) {
                         if (!recaptchaTokenResponse.getTokenResult().isEmpty()) {
@@ -59,7 +71,7 @@ public class ReCaptcha {
                         }
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
+                .addOnFailureListener(new com.google.android.gms.tasks.OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         if (e instanceof ApiException) {
@@ -69,6 +81,8 @@ public class ReCaptcha {
                         } else {
                             Log.e(TAG, "Unknown type of error: " + e.getMessage());
                         }
+                        if (failureListener != null)
+                            failureListener.onFailure();
                     }
                 });
     }
@@ -84,9 +98,8 @@ public class ReCaptcha {
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "captcha response: " + response.toString());
                         try {
-                            if (response.getBoolean("success"))
-                                ;
-                                //loginInterface.registerWithEmailAndPassword(email, password);
+                            if (response.getBoolean("success") && successListener != null)
+                                successListener.onSuccess();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
