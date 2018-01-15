@@ -12,52 +12,60 @@
         android:background="@android:color/background_light">
 
         <Button
+            android:id="@+id/cleanBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:text="reset"/>
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:text="clear"/>
+
+        <Button
             android:id="@+id/undoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="undo"/>
 
         <Button
             android:id="@+id/redoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="redo"/>
-
-        <Button
-            android:id="@+id/clearBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="clear"/>
 
         <Button
             android:id="@+id/selectBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="select"/>
 
         <Button
             android:id="@+id/pointBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="point"/>
 
         <Button
             android:id="@+id/isoBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="iso"/>
 
         <Button
             android:id="@+id/segBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="seg"/>
-
-        <Button
-            android:id="@+id/cleanBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="reset"/>
 
     </LinearLayout>
 
