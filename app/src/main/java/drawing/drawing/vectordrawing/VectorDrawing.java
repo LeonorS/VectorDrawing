@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 import drawing.drawing.R;
+import drawing.drawing.model.Figure;
 
 public class VectorDrawing extends AppCompatActivity {
 
@@ -18,7 +21,7 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.vector_drawing);
+        setContentView(R.layout.activity_vector_drawing);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
         final int point_margin = preferences.getInt("point_margin", 0);
@@ -28,11 +31,20 @@ public class VectorDrawing extends AppCompatActivity {
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin);
         layout.addView(customView);
 
+        Button undoBtn = (Button) findViewById(R.id.undoBtn);
+        undoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customView.undo();
+            }
+        });
+
         Button clearBtn = (Button) findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 customView.current_action = customView.DEFAULT_ACTION;
+                customView.resetSelection();
             }
         });
 
@@ -74,10 +86,9 @@ public class VectorDrawing extends AppCompatActivity {
         cleanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layout.removeAllViews();
-                customView = new CustomView(VectorDrawing.this, point_margin, seg_margin);
-                layout.addView(customView);
                 customView.current_action = customView.DEFAULT_ACTION;
+                customView.resetSelection();
+                customView.figures = new ArrayList<Figure>();
             }
         });
     }

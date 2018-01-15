@@ -5,19 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import drawing.drawing.R;
-import drawing.drawing.model.Figure;
-import drawing.drawing.model.PointFigure;
-import drawing.drawing.vectordrawing.CustomView;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 /**
@@ -33,9 +26,7 @@ public class Personalization extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.personalization);
-
-
+        setContentView(R.layout.activity_personalization);
 
         final Button ctn_btn = findViewById(R.id.ctn_btn);
         final TextView tv = findViewById(R.id.text);
@@ -69,7 +60,6 @@ public class Personalization extends AppCompatActivity {
 
             @Override
             public void endingTest(int point_margin, int seg_margin) {
-                Log.d("DEBUG", "point_margin : " + point_margin + "; seg_margin : " + seg_margin);
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
                 SharedPreferences.Editor edit = preferences.edit();

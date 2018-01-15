@@ -37,7 +37,7 @@ public class Iso extends PointFigure{
 
     @Override
     public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.GREEN);
+        myPaint.setColor(Color.GRAY);
         myPaint.setStyle(Paint.Style.FILL);
         myPaint.setStrokeWidth(1);
         for(PointFigure p : points){

@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.splashscreen;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import drawing.drawing.R;
 import drawing.drawing.testdrawing.MainActivity;
 import drawing.drawing.vectordrawing.VectorDrawing;
 

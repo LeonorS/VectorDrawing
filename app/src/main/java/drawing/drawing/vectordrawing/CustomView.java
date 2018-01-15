@@ -27,7 +27,7 @@ public class CustomView extends View {
     public                  int     current_action      = DEFAULT_ACTION;
     private Figure touched = null;
     private Selector selector = null;
-    private ArrayList<Figure> figures, selected;
+    protected ArrayList<Figure> figures, selected;
     protected Point  anchor;
     private Figure currentFigure;
     private int point_margin, seg_margin;
@@ -179,6 +179,11 @@ public class CustomView extends View {
     public void cleanSelector(){
         selector = null;
         current_action = DEFAULT_ACTION;
+        invalidate();
+    }
+
+    public void undo(){
+        figures.remove(figures.size() - 1);
         invalidate();
     }
 }

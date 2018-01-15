@@ -54,13 +54,13 @@ public class Segment extends Figure{
 
     @Override
     public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.BLUE);
+        myPaint.setColor(Color.BLACK);
         myPaint.setStyle(Paint.Style.FILL);
         if(selected == true){
             myPaint.setColor(Color.RED);
             myPaint.setStyle(Paint.Style.FILL);
         }
-        myPaint.setStrokeWidth(4);
+        myPaint.setStrokeWidth(3);
         canvas.drawLine(x1, y1, x2, y2, myPaint);
     }
 

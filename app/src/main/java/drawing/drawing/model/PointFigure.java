@@ -36,7 +36,7 @@ public class PointFigure extends Figure {
 
     @Override
     public void onDraw(Canvas canvas) {
-        myPaint.setColor(Color.BLUE);
+        myPaint.setColor(Color.BLACK);
         myPaint.setStyle(Paint.Style.FILL);
         if(selected == true){
             myPaint.setColor(Color.RED);

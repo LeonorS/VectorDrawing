@@ -12,6 +12,12 @@
         android:background="@android:color/background_light">
 
         <Button
+            android:id="@+id/undoBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="undo"/>
+
+        <Button
             android:id="@+id/clearBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
