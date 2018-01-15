@@ -32,6 +32,7 @@ public class SplashScreen extends AppCompatActivity {
                     Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
                     startActivity(myIntent);
                 }
+                SplashScreen.this.finish();
             }
         }, SPLASH_SCREEN_DELAY);
     }

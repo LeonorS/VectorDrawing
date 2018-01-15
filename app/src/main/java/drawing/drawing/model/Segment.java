@@ -46,7 +46,7 @@ public class Segment extends Figure{
             double m = (this.y1 - this.y2) / (this.x1 - this.x2);
             double m1 = (this.y1 - y) / (this.x1 - x);
             double m2 = (this.y2 - y) / (this.x2 - x);
-            double margin_2 = (margin * 2.5)/(double)(x2 - x1 + y2 - y1);
+            double margin_2 = (margin * 2.7)/(double)(x2 - x1 + y2 - y1);
             return m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2;
         }
         return false;
