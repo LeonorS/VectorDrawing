@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1080449817111",
+    "firebase_url": "https://vectordrawing-f6ed6.firebaseio.com",
+    "project_id": "vectordrawing-f6ed6",
+    "storage_bucket": "vectordrawing-f6ed6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080449817111:android:8a0161512b8e4fe0",
+        "android_client_info": {
+          "package_name": "drawing.drawing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080449817111-3pht2o1fvnp10k8ef75e7ohshpe36ce8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "drawing.drawing",
+            "certificate_hash": "111622c63348c90bfa2409629f72898ab9c45482"
+          }
+        },
+        {
+          "client_id": "1080449817111-23vk4t82gn83r7cmm9u7bjjifn4oe72i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4CrS1juTAn02zHGzukxjp8UYlmOwACao"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080449817111-23vk4t82gn83r7cmm9u7bjjifn4oe72i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
