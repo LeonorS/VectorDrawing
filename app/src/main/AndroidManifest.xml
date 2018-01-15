@@ -11,23 +11,27 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".splashscreen.SplashScreen"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".testdrawing.MainActivity">
-            <!--  C EST CA QUI DETERMINE MA PREMIERE ACTIVITE A ETRE LANCEE
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+
+        <activity
+            android:name=".testdrawing.MainActivity"
+            android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".testdrawing.Personalization">
+
+        <activity
+            android:name=".testdrawing.Personalization"
+            android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".vectordrawing.VectorDrawing">
+
+        <activity
+            android:name=".vectordrawing.VectorDrawing"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 
