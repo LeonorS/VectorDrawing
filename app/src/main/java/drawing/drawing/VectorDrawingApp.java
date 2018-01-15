@@ -3,6 +3,7 @@ package drawing.drawing;
 import android.app.Application;
 import android.util.Log;
 
+import com.androidnetworking.AndroidNetworking;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -18,5 +19,6 @@ public class VectorDrawingApp extends Application {
     public void onCreate() {
         super.onCreate();
         Twitter.initialize(this);
+        AndroidNetworking.initialize(getApplicationContext());
     }
 }

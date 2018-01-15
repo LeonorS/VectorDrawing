@@ -15,13 +15,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import drawing.drawing.Network;
 import drawing.drawing.R;
 
 /**
@@ -31,9 +43,6 @@ import drawing.drawing.R;
 
 public class RegisterFragment extends Fragment {
     private static final String TAG = "KJKP6_LOGIN_REGISTER";
-    private static final String SiteKey = "6LcpzjQUAAAAAD0dkI0uQ54c75TtJ_SVXaCGNaDT";
-    private static final String SecretKey  = "6LcpzjQUAAAAACh_yXlvmcmOwMN1jdYD3KpvFO0c";
-    private GoogleApiClient mGoogleApiClient;
     private static final int PASSWORD_MIN_LENGTH = 6;
     private LoginInterface loginInterface;
     private EditText usernameEditText;
@@ -65,17 +74,6 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(SafetyNet.API)
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getActivity(), "Connection failed!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
-        mGoogleApiClient.connect();
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,20 +87,10 @@ public class RegisterFragment extends Fragment {
                 if (!checkInput(email, username, password))
                     return;
 
-                SafetyNet.SafetyNetApi.verifyWithRecaptcha(mGoogleApiClient, SiteKey)
-                        .setResultCallback(new ResultCallback<SafetyNetApi.RecaptchaTokenResult>() {
-                            @Override
-                            public void onResult(SafetyNetApi.RecaptchaTokenResult result) {
-                                Status status = result.getStatus();
+                if (Network.requireNetworkActivation(getActivity()))
+                    return;
 
-                                if ((status != null) && status.isSuccess()) {
-                                    Log.e(TAG, "Captcha success!");
-                                    loginInterface.registerWithEmailAndPassword(email, password);
-                                } else {
-                                    Log.e(TAG, "Captcha error happened! " + status.getStatusMessage());
-                                }
-                            }
-                        });
+                //ToDo CAPTCHA INTEGRATION!
             }
         });
     }

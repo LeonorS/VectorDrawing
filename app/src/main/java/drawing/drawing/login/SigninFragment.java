@@ -44,6 +44,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import drawing.drawing.Network;
 import drawing.drawing.R;
 
 
@@ -129,6 +130,7 @@ public class SigninFragment extends Fragment {
             @Override
             public void failure(TwitterException exception) {
                 Log.d(TAG, "twitter:failure");
+                Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -159,6 +161,8 @@ public class SigninFragment extends Fragment {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Network.requireNetworkActivation(getActivity()))
+                    return;
                 signinWithEmailAndPassword();
             }
         });
