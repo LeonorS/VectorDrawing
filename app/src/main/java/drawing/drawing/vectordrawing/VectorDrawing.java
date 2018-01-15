@@ -4,6 +4,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -33,6 +36,7 @@ public class VectorDrawing extends AppCompatActivity {
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, width, height);
         layout.addView(customView);
 
+        /*
         Button undoBtn = (Button) findViewById(R.id.undoBtn);
         undoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +52,18 @@ public class VectorDrawing extends AppCompatActivity {
                 customView.redo();
             }
         });
+
+
+        Button cleanBtn = (Button) findViewById(R.id.cleanBtn);
+        cleanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customView.current_action = customView.DEFAULT_ACTION;
+                customView.resetSelection();
+                customView.figures = new ArrayList<Figure>();
+            }
+        });
+        */
 
         Button clearBtn = (Button) findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,16 +107,6 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button cleanBtn = (Button) findViewById(R.id.cleanBtn);
-        cleanBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.current_action = customView.DEFAULT_ACTION;
-                customView.resetSelection();
-                customView.figures = new ArrayList<Figure>();
-            }
-        });
-
         Button lineBtn = (Button) findViewById(R.id.lineBtn);
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +114,39 @@ public class VectorDrawing extends AppCompatActivity {
                 customView.current_action = customView.LINE_ACTION;
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.drawing_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_undo:
+                customView.undo();
+                return true;
+
+            case R.id.action_redo:
+                customView.redo();
+                return true;
+
+            case R.id.action_reset:
+                customView.current_action = customView.DEFAULT_ACTION;
+                customView.resetSelection();
+                customView.figures = new ArrayList<Figure>();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
 
