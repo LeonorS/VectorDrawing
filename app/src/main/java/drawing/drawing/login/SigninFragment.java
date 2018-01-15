@@ -44,7 +44,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import drawing.drawing.Network;
+import drawing.drawing.utils.Network;
 import drawing.drawing.R;
 
 

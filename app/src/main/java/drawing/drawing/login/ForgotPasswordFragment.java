@@ -20,6 +20,8 @@ import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
 
 import drawing.drawing.R;
+import drawing.drawing.utils.Network;
+import drawing.drawing.utils.ReCaptcha;
 
 
 /**
@@ -46,18 +48,6 @@ public class ForgotPasswordFragment extends Fragment {
         View root = inflater.inflate(R.layout.login_forgot_password_fragment, null);
         recover = (Button) root.findViewById(R.id.recover_button);
         emailEdittext = (EditText) root.findViewById(R.id.email_edittext);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(SafetyNet.API)
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getActivity(), "Connection failed!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .build();
-        mGoogleApiClient.connect();
-
         return root;
     }
 
@@ -65,24 +55,23 @@ public class ForgotPasswordFragment extends Fragment {
     public void onViewCreated(View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SafetyNet.SafetyNetApi.verifyWithRecaptcha(mGoogleApiClient, SiteKey)
-                        .setResultCallback(new ResultCallback<SafetyNetApi.RecaptchaTokenResult>() {
-                            @Override
-                            public void onResult(SafetyNetApi.RecaptchaTokenResult result) {
-                                Status status = result.getStatus();
+        if (Network.requireNetworkActivation(getActivity()))
+            return;
 
-                                //TODO: implement password recovery
-                                if ((status != null) && status.isSuccess()) {
-                                    Log.e(TAG, "success!");
-                                } else {
-                                    Log.e(TAG, "error happened! " + status.getStatusMessage());
-                                }
-                            }
-                        });
-            }
-        });
+        ReCaptcha reCaptcha = new ReCaptcha.Builder()
+                .addOnSuccessListener(new ReCaptcha.OnSuccessListener() {
+                    @Override
+                    public void onSuccess() {
+                        //ToDo send recovery mail
+                    }
+                })
+                .addOnFailureListener(new ReCaptcha.OnFailureListener() {
+                    @Override
+                    public void onFailure() {
+                        Log.d(TAG, "captcha has failed");
+                    }
+                })
+                .build();
+        reCaptcha.verify(getActivity());
     }
 }

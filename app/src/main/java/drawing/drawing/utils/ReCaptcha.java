@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.utils;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -12,11 +12,11 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import drawing.drawing.R;
 
 /**
  * VectorDrawing for FretX
