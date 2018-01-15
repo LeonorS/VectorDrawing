@@ -39,6 +39,14 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
+        Button redoBtn = (Button) findViewById(R.id.redoBtn);
+        redoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customView.redo();
+            }
+        });
+
         Button clearBtn = (Button) findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override

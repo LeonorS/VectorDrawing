@@ -3,8 +3,10 @@ package drawing.drawing.vectordrawing;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class CustomView extends View {
     public                  int     current_action      = DEFAULT_ACTION;
     private Figure touched = null;
     private Selector selector = null;
-    protected ArrayList<Figure> figures, selected;
+    protected ArrayList<Figure> figures, selected, undoed;
     protected Point  anchor;
     private Figure currentFigure;
     private int point_margin, seg_margin;
@@ -36,6 +38,7 @@ public class CustomView extends View {
         super(context);
         figures     = new ArrayList<>();
         selected    = new ArrayList<>();
+        undoed      = new ArrayList<>(10);
         this.point_margin = point_margin;
         this.seg_margin = seg_margin;
     }
@@ -183,7 +186,25 @@ public class CustomView extends View {
     }
 
     public void undo(){
-        figures.remove(figures.size() - 1);
+        if(figures.size() == 0){
+            Toast.makeText(this.getContext(), "Nothing to cancel.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Figure f = figures.remove(figures.size() - 1);
+        if (undoed.size() == 10){
+            undoed.remove(0);
+        }
+        undoed.add(f);
+        invalidate();
+    }
+
+    public void redo(){
+        if (undoed.size() == 0){
+            Toast.makeText(this.getContext(), "No figure available.", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Figure f = undoed.remove(undoed.size() - 1);
+        figures.add(f);
         invalidate();
     }
 }
