@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.Iso;
+import drawing.drawing.model.Line;
 import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Segment;
 import drawing.drawing.model.Selector;
@@ -175,7 +176,10 @@ public class CustomView extends View {
             figures.remove(currentFigure);
             if (current_action == SEG_ACTION) {
                 currentFigure = new Segment(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin);
+            } else if (current_action == LINE_ACTION) {
+                currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height);
             }
+
             figures.add(currentFigure);
             invalidate();
         }

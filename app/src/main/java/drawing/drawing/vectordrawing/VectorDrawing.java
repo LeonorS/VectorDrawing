@@ -30,7 +30,7 @@ public class VectorDrawing extends AppCompatActivity {
         final int point_margin = preferences.getInt("point_margin", 0);
         final int seg_margin = preferences.getInt("seg_margin", 0);
 
-        final LinearLayout layout = (LinearLayout)findViewById(R.id.drawingSpace);
+        final LinearLayout layout = findViewById(R.id.drawingSpace);
         double width = layout.getWidth();
         double height = layout.getHeight();
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, width, height);
@@ -45,14 +45,13 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button redoBtn = (Button) findViewById(R.id.redoBtn);
+        Button redoBtn = findViewById(R.id.redoBtn);
         redoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 customView.redo();
             }
         });
-
 
         Button cleanBtn = (Button) findViewById(R.id.cleanBtn);
         cleanBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +65,7 @@ public class VectorDrawing extends AppCompatActivity {
         */
 
         Button clearBtn = (Button) findViewById(R.id.clearBtn);
+
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +74,7 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button pointBtn = (Button) findViewById(R.id.pointBtn);
+        Button pointBtn = findViewById(R.id.pointBtn);
         pointBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +82,7 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button selectBtn = (Button) findViewById(R.id.selectBtn);
+        Button selectBtn = findViewById(R.id.selectBtn);
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +90,7 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button isoBtn = (Button) findViewById(R.id.isoBtn);
+        Button isoBtn = findViewById(R.id.isoBtn);
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +99,7 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button segBtn = (Button) findViewById(R.id.segBtn);
+        Button segBtn = findViewById(R.id.segBtn);
         segBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,6 +108,7 @@ public class VectorDrawing extends AppCompatActivity {
         });
 
         Button lineBtn = (Button) findViewById(R.id.lineBtn);
+
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
