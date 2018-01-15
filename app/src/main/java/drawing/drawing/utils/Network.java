@@ -1,4 +1,4 @@
-package drawing.drawing;
+package drawing.drawing.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;

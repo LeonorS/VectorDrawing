@@ -3,7 +3,6 @@ package drawing.drawing.login;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,28 +12,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import drawing.drawing.Network;
+import drawing.drawing.utils.Network;
 import drawing.drawing.R;
+import drawing.drawing.utils.ReCaptcha;
 
 /**
  * Parade for FretX
@@ -90,7 +71,21 @@ public class RegisterFragment extends Fragment {
                 if (Network.requireNetworkActivation(getActivity()))
                     return;
 
-                //ToDo CAPTCHA INTEGRATION!
+                ReCaptcha reCaptcha = new ReCaptcha.Builder()
+                        .addOnSuccessListener(new ReCaptcha.OnSuccessListener() {
+                            @Override
+                            public void onSuccess() {
+                                loginInterface.registerWithEmailAndPassword(email, password);
+                            }
+                        })
+                        .addOnFailureListener(new ReCaptcha.OnFailureListener() {
+                            @Override
+                            public void onFailure() {
+                                Log.d(TAG, "captcha has failed");
+                            }
+                        })
+                        .build();
+                reCaptcha.verify(getActivity());
             }
         });
     }
