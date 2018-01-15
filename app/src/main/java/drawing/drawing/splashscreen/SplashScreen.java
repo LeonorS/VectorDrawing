@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import drawing.drawing.R;
-import drawing.drawing.testdrawing.MainActivity;
+import drawing.drawing.login.Login;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
@@ -26,15 +27,30 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (firstLaunch) {
-                    Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
-                    startActivity(myIntent);
-                } else {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
                     startActivity(myIntent);
+                } else {
+                    Intent myIntent = new Intent(SplashScreen.this, Login.class);
+                    startActivity(myIntent);
                 }
-                SplashScreen.this.finish();
             }
         }, SPLASH_SCREEN_DELAY);
+
+
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (firstLaunch) {
+//                    Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
+//                    startActivity(myIntent);
+//                } else {
+//                    Intent myIntent = new Intent(SplashScreen.this, VectorDrawingApp.class);
+//                    startActivity(myIntent);
+//                }
+//                SplashScreen.this.finish();
+//            }
+//        }, SPLASH_SCREEN_DELAY);
     }
 }
