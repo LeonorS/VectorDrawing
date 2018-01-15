@@ -27,8 +27,10 @@ public class VectorDrawing extends AppCompatActivity {
         final int point_margin = preferences.getInt("point_margin", 0);
         final int seg_margin = preferences.getInt("seg_margin", 0);
 
-        final LinearLayout layout=(LinearLayout)findViewById(R.id.drawingSpace);
-        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin);
+        final LinearLayout layout = (LinearLayout)findViewById(R.id.drawingSpace);
+        double width = layout.getWidth();
+        double height = layout.getHeight();
+        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, width, height);
         layout.addView(customView);
 
         Button undoBtn = (Button) findViewById(R.id.undoBtn);
@@ -89,7 +91,6 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        //TODO remplacer par une suppression des figures
         Button cleanBtn = (Button) findViewById(R.id.cleanBtn);
         cleanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +98,14 @@ public class VectorDrawing extends AppCompatActivity {
                 customView.current_action = customView.DEFAULT_ACTION;
                 customView.resetSelection();
                 customView.figures = new ArrayList<Figure>();
+            }
+        });
+
+        Button lineBtn = (Button) findViewById(R.id.lineBtn);
+        lineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customView.current_action = customView.LINE_ACTION;
             }
         });
     }

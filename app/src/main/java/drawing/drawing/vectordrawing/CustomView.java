@@ -26,21 +26,26 @@ public class CustomView extends View {
     public  static final    int     POINT_ACTION        = 1;
     public  static final    int     SELECT_ACTION       = 2;
     public  static final    int     SEG_ACTION          = 3;
+    public  static final    int     LINE_ACTION         = 4;
     public                  int     current_action      = DEFAULT_ACTION;
+
     private Figure touched = null;
     private Selector selector = null;
-    protected ArrayList<Figure> figures, selected, undoed;
+    protected ArrayList<Figure> figures, selected, canceled;
     protected Point  anchor;
     private Figure currentFigure;
     private int point_margin, seg_margin;
+    private double height, width;
 
-    public CustomView(Context context, int point_margin, int seg_margin) {
+    public CustomView(Context context, int point_margin, int seg_margin, double width, double height) {
         super(context);
         figures     = new ArrayList<>();
         selected    = new ArrayList<>();
-        undoed      = new ArrayList<>(10);
+        canceled      = new ArrayList<>(10);
         this.point_margin = point_margin;
         this.seg_margin = seg_margin;
+        this.width = width;
+        this.height = height;
     }
 
     public boolean onTouchEvent(MotionEvent event) {
@@ -58,7 +63,7 @@ public class CustomView extends View {
                 moveFigure(event.getX(), event.getY());
             } else if (current_action == SELECT_ACTION){
                 makeSelector(event.getX(), event.getY());
-            } else if (current_action == SEG_ACTION){
+            } else if (current_action == SEG_ACTION || current_action == LINE_ACTION){
                 makeLine(event.getX(), event.getY());
             } break;
         case MotionEvent.ACTION_UP:
@@ -66,7 +71,7 @@ public class CustomView extends View {
                 resetSelection();
             } else if (current_action == SELECT_ACTION) {
                 cleanSelector();
-            } else if (current_action == SEG_ACTION){
+            } else if (current_action == SEG_ACTION  || current_action == LINE_ACTION){
                 cleanFigure();
             } break;
         case MotionEvent.ACTION_CANCEL:{break;}
@@ -168,7 +173,9 @@ public class CustomView extends View {
     public void makeLine(float x, float y){
         if (currentFigure == null || currentFigure instanceof Segment) {
             figures.remove(currentFigure);
-            currentFigure = new Segment(anchor.x, anchor.y, x, y, (double)seg_margin);
+            if (current_action == SEG_ACTION) {
+                currentFigure = new Segment(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin);
+            }
             figures.add(currentFigure);
             invalidate();
         }
@@ -191,19 +198,19 @@ public class CustomView extends View {
             return;
         }
         Figure f = figures.remove(figures.size() - 1);
-        if (undoed.size() == 10){
-            undoed.remove(0);
+        if (canceled.size() == 10){
+            canceled.remove(0);
         }
-        undoed.add(f);
+        canceled.add(f);
         invalidate();
     }
 
     public void redo(){
-        if (undoed.size() == 0){
+        if (canceled.size() == 0){
             Toast.makeText(this.getContext(), "No figure available.", Toast.LENGTH_LONG).show();
             return;
         }
-        Figure f = undoed.remove(undoed.size() - 1);
+        Figure f = canceled.remove(canceled.size() - 1);
         figures.add(f);
         invalidate();
     }
