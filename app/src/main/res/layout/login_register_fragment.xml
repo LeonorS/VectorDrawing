@@ -26,7 +26,6 @@
         android:hint="Email"
         android:inputType="textEmailAddress|textVisiblePassword" />
 
-    <!-- TODO: handle eye click -->
     <EditText
         android:id="@+id/password_edittext"
         android:layout_width="fill_parent"
@@ -34,7 +33,7 @@
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawableRight="@android:drawable/ic_menu_view"
         android:hint="Password"
-        android:inputType="textVisiblePassword" />
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/register_button"
