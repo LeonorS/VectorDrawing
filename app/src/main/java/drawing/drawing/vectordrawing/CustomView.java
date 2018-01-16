@@ -2,11 +2,7 @@ package drawing.drawing.vectordrawing;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -14,11 +10,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
-import drawing.drawing.model.Iso;
-import drawing.drawing.model.Line;
 import drawing.drawing.model.Model;
-import drawing.drawing.model.PointFigure;
-import drawing.drawing.model.Segment;
 import drawing.drawing.model.Selector;
 
 /**
@@ -33,6 +25,7 @@ public class CustomView extends View {
     public  static final    int     SEG_ACTION          = 3;
     public  static final    int     LINE_ACTION         = 4;
     public static final     int     ISO_ACTION          = 5;
+    public static final     int     INTER_ACTION          = 6;
     public                  int     current_action      = DEFAULT_ACTION;
 
     private Figure touched = null;
@@ -62,9 +55,8 @@ public class CustomView extends View {
                 if (current_action == DEFAULT_ACTION) {
                     touched = model.findFigure(event.getX(), event.getY());
                 }
-                if (current_action == POINT_ACTION || (current_action == DEFAULT_ACTION && touched == null)) {
-                    makeFigure(POINT_ACTION, event.getX(), event.getY(), null, null);
-                    current_action = DEFAULT_ACTION;
+                if (current_action == POINT_ACTION) {
+                    makeFigure(current_action, event.getX(), event.getY(), null, null);
                     invalidate();
                 }
                 break;
@@ -77,6 +69,7 @@ public class CustomView extends View {
                 }
                 else if (current_action == SELECT_ACTION){
                     makeSelector(event.getX(), event.getY());
+                    invalidate();
                 }
                 else if (current_action == SEG_ACTION || current_action == LINE_ACTION){
                     makeFigure(current_action, event.getX(), event.getY(), null, anchor);
@@ -110,20 +103,26 @@ public class CustomView extends View {
 
     public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
         switch (action){
-            case CustomView.POINT_ACTION:
+            case POINT_ACTION:
                 model.makePoint(x, y);
                 break;
 
-            case CustomView.SEG_ACTION:
+            case SEG_ACTION:
                 model.makeLine(action, x, y, anchor);
                 break;
 
-            case CustomView.LINE_ACTION:
+            case LINE_ACTION:
                 model.makeLine(action, x, y, anchor);
                 break;
 
-            case CustomView.ISO_ACTION:
+            case ISO_ACTION:
                 model.makeIso(selected);
+                current_action = DEFAULT_ACTION;
+                break;
+
+            case INTER_ACTION:
+                model.makeIntersection(selected);
+                current_action = DEFAULT_ACTION;
                 break;
         }
     }
@@ -132,7 +131,6 @@ public class CustomView extends View {
         resetSelection();
         selector = new Selector(anchor, (int) x, (int) y);
         selected = model.selectFigure(selector);
-        invalidate();
     }
 
     private  void makeAchor(float x, float y){
@@ -141,12 +139,11 @@ public class CustomView extends View {
 
     private void cleanFigure(){
         model.cleanCurrentFigure();
-        current_action = DEFAULT_ACTION;
     }
 
     private void cleanSelector(){
-        selector = null;
         current_action = DEFAULT_ACTION;
+        selector = null;
         invalidate();
     }
 
@@ -160,7 +157,12 @@ public class CustomView extends View {
         makeFigure(ISO_ACTION, 0,0, selected, null);
         resetSelection();
         invalidate();
-        current_action = DEFAULT_ACTION;
+    }
+
+    protected void makeInter(){
+        makeFigure(INTER_ACTION, 0,0, selected, null);
+        resetSelection();
+        invalidate();
     }
 
     protected void undo(){
@@ -185,6 +187,7 @@ public class CustomView extends View {
         current_action = DEFAULT_ACTION;
         resetSelection();
         model.reset();
+        invalidate();
     }
 
     public Model getModel() {

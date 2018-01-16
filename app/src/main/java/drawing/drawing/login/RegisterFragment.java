@@ -43,7 +43,7 @@ public class RegisterFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.login_register_fragment, null);
+        root = inflater.inflate(R.layout.fragment_login_register, null);
         usernameEditText = (EditText) root.findViewById(R.id.username_edittext);
         emailEditText = (EditText) root.findViewById(R.id.email_edittext);
         passwordEditText = (EditText) root.findViewById(R.id.password_edittext);

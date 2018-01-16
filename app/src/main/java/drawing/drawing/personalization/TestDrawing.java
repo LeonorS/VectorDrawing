@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.Model;
 import drawing.drawing.model.PointFigure;
-import drawing.drawing.model.Segment;
+import drawing.drawing.model.Line;
 import drawing.drawing.vectordrawing.CustomView;
 import drawing.drawing.vectordrawing.Designer;
 
@@ -78,7 +78,7 @@ public class TestDrawing extends View {
 
                 else if (CURRENT_TEST == SEG_TEST) {
 
-                        Segment s = (Segment) f;
+                        Line s = (Line) f;
 
                         seg_margin = Math.abs(anchor.y - s.getPoints().get(0).y);
                         if (seg_margin <= 25) {

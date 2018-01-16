@@ -8,15 +8,12 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
+import drawing.drawing.model.Intersection;
 import drawing.drawing.model.Iso;
-import drawing.drawing.model.Line;
+import drawing.drawing.model.StraightLine;
 import drawing.drawing.model.PointFigure;
-import drawing.drawing.model.Segment;
+import drawing.drawing.model.Line;
 import drawing.drawing.model.Selector;
-
-/**
- * Created by leo on 15/01/18.
- */
 
 public class Designer {
 
@@ -34,8 +31,11 @@ public class Designer {
             if (f instanceof Iso){
                 onDrawIso(canvas, (Iso)f);
             }
-            else if (f instanceof Line || f instanceof Segment){
-                onDrawSegment(canvas, (Segment) f);
+            else if (f instanceof StraightLine || f instanceof Line){
+                onDrawSegment(canvas, (Line) f);
+            }
+            else if (f instanceof  Intersection){
+                onDrawInter(canvas, (Intersection) f);
             }
             else if (f instanceof PointFigure){
                 onDrawPointFigure(canvas, (PointFigure) f);
@@ -43,7 +43,7 @@ public class Designer {
         }
 
         if (selector != null){
-            onDrwSelector(canvas, selector);
+            onDrawSelector(canvas, selector);
         }
     }
 
@@ -64,7 +64,7 @@ public class Designer {
         canvas.drawCircle(i.getPoint().x, i.getPoint().y, i.getWidthPoint(), myPaint);
     }
 
-    private void onDrawSegment(Canvas canvas, Segment s){
+    private void onDrawSegment(Canvas canvas, Line s){
 
         myPaint.setColor(Color.BLACK);
         myPaint.setStyle(Paint.Style.FILL);
@@ -88,7 +88,7 @@ public class Designer {
         canvas.drawCircle(p.getPoint().x, p.getPoint().y, p.getWidthPoint(), myPaint);
     }
 
-    private void onDrwSelector(Canvas canvas, Selector s){
+    private void onDrawSelector(Canvas canvas, Selector s){
 
         Rect rectangle = s.getRectangle();
         myPaint.setColor(Color.RED);
@@ -100,5 +100,15 @@ public class Designer {
         myPaint.setAlpha(100);
         myPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(rectangle, myPaint);
+    }
+
+    private void onDrawInter(Canvas canvas, Intersection i){
+
+        myPaint.setColor(Color.GRAY);
+        if(i.selected == true){
+            myPaint.setColor(Color.RED);
+            myPaint.setStyle(Paint.Style.FILL);
+        }
+        canvas.drawCircle(i.getPoint().x, i.getPoint().y, i.getWidthPoint(), myPaint);
     }
 }

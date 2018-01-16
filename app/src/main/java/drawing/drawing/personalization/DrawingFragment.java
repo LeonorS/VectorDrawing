@@ -30,7 +30,7 @@ public class DrawingFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.personalization_drawing_fragment, null);
+        View root = inflater.inflate(R.layout.fragment_personalization_drawing, null);
         drawingView = (TestDrawing) root.findViewById(R.id.drawing_view);
         return root;
     }

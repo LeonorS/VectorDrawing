@@ -76,7 +76,7 @@ public class SigninFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.login_signin_fragment, null);
+        root = inflater.inflate(R.layout.fragment_login_signin, null);
         emailEditText = (EditText) root.findViewById(R.id.email_edittext);
         passwordEditText = (EditText) root.findViewById(R.id.password_edittext);
         signinButton = (Button) root.findViewById(R.id.signin_button);

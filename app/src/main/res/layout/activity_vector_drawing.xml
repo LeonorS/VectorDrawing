@@ -11,38 +11,12 @@
         android:orientation="vertical"
         android:background="@android:color/background_light">
 
-        <!--
-        <Button
-            android:id="@+id/cleanBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="reset" />
-
-        <Button
-            android:id="@+id/undoBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="undo" />
-
-        <Button
-            android:id="@+id/redoBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="redo" />
-            -->
-
         <Button
             android:id="@+id/clearBtn"
             style="@style/ColoredButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="clear" />
-
-
-
 
         <Button
             android:id="@+id/selectBtn"
@@ -78,6 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Line" />
+
+        <Button
+            android:id="@+id/interBtn"
+            style="@style/ColoredButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inter"/>
 
     </LinearLayout>
 

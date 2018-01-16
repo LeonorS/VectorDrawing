@@ -37,7 +37,7 @@ public class InfoFragment extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.personalization_info_fragment, null);
+        View root = inflater.inflate(R.layout.fragment_personalization_info, null);
         button = (Button) root.findViewById(R.id.button);
         text1 = (TextView) root.findViewById(R.id.line1);
         text2 = (TextView) root.findViewById(R.id.line2);

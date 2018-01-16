@@ -17,20 +17,15 @@ import android.widget.LinearLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.List;
 
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.login.Login;
-import drawing.drawing.personalization.DrawingFragment;
-import drawing.drawing.personalization.Personalization;
-import drawing.drawing.splashscreen.SplashScreen;
 import drawing.drawing.utils.JsonHelper;
 import drawing.drawing.utils.NetworkHelper;
 
@@ -105,6 +100,14 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
+        Button interBtn = findViewById(R.id.interBtn);
+        interBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customView.current_action = customView.INTER_ACTION;
+                customView.makeInter();
+            }
+        });
 
         //Todo create associated drawings
         //==========================================================================================
