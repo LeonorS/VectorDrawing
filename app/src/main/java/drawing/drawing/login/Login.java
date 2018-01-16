@@ -56,7 +56,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     }
 
     private void onSuccessfulLogin() {
-        Database.getInstance().addUserListener(userDataCheckListener);
+        Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
         Database.getInstance().addUserEventListener();
     }
 
@@ -75,7 +75,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 Database.getInstance().setUser(new User(fUser.getDisplayName(), fUser.getEmail()));
             } else {
                 Log.w(TAG, "user is old");
-                onSuccessfulUserData();
+                Intent i = new Intent(Login.this, VectorDrawing.class);
+                startActivity(i);
             }
         }
     };

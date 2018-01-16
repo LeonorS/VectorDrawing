@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
+import drawing.drawing.database.UserListener;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 /**
@@ -20,6 +22,7 @@ import drawing.drawing.vectordrawing.VectorDrawing;
  */
 
 public class Personalization extends AppCompatActivity {
+    private static final String TAG = "KJKP6_PERSONALIZATION";
 
     private TestDrawing customView;
     private LinearLayout layout;
@@ -63,9 +66,12 @@ public class Personalization extends AppCompatActivity {
             @Override
             public void endingTest(int point_margin, int seg_margin) {
 
+                //Todo race condition if going to next activity too fast
                 final Database database = Database.getInstance();
                 final User user = database.getUser();
                 user.setPrecision(point_margin, seg_margin);
+                Database.getInstance().addUserListenerWithoutNotifying(userDataUpdateListener);
+                Log.d(TAG, "set user");
                 database.setUser(user);
 
 //                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
@@ -78,7 +84,6 @@ public class Personalization extends AppCompatActivity {
                 endingTest[0] = true;
                 ctn_btn.setText("start");
                 tv.setText("Very good ! You can start drawing.");
-                toggleVisibility();
             }
         });
     }
@@ -99,4 +104,12 @@ public class Personalization extends AppCompatActivity {
         }
         drawingViewVisible = !drawingViewVisible;
     }
+
+    private final UserListener userDataUpdateListener = new UserListener() {
+        @Override
+        public void onUpdate(User user) {
+            Log.d(TAG, "user updated");
+            toggleVisibility();
+        }
+    };
 }

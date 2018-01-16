@@ -52,9 +52,11 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Log.w(TAG, "user is not logged in");
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);
                     startActivity(myIntent);
                 } else {
+                    Log.w(TAG, "user is logged in");
                     Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
                     //Todo should be hidden in database builder - Race condition prone
                     Database.getInstance().addUserEventListener();
