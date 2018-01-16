@@ -1,5 +1,7 @@
 package drawing.drawing.database;
 
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -37,6 +39,14 @@ public class User {
     public void setPrecision(int point_margin, int segment_margin) {
         this.point_margin = point_margin;
         this.segment_margin = segment_margin;
+        Log.d("User", "point_margin : " + point_margin + "; seg_margin ; " + segment_margin );
     }
 
+    public int getPointMargin(){
+        return point_margin;
+    }
+
+    public int getSegmentMargin(){
+        return segment_margin;
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -44,7 +45,7 @@ public class TestDrawing extends View {
     public TestDrawing(Context context, AttributeSet attrs) {
         super(context, attrs);
         model = new Model(0, 0, 0, 0);
-        model.makeFigure(CustomView.POINT_ACTION, 200, 200, null, null);
+        makeFigure(CustomView.POINT_ACTION, 200, 200, null, null);
         CURRENT_TEST = POINT_TEST;
         designer = new Designer();
     }
@@ -98,12 +99,13 @@ public class TestDrawing extends View {
                 if (CURRENT_TEST == POINT_TEST && touched != null){
                     CURRENT_TEST = SEG_TEST;
                     model.reset();
-                    model.makeFigure(CustomView.SEG_ACTION, 100, 300, null, new Point(600, 300));
+                    makeFigure(CustomView.SEG_ACTION, 100, 300, null, new Point(600, 300));
                     invalidate();
                 }
 
                 else if (CURRENT_TEST == SEG_TEST && touched != null){
                     if (listener != null){
+                        Log.d("TestDrawing", "point_margin : " + point_margin + "; seg_margin ; " + seg_margin );
                         listener.endingTest(point_margin, seg_margin);
                     }
                 }
@@ -117,6 +119,26 @@ public class TestDrawing extends View {
         super.onDraw(canvas);
         ArrayList<Figure> figures = model.getFigures();
         designer.onDraw(canvas, figures, null);
+    }
+
+    public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
+        switch (action){
+            case CustomView.POINT_ACTION:
+                model.makePoint(x, y);
+                break;
+
+            case CustomView.SEG_ACTION:
+                model.makeLine(action, x, y, anchor);
+                break;
+
+            case CustomView.LINE_ACTION:
+                model.makeLine(action, x, y, anchor);
+                break;
+
+            case CustomView.ISO_ACTION:
+                model.makeIso(selected);
+                break;
+        }
     }
 
     public  void makeAchor(float x, float y){

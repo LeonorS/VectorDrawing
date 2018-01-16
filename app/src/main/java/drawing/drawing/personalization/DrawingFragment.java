@@ -46,6 +46,7 @@ public class DrawingFragment extends Fragment {
                 //Todo race condition if going to next activity too fast
                 final Database database = Database.getInstance();
                 final User user = database.getUser();
+                Log.d("DrawingFragment", "point_margin : " + point_margin + "; seg_margin ; " + seg_margin );
                 user.setPrecision(point_margin, seg_margin);
                 Database.getInstance().addUserListenerWithoutNotifying(userDataUpdateListener);
                 Log.d(TAG, "set user");

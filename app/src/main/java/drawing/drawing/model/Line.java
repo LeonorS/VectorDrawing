@@ -1,6 +1,7 @@
 package drawing.drawing.model;
 
 import android.graphics.Point;
+import android.util.Log;
 
 /**
  * Created by leo on 15/01/18.
@@ -14,7 +15,13 @@ public class Line extends Segment{
         super(x1, y1, x2, y2, margin);
         this.width = width;
         this.height = height;
-        //setPoints();
+        setPoints();
+
+        Log.d("Line", "width : " + width);
+        Log.d("Line", "height : " + height);
+        Log.d("Line", "x1 : " + x1 + "; y1 : " + y1 + "; x2 : " + x2 + "; y2 : " + y2);
+
+        Log.d("Line get point","x1 : " + getP1().x + "; y1 : " + getP1().y + "; x2 : " + getP2().x + "; y2 : " + getP2().y);
     }
 
     public void setPoints(){
@@ -30,8 +37,8 @@ public class Line extends Segment{
         else if (getP1().x > getP2().x) {
             p1 = getP2();
             p2 = getP1();
-            setP2(p2.x, p2.y);
-            setP1(p1.x, p1.y);
+            setP2(p2);
+            setP1(p1);
         }
         else if (getP1().y < getP2().y) {
             p1 = getP1();
@@ -40,8 +47,8 @@ public class Line extends Segment{
         else {
             p1 = getP2();
             p2 = getP1();
-            setP2(p2.x, p2.y);
-            setP1(p1.x, p1.y);
+            setP2(p2);
+            setP1(p1);
         }
 
         double m = (double)(p1.y - p2.y) / (double)(p1.x - p2.x);
@@ -49,7 +56,7 @@ public class Line extends Segment{
         tmpy = (double)p2.y + m * (width - (double)p2.x);
 
         if (tmpy < height && tmpy >= 0)
-            pp2 = new Point ((int)width, (int)tmpy);
+            pp2 = new Point ((int) width, (int)tmpy);
 
         else if (tmpy >= height){
             tmpx = (height - (double)p2.y) / m + (double)p2.x;
@@ -78,7 +85,8 @@ public class Line extends Segment{
 
         }
 
-        setP1(pp1.x, pp1.y);
-        setP2(pp2.x, pp2.y);
+        setP1(pp1);
+        setP2(pp2);
     }
+
 }

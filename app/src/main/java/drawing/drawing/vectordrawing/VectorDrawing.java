@@ -2,9 +2,10 @@ package drawing.drawing.vectordrawing;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
+import drawing.drawing.database.User;
 import drawing.drawing.model.Figure;
 
 public class VectorDrawing extends AppCompatActivity {
@@ -28,17 +30,20 @@ public class VectorDrawing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
-//        final int point_margin = preferences.getInt("point_margin", 0);
-//        final int seg_margin = preferences.getInt("seg_margin", 0);
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
+        //final int point_margin = preferences.getInt("point_margin", 0);
+        //final int seg_margin = preferences.getInt("seg_margin", 0);
 
-        final int point_margin = Database.getInstance().getUser().point_margin;
-        final int seg_margin = Database.getInstance().getUser().segment_margin;
+        final Database database = Database.getInstance();
+        final User user = database.getUser();
+        final int point_margin = user.getPointMargin();
+        final int seg_margin = user.getSegmentMargin();
 
         final LinearLayout layout = findViewById(R.id.drawingSpace);
-        double width = layout.getWidth();
-        double height = layout.getHeight();
-        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, width, height);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        
+        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, metrics.widthPixels, metrics.heightPixels);
         layout.addView(customView);
 
         Button clearBtn = findViewById(R.id.clearBtn);

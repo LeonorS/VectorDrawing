@@ -42,26 +42,6 @@ public class Model {
         return f;
     }
 
-    public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
-        switch (action){
-            case CustomView.POINT_ACTION:
-                makePoint(x, y);
-                break;
-
-            case CustomView.SEG_ACTION:
-                makeLine(action, x, y, anchor);
-                break;
-
-            case CustomView.LINE_ACTION:
-                makeLine(action, x, y, anchor);
-                break;
-
-            case CustomView.ISO_ACTION:
-                makeIso(selected);
-                break;
-        }
-    }
-
     public int sizeFigures(){
         return figures.size();
     }
@@ -109,11 +89,11 @@ public class Model {
         }
     }
 
-    private void makePoint(float x, float y){
+    public void makePoint(float x, float y){
         figures.add(new PointFigure((int) x, (int) y, point_margin));
     }
 
-    private void makeIso(ArrayList<Figure> selected){
+    public void makeIso(ArrayList<Figure> selected){
         if (selected == null || selected.size() < 2)
             return;
         int sx = 0;
@@ -137,8 +117,7 @@ public class Model {
         figures.add(new Iso(sx, sy, point_margin, selected));
     }
 
-    private void makeLine(int action, float x, float y, Point anchor){
-        if (currentFigure == null || currentFigure instanceof Segment) {
+    public void makeLine(int action, float x, float y, Point anchor){
             figures.remove(currentFigure);
             if (action == CustomView.SEG_ACTION) {
                 currentFigure = new Segment(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin);
@@ -146,7 +125,6 @@ public class Model {
                 currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height);
             }
             figures.add(currentFigure);
-        }
     }
 
     public Point moveFigure(float x, float y, Figure f, Point anchor){

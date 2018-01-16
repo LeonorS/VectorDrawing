@@ -63,8 +63,8 @@ public class Segment extends Figure{
         int y1 = p1.y + y - anchor.y;
         int x2 = p2.x + x - anchor.x;
         int y2 = p2.y + y - anchor.y;
-        setP1(x1, y1);
-        setP2(x2, y2);
+        setP1(new Point(x1, y1));
+        setP2(new Point(x2, y2));
         anchor = new Point(x, y);
         return anchor;
     }
@@ -124,11 +124,11 @@ public class Segment extends Figure{
         return getPoints().get(1);
     }
 
-    public void setP1(int x, int y){
-        this.changePoint(new Point (x, y), 0);
+    public void setP1(Point p){
+        this.changePoint(p, 0);
     }
 
-    public void setP2(int x, int y){
-        this.changePoint(new Point (x, y), 1);
+    public void setP2(Point p){
+        this.changePoint(p, 1);
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -62,7 +63,7 @@ public class CustomView extends View {
                     touched = model.findFigure(event.getX(), event.getY());
                 }
                 if (current_action == POINT_ACTION || (current_action == DEFAULT_ACTION && touched == null)) {
-                    model.makeFigure(POINT_ACTION, event.getX(), event.getY(), null, null);
+                    makeFigure(POINT_ACTION, event.getX(), event.getY(), null, null);
                     current_action = DEFAULT_ACTION;
                     invalidate();
                 }
@@ -78,7 +79,7 @@ public class CustomView extends View {
                     makeSelector(event.getX(), event.getY());
                 }
                 else if (current_action == SEG_ACTION || current_action == LINE_ACTION){
-                    model.makeFigure(current_action, event.getX(), event.getY(), null, anchor);
+                    makeFigure(current_action, event.getX(), event.getY(), null, anchor);
                     invalidate();
                 }
                 break;
@@ -105,6 +106,26 @@ public class CustomView extends View {
         super.onDraw(canvas);
         ArrayList<Figure> figures = model.getFigures();
         designer.onDraw(canvas, figures, selector);
+    }
+
+    public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
+        switch (action){
+            case CustomView.POINT_ACTION:
+                model.makePoint(x, y);
+                break;
+
+            case CustomView.SEG_ACTION:
+                model.makeLine(action, x, y, anchor);
+                break;
+
+            case CustomView.LINE_ACTION:
+                model.makeLine(action, x, y, anchor);
+                break;
+
+            case CustomView.ISO_ACTION:
+                model.makeIso(selected);
+                break;
+        }
     }
 
     private void makeSelector(float x, float y){
@@ -136,7 +157,7 @@ public class CustomView extends View {
     }
 
     protected void makeIso(){
-        model.makeFigure(ISO_ACTION, 0,0, selected, null);
+        makeFigure(ISO_ACTION, 0,0, selected, null);
         resetSelection();
         invalidate();
         current_action = DEFAULT_ACTION;
