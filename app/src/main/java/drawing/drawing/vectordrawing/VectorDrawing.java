@@ -2,6 +2,7 @@ package drawing.drawing.vectordrawing;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import drawing.drawing.R;
+import drawing.drawing.database.Database;
 import drawing.drawing.model.Figure;
 
 public class VectorDrawing extends AppCompatActivity {
@@ -26,9 +28,12 @@ public class VectorDrawing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
-        final int point_margin = preferences.getInt("point_margin", 0);
-        final int seg_margin = preferences.getInt("seg_margin", 0);
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
+//        final int point_margin = preferences.getInt("point_margin", 0);
+//        final int seg_margin = preferences.getInt("seg_margin", 0);
+
+        final int point_margin = Database.getInstance().getUser().point_margin;
+        final int seg_margin = Database.getInstance().getUser().segment_margin;
 
         final LinearLayout layout = findViewById(R.id.drawingSpace);
         double width = layout.getWidth();
