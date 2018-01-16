@@ -42,7 +42,7 @@ public class VectorDrawing extends AppCompatActivity {
         final LinearLayout layout = findViewById(R.id.drawingSpace);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        
+
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, metrics.widthPixels, metrics.heightPixels);
         layout.addView(customView);
 

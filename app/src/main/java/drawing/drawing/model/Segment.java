@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by leo on 06/12/17.
@@ -16,12 +17,56 @@ import java.util.ArrayList;
 public class Segment extends Figure{
 
     private double margin = 8;
+    private Vector<Intersection> inter;
 
     public Segment(int x1, int y1, int x2, int y2, double margin){
         super();
         addPoint(new Point(x1, y1));
         addPoint(new Point(x2, y2));
         this.margin = margin;
+        this.inter = new Vector<Intersection>();
+    }
+
+    public Vector<Intersection> getInter(){
+        return inter;
+    }
+
+    public Point getP1(){
+        return getPoints().get(0);
+    }
+
+    public Point getP2(){
+        return getPoints().get(1);
+    }
+
+    public void setP1(Point p){
+        this.changePoint(p, 0);
+    }
+
+    public void setP2(Point p){
+        this.changePoint(p, 1);
+    }
+
+    @Override
+    public Point move(int x, int y, Point anchor) {
+
+        Point p1 = getP1();
+        Point p2 = getP2();
+        int x1 = p1.x + x - anchor.x;
+        int y1 = p1.y + y - anchor.y;
+        int x2 = p2.x + x - anchor.x;
+        int y2 = p2.y + y - anchor.y;
+        setP1(new Point(x1, y1));
+        setP2(new Point(x2, y2));
+        anchor = new Point(x, y);
+        return anchor;
+    }
+
+    public void setDep(){
+        for (int k = 0; k < inter.size(); k++){
+            if(!inter.get(k).setIntersection())
+                k--;
+        }
     }
 
     @Override
@@ -52,21 +97,6 @@ public class Segment extends Figure{
         }
 
         return false;
-    }
-
-    @Override
-    public Point move(int x, int y, Point anchor) {
-
-        Point p1 = getP1();
-        Point p2 = getP2();
-        int x1 = p1.x + x - anchor.x;
-        int y1 = p1.y + y - anchor.y;
-        int x2 = p2.x + x - anchor.x;
-        int y2 = p2.y + y - anchor.y;
-        setP1(new Point(x1, y1));
-        setP2(new Point(x2, y2));
-        anchor = new Point(x, y);
-        return anchor;
     }
 
     @Override
@@ -114,21 +144,5 @@ public class Segment extends Figure{
 
     public void setMargin(double value){
         margin = value;
-    }
-
-    public Point getP1(){
-        return getPoints().get(0);
-    }
-
-    public Point getP2(){
-        return getPoints().get(1);
-    }
-
-    public void setP1(Point p){
-        this.changePoint(p, 0);
-    }
-
-    public void setP2(Point p){
-        this.changePoint(p, 1);
     }
 }
