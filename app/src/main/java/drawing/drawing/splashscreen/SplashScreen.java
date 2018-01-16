@@ -12,7 +12,7 @@ import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.login.Login;
-import drawing.drawing.testdrawing.MainActivity;
+import drawing.drawing.personalization.Personalization;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
@@ -29,7 +29,7 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(myIntent);
             } else if (!user.isPrecisionSet()) {
                 Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " precision not set");
-                Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
+                Intent myIntent = new Intent(SplashScreen.this, Personalization.class);
                 startActivity(myIntent);
             } else {
                 Log.w(TAG, "user is old");

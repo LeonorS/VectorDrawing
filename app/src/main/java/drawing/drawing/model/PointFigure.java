@@ -1,17 +1,8 @@
 package drawing.drawing.model;
 
-import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.ArrayList;
-
-import drawing.drawing.testdrawing.Personalization;
-import drawing.drawing.vectordrawing.VectorDrawing;
 
 /**
  * Created by leo on 03/12/17.

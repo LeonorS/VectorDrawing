@@ -1,9 +1,7 @@
-package drawing.drawing.testdrawing;
+package drawing.drawing.personalization;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +19,7 @@ import drawing.drawing.vectordrawing.VectorDrawing;
  * Created by leo on 14/01/18.
  */
 
-public class Personalization extends AppCompatActivity {
+public class Personalization_old extends AppCompatActivity {
     private static final String TAG = "KJKP6_PERSONALIZATION";
 
     private TestDrawing customView;
@@ -31,7 +29,7 @@ public class Personalization extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personalization);
+        setContentView(R.layout.activity_personalization_old);
 
         final Button ctn_btn = findViewById(R.id.ctn_btn);
         final TextView tv = findViewById(R.id.text);
@@ -54,9 +52,9 @@ public class Personalization extends AppCompatActivity {
 //                    editor.putBoolean(getString(R.string.preference_first_launch), false);
 //                    editor.commit();
 
-                    Intent intent = new Intent(Personalization.this, VectorDrawing.class);
+                    Intent intent = new Intent(Personalization_old.this, VectorDrawing.class);
                     startActivity(intent);
-                    Personalization.this.finish();
+                    Personalization_old.this.finish();
                 }
             }
         });
@@ -74,7 +72,7 @@ public class Personalization extends AppCompatActivity {
                 Log.d(TAG, "set user");
                 database.setUser(user);
 
-//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization_old.this);
 //                SharedPreferences.Editor edit = preferences.edit();
 //                edit.putInt("point_margin", point_margin);
 //                edit.apply();

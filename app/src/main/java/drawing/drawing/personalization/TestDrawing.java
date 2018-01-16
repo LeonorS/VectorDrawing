@@ -1,4 +1,4 @@
-package drawing.drawing.testdrawing;
+package drawing.drawing.personalization;
 
 import android.content.Context;
 import android.graphics.Canvas;

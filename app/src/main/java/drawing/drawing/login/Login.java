@@ -20,11 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import drawing.drawing.R;
-import drawing.drawing.VectorDrawingApp;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
-import drawing.drawing.testdrawing.MainActivity;
+import drawing.drawing.personalization.Personalization;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class Login extends AppCompatActivity implements LoginInterface {
@@ -96,7 +95,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
 
 
     private void onSuccessfulUserData() {
-        Intent i = new Intent(Login.this, MainActivity.class);
+        Intent i = new Intent(Login.this, Personalization.class);
         startActivity(i);
     }
 

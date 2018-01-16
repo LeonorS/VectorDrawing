@@ -34,12 +34,12 @@
         </activity>
 
         <activity
-            android:name=".testdrawing.MainActivity"
+            android:name=".personalization.Personalization"
             android:screenOrientation="landscape">
         </activity>
 
         <activity
-            android:name=".testdrawing.Personalization"
+            android:name=".personalization.Personalization_old"
             android:screenOrientation="landscape">
         </activity>
 
