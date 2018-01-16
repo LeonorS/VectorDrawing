@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
@@ -33,13 +32,13 @@ public class SplashScreen extends AppCompatActivity {
                 SplashScreen.this.finish();
             } else if (!user.isPrecisionSet()) {
                 Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " precision not set");
-                CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
+                CrashAnalyticsHelper.signIn(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, Personalization.class);
                 startActivity(myIntent);
                 SplashScreen.this.finish();
             } else {
                 Log.w(TAG, "user is old");
-                CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
+                CrashAnalyticsHelper.signIn(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
                 startActivity(myIntent);
                 SplashScreen.this.finish();

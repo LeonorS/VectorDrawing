@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/action_logout"
+        android:title="Logout"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_undo"
         android:title="Undo"
         app:showAsAction="never" />
@@ -13,5 +17,9 @@
     <item
         android:id="@+id/action_reset"
         android:title="Reset"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save"
+        android:title="Save"
         app:showAsAction="never" />
 </menu>
