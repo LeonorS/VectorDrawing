@@ -1,5 +1,6 @@
 package drawing.drawing.login;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -68,6 +72,7 @@ public class SigninFragment extends Fragment {
     private TextView register;
     private TextView forgot;
     private View root;
+    private boolean passwordVisible = false;
 
     public static SigninFragment newInstance(LoginInterface loginInterface) {
         SigninFragment fragment = new SigninFragment();
@@ -89,6 +94,7 @@ public class SigninFragment extends Fragment {
         return root;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -172,6 +178,28 @@ public class SigninFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     signinWithEmailAndPassword();
                     return true;
+                }
+                return false;
+            }
+        });
+        passwordEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (passwordVisible) {
+                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        } else {
+                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                        }
+                        passwordVisible = !passwordVisible;
+                        return true;
+                    }
                 }
                 return false;
             }
