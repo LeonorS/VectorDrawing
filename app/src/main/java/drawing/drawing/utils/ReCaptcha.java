@@ -96,7 +96,6 @@ public class ReCaptcha {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "captcha response: " + response.toString());
                         try {
                             if (response.getBoolean("success") && successListener != null)
                                 successListener.onSuccess();

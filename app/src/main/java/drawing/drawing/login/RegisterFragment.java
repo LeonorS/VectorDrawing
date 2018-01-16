@@ -3,6 +3,7 @@ package drawing.drawing.login;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,6 +13,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import drawing.drawing.utils.Network;
 import drawing.drawing.R;
@@ -91,6 +97,7 @@ public class RegisterFragment extends Fragment {
     }
 
     boolean checkInput(String email, String username, String password) {
+        //TODO implement email format check with regexp
         if (email.length() == 0)
             return false;
         else if (username.length() == 0)

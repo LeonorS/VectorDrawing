@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -151,6 +152,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
+                            sendConfirmationEmail();
                             onSuccessfulLogin();
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -167,5 +169,38 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 });
     }
 
+    private void sendConfirmationEmail() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser fUser = auth.getCurrentUser();
+
+        if (fUser == null) {
+            Log.e(TAG, "firebase user is null after registration");
+            return;
+        }
+
+        //Todo use url to redirect user to login page
+        //String url = "http://www.example.com/verify?uid=" + fUser.getUid();
+        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                //.setUrl(url)
+                .setAndroidPackageName("drawing.drawing", false, null)
+                //.setIOSBundleId("com.example.ios")
+                .build();
+
+        fUser.sendEmailVerification(actionCodeSettings)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Email sent.");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Email not sent.");
+                    }
+                });
+    }
 
 }
