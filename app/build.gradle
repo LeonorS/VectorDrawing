@@ -53,7 +53,7 @@ dependencies {
         transitive = true
     }
     compile 'com.google.firebase:firebase-core:11.8.0'
-
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 }
 
 
