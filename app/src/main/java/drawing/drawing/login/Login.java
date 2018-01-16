@@ -3,6 +3,7 @@ package drawing.drawing.login;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +47,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private final static String TAG = "KJKP6_LOGIN";
     private FragmentManager fragmentManager;
     private Fragment fragment;
+    private static int remainingProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,39 +72,71 @@ public class Login extends AppCompatActivity implements LoginInterface {
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
-    public static boolean signout(final Activity activity) {
+    public interface OnSignoutCompleteListener {
+        void onComplete();
+    }
+
+    public static void signout(final Activity activity, final OnSignoutCompleteListener listener) {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null) {
             Log.w(TAG, "unable to signout user, fUser is null");
-            return false;
         }
 
         CrashAnalyticsHelper.signOut();
 
         List<? extends UserInfo> providerData = FirebaseAuth.getInstance().getCurrentUser().getProviderData();
+        remainingProvider = providerData.size();
         for (UserInfo data: providerData) {
             switch (data.getProviderId()) {
                 case "firebase":
                     FirebaseAuth.getInstance().signOut();
+                    --remainingProvider;
+                    signoutCheck(listener);
                     break;
                 case "facebook.com":
                     LoginManager.getInstance().logOut();
+                    --remainingProvider;
+                    signoutCheck(listener);
                     break;
                 case "google.com":
-                    //todo implement race condition protection
                     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                             .requestEmail()
                             .build();
-                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
-                    mGoogleSignInClient.signOut();
+                    final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+                    mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful())
+                                Log.w(TAG, "Google logout failed");
+                            --remainingProvider;
+                            signoutCheck(listener);
+                        }
+                    });
                     break;
                 case "twitter.com":
                     //todo check that nothing need to be done
+                    --remainingProvider;
+                    signoutCheck(listener);
                     break;
             }
-            Log.d(TAG, "Porvider: " + data.getProviderId());
+            Log.d(TAG, "signed oud of " + data.getProviderId());
         }
-        return true;
+    }
+
+    //todo wait until signout or timeout
+    public static void signoutCheck(final OnSignoutCompleteListener listener) {
+        Log.d(TAG,"remainingProvider: " + remainingProvider);
+
+        if (remainingProvider == 0) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onComplete();
+                }
+            }, 300);
+        }
+
     }
 
     // ==================================USER DATA CHECK============================================

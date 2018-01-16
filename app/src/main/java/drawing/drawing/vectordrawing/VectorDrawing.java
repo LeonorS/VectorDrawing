@@ -150,10 +150,14 @@ public class VectorDrawing extends AppCompatActivity {
         switch (item.getItemId()) {
             //todo move this to user profile activity
             case R.id.action_logout:
-                Login.signout(this);
-                Intent myIntent = new Intent(VectorDrawing.this, Login.class);
-                startActivity(myIntent);
-                finish();
+                Login.signout(this, new Login.OnSignoutCompleteListener() {
+                    @Override
+                    public void onComplete() {
+                        Intent myIntent = new Intent(VectorDrawing.this, Login.class);
+                        startActivity(myIntent);
+                        finish();
+                    }
+                });
                 return true;
 
             case R.id.action_undo:
