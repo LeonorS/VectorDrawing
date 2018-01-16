@@ -1,42 +1,66 @@
 package drawing.drawing.splashscreen;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import drawing.drawing.R;
+import drawing.drawing.database.Database;
+import drawing.drawing.database.User;
+import drawing.drawing.database.UserListener;
 import drawing.drawing.login.Login;
+import drawing.drawing.testdrawing.MainActivity;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
-
+    private static final String TAG = "KJKP6_SPLASH_SCREEN";
     private static final int SPLASH_SCREEN_DELAY = 2000;
+
+    private UserListener userDataCheckListener = new UserListener() {
+        @Override
+        public void onUpdate(User user) {
+            Database.getInstance().removeUserListener(this);
+            if (user == null) {
+                Log.w(TAG, "user is null");
+                Intent myIntent = new Intent(SplashScreen.this, Login.class);
+                startActivity(myIntent);
+            } else if (!user.isPrecisionSet()) {
+                Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " precision not set");
+                Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
+                startActivity(myIntent);
+            } else {
+                Log.w(TAG, "user is old");
+                Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
+                startActivity(myIntent);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-        final boolean firstLaunch = !sharedPref.contains(getString(R.string.preference_first_launch));
+//        final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+//        final boolean firstLaunch = !sharedPref.contains(getString(R.string.preference_first_launch));
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
-                    startActivity(myIntent);
-                } else {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);
                     startActivity(myIntent);
+                } else {
+                    Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
+                    //Todo should be hidden in database builder - Race condition prone
+                    Database.getInstance().addUserEventListener();
                 }
             }
         }, SPLASH_SCREEN_DELAY);
-
 
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {

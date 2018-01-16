@@ -16,12 +16,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import drawing.drawing.R;
 import drawing.drawing.VectorDrawingApp;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
+import drawing.drawing.testdrawing.MainActivity;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class Login extends AppCompatActivity implements LoginInterface {
@@ -46,6 +48,12 @@ public class Login extends AppCompatActivity implements LoginInterface {
             super.onBackPressed();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        fragment.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void onSuccessfulLogin() {
         Database.getInstance().addUserListener(userDataCheckListener);
         Database.getInstance().addUserEventListener();
@@ -54,11 +62,16 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private UserListener userDataCheckListener = new UserListener() {
         @Override
         public void onUpdate(User user) {
+            FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (fUser == null) {
+                Log.e(TAG, "firebase user null after Auth");
+                return;
+            }
             Database.getInstance().removeUserListener(this);
             if (user == null) {
                 Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " is new");
                 Database.getInstance().addUserListenerWithoutNotifying(userDataCreateListener);
-                Database.getInstance().setUser(new User("username", "email"));
+                Database.getInstance().setUser(new User(fUser.getDisplayName(), fUser.getEmail()));
             } else {
                 Log.w(TAG, "user is old");
                 onSuccessfulUserData();
@@ -81,11 +94,11 @@ public class Login extends AppCompatActivity implements LoginInterface {
 
 
     private void onSuccessfulUserData() {
-        Intent i = new Intent(Login.this, VectorDrawing.class);
+        Intent i = new Intent(Login.this, MainActivity.class);
         startActivity(i);
     }
 
-    // =============================================================================================
+    // =============================LOGIN INTERFACE IMPLEMENTATION==================================
     public void setCurrentFragment(Fragment fragment) {
         this.fragment = fragment;
     }
@@ -154,9 +167,5 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        fragment.onActivityResult(requestCode, resultCode, data);
-    }
+
 }

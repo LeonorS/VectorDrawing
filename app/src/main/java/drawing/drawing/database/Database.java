@@ -40,6 +40,7 @@ public class Database {
     }
 
     //==============================================================================================
+    //Todo remove race conditions
     public void addUserEventListener() {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser != null) {
@@ -73,7 +74,7 @@ public class Database {
         userListeners.remove(listener);
     }
 
-    public void notifyUserListeners() {
+    private void notifyUserListeners() {
         for (UserListener userListener: userListeners) {
             userListener.onUpdate(user);
         }

@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import drawing.drawing.R;
+import drawing.drawing.database.Database;
+import drawing.drawing.database.User;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 /**
@@ -44,10 +46,10 @@ public class Personalization extends AppCompatActivity {
                 if (endingTest[0] == false) {
                     toggleVisibility();
                 } else {
-                    final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putBoolean(getString(R.string.preference_first_launch), false);
-                    editor.commit();
+//                    final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPref.edit();
+//                    editor.putBoolean(getString(R.string.preference_first_launch), false);
+//                    editor.commit();
 
                     Intent intent = new Intent(Personalization.this, VectorDrawing.class);
                     startActivity(intent);
@@ -61,12 +63,17 @@ public class Personalization extends AppCompatActivity {
             @Override
             public void endingTest(int point_margin, int seg_margin) {
 
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
-                SharedPreferences.Editor edit = preferences.edit();
-                edit.putInt("point_margin", point_margin);
-                edit.apply();
-                edit.putInt("seg_margin", seg_margin);
-                edit.apply();
+                final Database database = Database.getInstance();
+                final User user = database.getUser();
+                user.setPrecision(point_margin, seg_margin);
+                database.setUser(user);
+
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization.this);
+//                SharedPreferences.Editor edit = preferences.edit();
+//                edit.putInt("point_margin", point_margin);
+//                edit.apply();
+//                edit.putInt("seg_margin", seg_margin);
+//                edit.apply();
 
                 endingTest[0] = true;
                 ctn_btn.setText("start");

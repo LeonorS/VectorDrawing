@@ -60,14 +60,14 @@ public class ReCaptcha {
         }
     }
 
-    public void verify(final Activity acitvity) {
-        SafetyNet.getClient(acitvity)
-                .verifyWithRecaptcha(acitvity.getString(R.string.reCaptcha_SiteKey))
+    public void verify(final Activity activity) {
+        SafetyNet.getClient(activity)
+                .verifyWithRecaptcha(activity.getString(R.string.reCaptcha_SiteKey))
                 .addOnSuccessListener(new com.google.android.gms.tasks.OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
                     @Override
                     public void onSuccess(SafetyNetApi.RecaptchaTokenResponse recaptchaTokenResponse) {
                         if (!recaptchaTokenResponse.getTokenResult().isEmpty()) {
-                            handleSiteVerify(acitvity, recaptchaTokenResponse.getTokenResult());
+                            handleSiteVerify(activity, recaptchaTokenResponse.getTokenResult());
                         }
                     }
                 })

@@ -16,21 +16,21 @@ import android.os.Bundle;
  */
 
 public class Network {
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm != null) {
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            return netInfo != null && netInfo.isConnectedOrConnecting();
-        } else {
-            return false;
-        }
-    }
-
     public static boolean requireNetworkActivation(Activity activity) {
         if (!isOnline(activity)) {
             NoInternetConnectionDialog internetDialog = new NoInternetConnectionDialog();
             internetDialog.show(activity.getFragmentManager(), "NETWORK");
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            return netInfo != null && netInfo.isConnectedOrConnecting();
         } else {
             return false;
         }
