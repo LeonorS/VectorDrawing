@@ -222,7 +222,7 @@ public class SigninFragment extends Fragment {
             AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
             loginInterface.signinWithAuthCredential(credential);
         } else {
-            Log.d(TAG, "google:error " + result.getStatus().getStatusMessage());
+            Log.d(TAG, "google:error " + result.getStatus().toString());
             Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
         }
     }
