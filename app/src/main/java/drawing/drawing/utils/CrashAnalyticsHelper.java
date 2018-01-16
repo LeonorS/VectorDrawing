@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class CrashAnalyticsHelper {
     private static final String TAG = "KJKP6_CRASHANALYTICS";
 
-    public static boolean logUser(FirebaseUser fUser) {
+    public static boolean signIn(FirebaseUser fUser) {
         if (fUser == null) {
             Log.e(TAG, "Unable to log user, firebase user is null");
             return false;
@@ -23,4 +23,9 @@ public class CrashAnalyticsHelper {
         Crashlytics.setUserName(fUser.getDisplayName());
         return true;
     }
+
+    public static boolean signOut() {
+        return true;
+    }
+
 }

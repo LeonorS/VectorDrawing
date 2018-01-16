@@ -1,5 +1,6 @@
 package drawing.drawing.vectordrawing;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,20 @@ import android.widget.LinearLayout;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.List;
+
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
+import drawing.drawing.login.Login;
+import drawing.drawing.personalization.DrawingFragment;
+import drawing.drawing.personalization.Personalization;
+import drawing.drawing.splashscreen.SplashScreen;
 import drawing.drawing.utils.JsonHelper;
 import drawing.drawing.utils.NetworkHelper;
 
@@ -140,6 +148,14 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //todo move this to user profile activity
+            case R.id.action_logout:
+                Login.signout(this);
+                Intent myIntent = new Intent(VectorDrawing.this, Login.class);
+                startActivity(myIntent);
+                finish();
+                return true;
+
             case R.id.action_undo:
                 customView.undo();
                 return true;
@@ -160,7 +176,7 @@ public class VectorDrawing extends AppCompatActivity {
 
                 final String save = JsonHelper.saveToJson(customView.getModel());
 
-                //Todo move this to StorageHelper in utils
+                //Todo move this to drawing storage dedicated class
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReference();
                 StorageReference drawRef = storageRef.child("draws");
