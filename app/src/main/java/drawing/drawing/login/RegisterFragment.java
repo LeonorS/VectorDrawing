@@ -3,7 +3,6 @@ package drawing.drawing.login;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,14 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import drawing.drawing.utils.Network;
+import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
-import drawing.drawing.utils.ReCaptcha;
+import drawing.drawing.utils.ReCaptchaHelper;
 
 /**
  * Parade for FretX
@@ -74,17 +68,17 @@ public class RegisterFragment extends Fragment {
                 if (!checkInput(email, username, password))
                     return;
 
-                if (Network.requireNetworkActivation(getActivity()))
+                if (NetworkHelper.requireNetworkActivation(getActivity()))
                     return;
 
-                ReCaptcha reCaptcha = new ReCaptcha.Builder()
-                        .addOnSuccessListener(new ReCaptcha.OnSuccessListener() {
+                ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
+                        .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
                             @Override
                             public void onSuccess() {
                                 loginInterface.registerWithEmailAndPassword(email, password);
                             }
                         })
-                        .addOnFailureListener(new ReCaptcha.OnFailureListener() {
+                        .addOnFailureListener(new ReCaptchaHelper.OnFailureListener() {
                             @Override
                             public void onFailure() {
                                 Log.d(TAG, "captcha has failed");

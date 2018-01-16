@@ -15,7 +15,7 @@ import android.os.Bundle;
  * Created by pandor on 15/01/18 21:00.
  */
 
-public class Network {
+public class NetworkHelper {
     public static boolean requireNetworkActivation(Activity activity) {
         if (!isOnline(activity)) {
             NoInternetConnectionDialog internetDialog = new NoInternetConnectionDialog();

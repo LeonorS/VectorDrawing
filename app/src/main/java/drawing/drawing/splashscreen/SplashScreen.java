@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.login.Login;
 import drawing.drawing.personalization.Personalization;
+import drawing.drawing.utils.CrashAnalyticsHelper;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
@@ -27,14 +30,19 @@ public class SplashScreen extends AppCompatActivity {
                 Log.w(TAG, "user is null");
                 Intent myIntent = new Intent(SplashScreen.this, Login.class);
                 startActivity(myIntent);
+                finish();
             } else if (!user.isPrecisionSet()) {
                 Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " precision not set");
+                CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, Personalization.class);
                 startActivity(myIntent);
+                finish();
             } else {
                 Log.w(TAG, "user is old");
+                CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
                 startActivity(myIntent);
+                finish();
             }
         }
     };
@@ -55,6 +63,7 @@ public class SplashScreen extends AppCompatActivity {
                     Log.w(TAG, "user is not logged in");
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);
                     startActivity(myIntent);
+                    finish();
                 } else {
                     Log.w(TAG, "user is logged in");
                     Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);

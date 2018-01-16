@@ -44,7 +44,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import drawing.drawing.utils.Network;
+import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 
 
@@ -161,7 +161,7 @@ public class SigninFragment extends Fragment {
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Network.requireNetworkActivation(getActivity()))
+                if (NetworkHelper.requireNetworkActivation(getActivity()))
                     return;
                 signinWithEmailAndPassword();
             }

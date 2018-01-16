@@ -1,11 +1,8 @@
 package drawing.drawing.vectordrawing;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,12 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
-
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
-import drawing.drawing.model.Figure;
 
 public class VectorDrawing extends AppCompatActivity {
 
@@ -29,10 +23,6 @@ public class VectorDrawing extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
-
-        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(VectorDrawing.this);
-        //final int point_margin = preferences.getInt("point_margin", 0);
-        //final int seg_margin = preferences.getInt("seg_margin", 0);
 
         final Database database = Database.getInstance();
         final User user = database.getUser();
@@ -95,6 +85,37 @@ public class VectorDrawing extends AppCompatActivity {
                 customView.current_action = customView.LINE_ACTION;
             }
         });
+
+
+        //Todo create associated drawings
+        //==========================================================================================
+//        ImageView icon = new ImageView(this); // Create an icon
+//        icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+//        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+//                .setContentView(icon)
+//                .setPosition(FloatingActionButton.POSITION_BOTTOM_CENTER)
+//                .build();
+//        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+//
+//        // repeat many times:
+//        ImageView itemIcon1 = new ImageView(this);
+//        itemIcon1.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+//        SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
+//
+//        ImageView itemIcon2 = new ImageView(this);
+//        itemIcon2.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+//        SubActionButton button2 = itemBuilder.setContentView(itemIcon2).build();
+//
+//        ImageView itemIcon3 = new ImageView(this);
+//        itemIcon3.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+//        SubActionButton button3 = itemBuilder.setContentView(itemIcon3).build();
+//
+//        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+//                .addSubActionView(button1)
+//                .addSubActionView(button2)
+//                .addSubActionView(button3)
+//                .attachTo(actionButton)
+//                .build();
     }
 
     @Override
