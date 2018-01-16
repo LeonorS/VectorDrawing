@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +89,13 @@ public class ForgotPasswordFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "Email sent to " + email);
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            Fragment signinFragment = SigninFragment.newInstance(loginInterface);
+                            fragmentTransaction.replace(R.id.container, signinFragment, "selection");
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commitAllowingStateLoss();
+                            loginInterface.setCurrentFragment(signinFragment);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
