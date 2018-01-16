@@ -14,4 +14,8 @@
         android:id="@+id/action_reset"
         android:title="Reset"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save"
+        android:title="Save"
+        app:showAsAction="never" />
 </menu>

@@ -186,4 +186,8 @@ public class CustomView extends View {
         resetSelection();
         model.reset();
     }
+
+    public Model getModel() {
+        return model;
+    }
 }
