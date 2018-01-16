@@ -44,6 +44,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-crash:11.8.0'
     compile 'com.google.firebase:firebase-database:11.8.0'
+    compile 'com.google.firebase:firebase-storage:11.8.0'
     compile 'com.facebook.android:facebook-android-sdk:4.29.0'
     compile 'com.twitter.sdk.android:twitter:3.1.1'
     compile 'com.google.android.gms:play-services-auth:11.8.0'
@@ -54,6 +55,7 @@ dependencies {
     }
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    compile 'com.google.code.gson:gson:2.8.2'
 }
 
 

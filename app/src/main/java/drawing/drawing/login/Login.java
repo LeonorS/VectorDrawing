@@ -1,5 +1,6 @@
 package drawing.drawing.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +26,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
+import java.util.List;
 
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
@@ -55,8 +66,44 @@ public class Login extends AppCompatActivity implements LoginInterface {
         fragment.onActivityResult(requestCode, resultCode, data);
     }
 
+    public static boolean signout(final Activity activity) {
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null) {
+            Log.w(TAG, "unable to signout user, fUser is null");
+            return false;
+        }
+
+        CrashAnalyticsHelper.signOut();
+
+        List<? extends UserInfo> providerData = FirebaseAuth.getInstance().getCurrentUser().getProviderData();
+        for (UserInfo data: providerData) {
+            switch (data.getProviderId()) {
+                case "firebase":
+                    FirebaseAuth.getInstance().signOut();
+                    break;
+                case "facebook.com":
+                    LoginManager.getInstance().logOut();
+                    break;
+                case "google.com":
+                    //todo implement race condition protection
+                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build();
+                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+                    mGoogleSignInClient.signOut();
+                    break;
+                case "twitter.com":
+                    //todo check that nothing need to be done
+                    break;
+            }
+            Log.d(TAG, "Porvider: " + data.getProviderId());
+        }
+        return true;
+    }
+
+    // ==================================USER DATA CHECK============================================
     private void onSuccessfulLogin() {
-        CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
+        CrashAnalyticsHelper.signIn(FirebaseAuth.getInstance().getCurrentUser());
         Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
         Database.getInstance().addUserEventListener();
     }
@@ -78,6 +125,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 Log.w(TAG, "user is old");
                 Intent i = new Intent(Login.this, VectorDrawing.class);
                 startActivity(i);
+                Login.this.finish();
             }
         }
     };
@@ -99,6 +147,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private void onSuccessfulUserData() {
         Intent i = new Intent(Login.this, Personalization.class);
         startActivity(i);
+        Login.this.finish();
     }
 
     // =============================LOGIN INTERFACE IMPLEMENTATION==================================
@@ -204,5 +253,4 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     }
                 });
     }
-
 }

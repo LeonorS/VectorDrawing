@@ -1,8 +1,12 @@
 package drawing.drawing.vectordrawing;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,13 +14,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.List;
+
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
+import drawing.drawing.login.Login;
+import drawing.drawing.personalization.DrawingFragment;
+import drawing.drawing.personalization.Personalization;
+import drawing.drawing.splashscreen.SplashScreen;
+import drawing.drawing.utils.JsonHelper;
+import drawing.drawing.utils.NetworkHelper;
 
 public class VectorDrawing extends AppCompatActivity {
-
-
+    private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private CustomView customView;
 
     @Override
@@ -32,7 +51,7 @@ public class VectorDrawing extends AppCompatActivity {
         final LinearLayout layout = findViewById(R.id.drawingSpace);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        
+
         customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, metrics.widthPixels, metrics.heightPixels);
         layout.addView(customView);
 
@@ -129,6 +148,14 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //todo move this to user profile activity
+            case R.id.action_logout:
+                Login.signout(this);
+                Intent myIntent = new Intent(VectorDrawing.this, Login.class);
+                startActivity(myIntent);
+                finish();
+                return true;
+
             case R.id.action_undo:
                 customView.undo();
                 return true;
@@ -139,6 +166,39 @@ public class VectorDrawing extends AppCompatActivity {
 
             case R.id.action_reset:
                 customView.reset();
+                return true;
+
+            case R.id.action_save:
+
+                if (NetworkHelper.requireNetworkActivation(this)) {
+                    return true;
+                }
+
+                final String save = JsonHelper.saveToJson(customView.getModel());
+
+                //Todo move this to drawing storage dedicated class
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReference();
+                StorageReference drawRef = storageRef.child("draws");
+                StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                final StorageReference exampleRef = userDrawRef.child("example.json");
+
+                UploadTask uploadTask = exampleRef.putBytes(save.getBytes());
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.w(TAG, "UploadFailed: " + exception.getMessage());
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        Log.w(TAG, "UploadSucceeded: " + downloadUrl.toString());
+                    }
+                });
+                Log.d(TAG, "JSON: " + save);
                 return true;
 
             default:
