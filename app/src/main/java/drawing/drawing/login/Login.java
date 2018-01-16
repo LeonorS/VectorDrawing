@@ -78,6 +78,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 Log.w(TAG, "user is old");
                 Intent i = new Intent(Login.this, VectorDrawing.class);
                 startActivity(i);
+                Login.this.finish();
             }
         }
     };
@@ -99,6 +100,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private void onSuccessfulUserData() {
         Intent i = new Intent(Login.this, Personalization.class);
         startActivity(i);
+        Login.this.finish();
     }
 
     // =============================LOGIN INTERFACE IMPLEMENTATION==================================

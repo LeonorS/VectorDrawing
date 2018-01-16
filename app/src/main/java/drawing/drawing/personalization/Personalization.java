@@ -60,6 +60,7 @@ public class Personalization extends AppCompatActivity implements Personalizatio
             default:
                 Intent intent = new Intent(Personalization.this, VectorDrawing.class);
                 startActivity(intent);
+                Personalization.this.finish();
         }
         ++state;
     }

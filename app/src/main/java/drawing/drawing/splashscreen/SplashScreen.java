@@ -30,19 +30,19 @@ public class SplashScreen extends AppCompatActivity {
                 Log.w(TAG, "user is null");
                 Intent myIntent = new Intent(SplashScreen.this, Login.class);
                 startActivity(myIntent);
-                finish();
+                SplashScreen.this.finish();
             } else if (!user.isPrecisionSet()) {
                 Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " precision not set");
                 CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, Personalization.class);
                 startActivity(myIntent);
-                finish();
+                SplashScreen.this.finish();
             } else {
                 Log.w(TAG, "user is old");
                 CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
                 Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
                 startActivity(myIntent);
-                finish();
+                SplashScreen.this.finish();
             }
         }
     };
@@ -63,7 +63,7 @@ public class SplashScreen extends AppCompatActivity {
                     Log.w(TAG, "user is not logged in");
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);
                     startActivity(myIntent);
-                    finish();
+                    SplashScreen.this.finish();
                 } else {
                     Log.w(TAG, "user is logged in");
                     Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);

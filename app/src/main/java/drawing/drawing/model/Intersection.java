@@ -16,6 +16,30 @@ public class Intersection extends PointFigure {
         this.s2=s2;
     }
 
+    @Override
+    public Point move(int x, int y, Point anchor) {
+
+        Point p = new Point(this.getPoint());
+        super.move(x, y, anchor);
+
+        s1.getP1().x += x - p.x;
+        s1.getP1().y += y - p.y;
+
+        s1.getP2().x += x - p.x;
+        s1.getP2().y += y - p.y;
+
+        s2.getP1().x += x - p.x;
+        s2.getP1().y += y - p.y;
+
+        s2.getP2().x += x - p.x;
+        s2.getP2().y += y - p.y;
+
+        s1.setDep();
+        s2.setDep();
+
+        return anchor;
+    }
+
     public boolean setIntersection(){
 
         int x1 = s1.getP1().x;
@@ -42,5 +66,13 @@ public class Intersection extends PointFigure {
 
         super.changePoint(p, 0);
         return true;
+    }
+
+    public Segment getL1(){
+        return s1;
+    }
+
+    public Segment getL2(){
+        return s2;
     }
 }
