@@ -23,12 +23,12 @@ import drawing.drawing.R;
  * Created by pandor on 15/01/18 22:36.
  */
 
-public class ReCaptcha {
+public class ReCaptchaHelper {
     private static final String TAG = "KJKP6_RECAPTCHA";
     private OnSuccessListener successListener;
     private OnFailureListener failureListener;
 
-    private ReCaptcha(){};
+    private ReCaptchaHelper(){};
 
     public interface OnSuccessListener {
         void onSuccess();
@@ -39,10 +39,10 @@ public class ReCaptcha {
     }
 
     public static class Builder {
-        private ReCaptcha reCaptcha;
+        private ReCaptchaHelper reCaptcha;
 
         public Builder() {
-            reCaptcha = new ReCaptcha();
+            reCaptcha = new ReCaptchaHelper();
         }
 
         public Builder addOnSuccessListener(OnSuccessListener listener) {
@@ -55,7 +55,7 @@ public class ReCaptcha {
             return this;
         }
 
-        public ReCaptcha build() {
+        public ReCaptchaHelper build() {
             return reCaptcha;
         }
     }

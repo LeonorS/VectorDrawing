@@ -10,23 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import drawing.drawing.R;
-import drawing.drawing.utils.Network;
-import drawing.drawing.utils.ReCaptcha;
+import drawing.drawing.utils.NetworkHelper;
 
 
 /**
@@ -61,20 +51,20 @@ public class ForgotPasswordFragment extends Fragment {
         recover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Network.requireNetworkActivation(getActivity()))
+                if (NetworkHelper.requireNetworkActivation(getActivity()))
                     return;
 
                 resetPassword();
 
-//                ReCaptcha reCaptcha = new ReCaptcha.Builder()
-//                        .addOnSuccessListener(new ReCaptcha.OnSuccessListener() {
+//                ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
+//                        .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
 //                            @Override
 //                            public void onSuccess() {
 //                                Log.d(TAG, "captcha has succeeded");
 //                                resetPassword();
 //                            }
 //                        })
-//                        .addOnFailureListener(new ReCaptcha.OnFailureListener() {
+//                        .addOnFailureListener(new ReCaptchaHelper.OnFailureListener() {
 //                            @Override
 //                            public void onFailure() {
 //                                Log.d(TAG, "captcha has failed");

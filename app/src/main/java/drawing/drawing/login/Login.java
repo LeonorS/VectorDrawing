@@ -24,6 +24,7 @@ import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.personalization.Personalization;
+import drawing.drawing.utils.CrashAnalyticsHelper;
 import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class Login extends AppCompatActivity implements LoginInterface {
@@ -55,6 +56,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     }
 
     private void onSuccessfulLogin() {
+        CrashAnalyticsHelper.logUser(FirebaseAuth.getInstance().getCurrentUser());
         Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
         Database.getInstance().addUserEventListener();
     }

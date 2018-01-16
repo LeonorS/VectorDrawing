@@ -12,4 +12,5 @@
     <string name="com.twitter.sdk.android.CONSUMER_SECRET"> j4yugezdiN0UeUP5ZAR3MqFpSo9IjWhuH6dRKTK8I7vJNHik1W</string>
     <string name="reCaptcha_SiteKey">6Len10AUAAAAAJRuyFc0MqR-Oe-HxxPiQIRJcHoH</string>
     <string name="reCaptcha_SecretKey">6Len10AUAAAAABcB99ugROi8_hYM300cnkUJFVGb</string>
+
 </resources>
