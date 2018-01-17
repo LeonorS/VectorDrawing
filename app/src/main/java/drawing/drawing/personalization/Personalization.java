@@ -1,7 +1,6 @@
 package drawing.drawing.personalization;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import drawing.drawing.R;
-import drawing.drawing.vectordrawing.VectorDrawing;
+import drawing.drawing.workspace.Workspace;
 
 /**
  * VectorDrawing for FretX
@@ -68,7 +67,7 @@ public class Personalization extends AppCompatActivity implements Personalizatio
                 break;
             default:
                 if (!outsideWorkflow) {
-                    Intent intent = new Intent(Personalization.this, VectorDrawing.class);
+                    Intent intent = new Intent(Personalization.this, Workspace.class);
                     startActivity(intent);
                 } else {
                     setResult(RESULT_OK, new Intent());

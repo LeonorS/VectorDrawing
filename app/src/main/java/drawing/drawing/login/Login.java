@@ -13,12 +13,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -28,20 +25,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.TwitterApi;
 
 import java.util.List;
 
 import drawing.drawing.R;
+import drawing.drawing.workspace.Workspace;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.CrashAnalyticsHelper;
-import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class Login extends AppCompatActivity implements LoginInterface {
     private final static String TAG = "KJKP6_LOGIN";
@@ -161,7 +154,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 Database.getInstance().setUser(new User(fUser.getDisplayName(), fUser.getEmail()));
             } else {
                 Log.w(TAG, "user is old");
-                Intent i = new Intent(Login.this, VectorDrawing.class);
+                Intent i = new Intent(Login.this, Workspace.class);
                 startActivity(i);
                 Login.this.finish();
             }

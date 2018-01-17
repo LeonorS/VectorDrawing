@@ -9,13 +9,13 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 
 import drawing.drawing.R;
+import drawing.drawing.workspace.Workspace;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.login.Login;
 import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.CrashAnalyticsHelper;
-import drawing.drawing.vectordrawing.VectorDrawing;
 
 public class SplashScreen extends AppCompatActivity {
     private static final String TAG = "KJKP6_SPLASH_SCREEN";
@@ -39,7 +39,7 @@ public class SplashScreen extends AppCompatActivity {
             } else {
                 Log.w(TAG, "user is old");
                 CrashAnalyticsHelper.signIn(FirebaseAuth.getInstance().getCurrentUser());
-                Intent myIntent = new Intent(SplashScreen.this, VectorDrawing.class);
+                Intent myIntent = new Intent(SplashScreen.this, Workspace.class);
                 startActivity(myIntent);
                 SplashScreen.this.finish();
             }
