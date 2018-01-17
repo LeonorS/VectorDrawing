@@ -171,4 +171,9 @@ public class Model {
     public void removeInter(Intersection i){
         figures.remove(i);
     }
+
+    public void setPrecision(int point_margin, int seg_margin) {
+        this.point_margin = point_margin;
+        this.seg_margin = seg_margin;
+    }
 }

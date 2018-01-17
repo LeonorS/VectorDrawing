@@ -1,6 +1,7 @@
 package drawing.drawing.personalization;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,15 +18,23 @@ import drawing.drawing.vectordrawing.VectorDrawing;
  */
 
 public class Personalization extends AppCompatActivity implements PersonalizationListener {
+    public static final String OUTSIDE_WORKFLOW = "outsideWorkflow";
     private static final String TAG = "KJKP6_PERSONALIZATION";
     private FragmentManager fragmentManager;
     private Fragment fragment;
+    private boolean outsideWorkflow = false;
 
     private int state = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.containsKey(OUTSIDE_WORKFLOW)) {
+            outsideWorkflow = bundle.getBoolean(OUTSIDE_WORKFLOW);
+        }
+
         setContentView(R.layout.activity_personalization);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -58,8 +67,12 @@ public class Personalization extends AppCompatActivity implements Personalizatio
                 fragmentTransaction.commit();
                 break;
             default:
-                Intent intent = new Intent(Personalization.this, VectorDrawing.class);
-                startActivity(intent);
+                if (!outsideWorkflow) {
+                    Intent intent = new Intent(Personalization.this, VectorDrawing.class);
+                    startActivity(intent);
+                } else {
+                    setResult(RESULT_OK, new Intent());
+                }
                 Personalization.this.finish();
         }
         ++state;

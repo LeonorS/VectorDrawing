@@ -1,7 +1,5 @@
 package drawing.drawing.model;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
 
 import java.util.Vector;

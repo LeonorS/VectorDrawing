@@ -26,10 +26,14 @@ import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.login.Login;
+import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.JsonHelper;
 import drawing.drawing.utils.NetworkHelper;
 
+import static drawing.drawing.personalization.Personalization.OUTSIDE_WORKFLOW;
+
 public class VectorDrawing extends AppCompatActivity {
+    private static final int PRECISION_REQUEST_CODE = 42;
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private CustomView customView;
 
@@ -151,6 +155,15 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            //todo move this to user profile activity
+            case R.id.action_precision:
+                Intent myIntent = new Intent(VectorDrawing.this, Personalization.class);
+                myIntent.putExtra(OUTSIDE_WORKFLOW, true);
+                startActivityForResult(myIntent, PRECISION_REQUEST_CODE);
+                //startActivity(myIntent);
+                return true;
+
             //todo move this to user profile activity
             case R.id.action_logout:
                 Login.signout(this, new Login.OnSignoutCompleteListener() {
@@ -214,6 +227,16 @@ public class VectorDrawing extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PRECISION_REQUEST_CODE) {
+            User user = Database.getInstance().getUser();
+            Log.d(TAG, "update precision: " + user.point_margin + " | " + user.segment_margin);
+            customView.getModel().setPrecision(user.point_margin, user.segment_margin);
+        } else
+            super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
