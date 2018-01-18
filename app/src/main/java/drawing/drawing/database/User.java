@@ -59,7 +59,7 @@ public class User {
 
     public void addDrawing(String name) {
         final Date currentTime = Calendar.getInstance().getTime();
-        final Drawing drawing = new Drawing(name, currentTime.toString());
+        final Drawing drawing = new Drawing(name, currentTime.toString(), currentTime.toString());
         final Database database = Database.getInstance();
         final User user = database.getUser();
         drawings.put(name, drawing);

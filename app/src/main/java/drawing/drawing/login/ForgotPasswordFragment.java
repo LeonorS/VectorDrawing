@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import drawing.drawing.R;
+import drawing.drawing.messaging.CustomProgressDialog;
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.NetworkHelper;
 
 
@@ -81,6 +83,9 @@ public class ForgotPasswordFragment extends Fragment {
     private void resetPassword() {
         email = emailEdittext.getText().toString();
 
+        final MessagingInterface mi = CustomProgressDialog.newInstance(getActivity().getFragmentManager());
+        mi.show(CustomProgressDialog.DialogType.PROGRESS, "Sending email...", null);
+
         try {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.useAppLanguage();
@@ -96,16 +101,19 @@ public class ForgotPasswordFragment extends Fragment {
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commitAllowingStateLoss();
                             loginInterface.setCurrentFragment(signinFragment);
+                            mi.show(CustomProgressDialog.DialogType.SUCCESS, "Email sent!");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Email not sent to " + email);
+                            Log.w(TAG, "Email not sent: " + e.getMessage());
+                            mi.show(CustomProgressDialog.DialogType.SUCCESS, "Email not sent!", e.getMessage());
                         }
                     });
         } catch (IllegalArgumentException e) {
             Log.w(TAG, e.toString());
+            //ToDo implement email format validation during typing of email
         }
     }
 }

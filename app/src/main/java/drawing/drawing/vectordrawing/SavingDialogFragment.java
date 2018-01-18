@@ -22,7 +22,7 @@ import drawing.drawing.storage.Storage;
  */
 
 public class SavingDialogFragment extends DialogFragment {
-    private static final String TAG = "";
+    private static final String TAG = "KJKP6_SAVING_DIALOG";
     private Bitmap preview;
     private Model model;
     private OnSaveListener listener;

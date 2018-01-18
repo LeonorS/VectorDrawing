@@ -68,7 +68,7 @@ public class Storage {
                 listener.onFailure("network failure");
         }
 
-        final JsonHelper<Model, Figure> jsonHelper = new JsonHelper<>(Model.class);
+        final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
         jsonHelper.registerTypeAdapter(Figure.class);
         final String save = jsonHelper.saveToJson(model);
 
@@ -107,7 +107,7 @@ public class Storage {
             public void onSuccess(byte[] bytes) {
                 Log.d(TAG, "received JSON: " + new String(bytes));
                 final String jsonString = new String(bytes);
-                final JsonHelper<Model, Figure> jsonHelper = new JsonHelper<>(Model.class);
+                final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
                 jsonHelper.registerTypeAdapter(Figure.class);
                 final Model model = jsonHelper.loadToObject(jsonString);
                 listener.onSuccess(model);

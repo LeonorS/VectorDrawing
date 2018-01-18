@@ -40,7 +40,6 @@ public class VectorDrawing extends AppCompatActivity {
 
         final Database database = Database.getInstance();
 
-
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
             name = bundle.getString(DRAWING_NAME);
@@ -67,7 +66,7 @@ public class VectorDrawing extends AppCompatActivity {
         customView.getModel().setSize(metrics.widthPixels, metrics.heightPixels);
 //width, height, point_margin, seg_margin
 
-                Button clearBtn = findViewById(R.id.clearBtn);
+        Button clearBtn = findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -224,7 +223,7 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PRECISION_REQUEST_CODE) {
-            User user = Database.getInstance().getUser();
+            final User user = Database.getInstance().getUser();
             Log.d(TAG, "update precision: " + user.point_margin + " | " + user.segment_margin);
             customView.getModel().setPrecision(user.point_margin, user.segment_margin);
         } else
@@ -239,7 +238,6 @@ public class VectorDrawing extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (name != null) {
-                            Database.getInstance().getUser().addDrawing(name);
                             Storage.getInstance().setModel(VectorDrawing.this, name, customView.getModel(), null);
                             Storage.getInstance().setPreview(VectorDrawing.this, name, customView.getPreview(), null);
                             VectorDrawing.this.finish();

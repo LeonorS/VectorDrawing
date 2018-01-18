@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import drawing.drawing.messaging.CustomProgressDialog;
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 import drawing.drawing.utils.ReCaptchaHelper;
@@ -103,6 +105,7 @@ public class RegisterFragment extends Fragment {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
+                //Todo notify user on requirement / errors
                 if (!checkInput(email, username, password))
                     return;
 
