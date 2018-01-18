@@ -53,12 +53,14 @@
             android:layout_height="wrap_content"
             android:text="Line" />
 
+        <!--
         <Button
             android:id="@+id/interBtn"
             style="@style/ColoredButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Inter"/>
+            -->
 
     </LinearLayout>
 

@@ -11,8 +11,8 @@ public class StraightLine extends Line {
 
     private double width, height;
 
-    public StraightLine(int x1, int y1, int x2, int y2, double margin, double width, double height, Model model) {
-        super(x1, y1, x2, y2, margin, model);
+    public StraightLine(int x1, int y1, int x2, int y2, double margin, double width, double height/*, Model model*/) {
+        super(x1, y1, x2, y2, margin/*, model*/);
         this.width = width;
         this.height = height;
         setPoints();

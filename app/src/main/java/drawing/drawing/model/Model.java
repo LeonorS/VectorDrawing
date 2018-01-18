@@ -1,6 +1,7 @@
 package drawing.drawing.model;
 
 import android.graphics.Point;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -103,12 +104,13 @@ public class Model {
             return;
         int sx = 0;
         int sy = 0;
-        for(int i = 0; i < selected.size(); i++){
-            if (selected.get(i) instanceof Intersection){
-                selected.remove(i);
-                i--;
-            }
-        }
+//        for(int i = 0; i < selected.size(); i++){
+//            if (selected.get(i) instanceof Intersection){
+//                selected.remove(i);
+//                i--;
+//            }
+//        }
+        Log.d("Make iso !!!!!!!", "calcul ...");
         for(Figure f : selected){
             if (f instanceof PointFigure){
                 sx += f.getPoints().get(0).x;
@@ -119,57 +121,137 @@ public class Model {
         }
         sx /= selected.size();
         sy /= selected.size();
-        figures.add(new Iso(sx, sy, point_margin, selected));
+
+        Log.d("Make iso !!!!!!!", "calcul done");
+
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (Figure f : selected){
+            ids.add(f.getId());
+        }
+
+        Log.d("Make iso !!!!!!!", "ids done");
+
+        Iso i = new Iso(sx, sy, point_margin, ids);
+        figures.add(i);
+
+        Log.d("Make iso !!!!!!!", "iso done");
+
+        for (Figure f : selected){
+            ((PointFigure) f).addBarycenter(i.getId());
+        }
+
+        Log.d("Make iso !!!!!!!", "deps done");
+
     }
 
     public void makeLine(int action, float x, float y, Point anchor){
             figures.remove(currentFigure);
             if (action == CustomView.SEG_ACTION) {
-                currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, this);
+                currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
             } else if (action == CustomView.LINE_ACTION) {
-                currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height, this);
+                currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
             }
             figures.add(currentFigure);
     }
 
-    public void makeIntersection(ArrayList<Figure> selected){
-        if (selected.size() != 2)
-            return;
+//    public void makeIntersection(ArrayList<Figure> selected){
+//        if (selected.size() != 2)
+//            return;
+//
+//        for(Figure f : selected)
+//            if(!(f instanceof Line))
+//                return;
+//
+//        Line s1, s2;
+//        s1 = (Line)selected.get(0);
+//        s2 = (Line)selected.get(1);
+//
+//        int x1 = s1.getP1().x;
+//        int y1 = s1.getP1().y;
+//        int x2 = s1.getP2().x;
+//        int y2 = s1.getP2().y;
+//        int x3 = s2.getP1().x;
+//        int y3 = s2.getP1().y;
+//        int x4 = s2.getP2().x;
+//        int y4 = s2.getP2().y;
+//
+//        int x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+//        int y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+//
+//        Point p = new Point(x, y);
+//
+//        if(s1.contains(p.x, p.y) && s2.contains(p.x, p.y)){
+//            Intersection i = new Intersection(p.x, p.y, s1, s2, point_margin);
+//            figures.add(i);
+//            s1.getInter().add(i);
+//            s2.getInter().add(i);
+//        }
+//    }
 
-        for(Figure f : selected)
-            if(!(f instanceof Line))
-                return;
-
-        Line s1, s2;
-        s1 = (Line)selected.get(0);
-        s2 = (Line)selected.get(1);
-
-        int x1 = s1.getP1().x;
-        int y1 = s1.getP1().y;
-        int x2 = s1.getP2().x;
-        int y2 = s1.getP2().y;
-        int x3 = s2.getP1().x;
-        int y3 = s2.getP1().y;
-        int x4 = s2.getP2().x;
-        int y4 = s2.getP2().y;
-
-        int x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-        int y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-
-        Point p = new Point(x, y);
-
-        if(s1.contains(p.x, p.y) && s2.contains(p.x, p.y)){
-            Intersection i = new Intersection(p.x, p.y, s1, s2, point_margin);
-            figures.add(i);
-            s1.getInter().add(i);
-            s2.getInter().add(i);
+    private Figure findFigureById(int i){
+        for (Figure f : figures){
+            if (f.getId() == i)
+                return f;
         }
+        return null;
+    }
+
+    public ArrayList<Figure> findFiguesById(ArrayList<Integer> ids){
+        ArrayList<Figure> figures = new ArrayList<>();
+        for (Integer i : ids){
+            Log.d("findFiguesById", ""+i);
+            Figure f = findFigureById(i);
+            figures.add(f);
+        }
+        return figures;
     }
 
     public Point moveFigure(float x, float y, Figure f, Point anchor){
+
         if (f != null) {
+
+            if (f instanceof Iso){
+
+                Iso iso = (Iso) f;
+                ArrayList<Figure> points_linked = new ArrayList<>();
+                points_linked.addAll(findFiguesById(iso.getIdsLinked()));
+
+                Point p = new Point(iso.getPoint());
+
+                for(Figure ff : points_linked){
+                    PointFigure pf = (PointFigure) ff;
+                    pf.move(pf.getPoint().x + (int) x - p.x, pf.getPoint().y + (int) y - p.y, anchor);
+                }
+            }
+
+            else if (f instanceof PointFigure){
+
+                PointFigure pf = (PointFigure) f;
+                ArrayList<Figure> iso_linked = new ArrayList<>();
+                iso_linked.addAll(findFiguesById(pf.getBarycenterIds()));
+
+                for(Figure ff : iso_linked){
+                    Iso iso = (Iso) ff;
+
+                    ArrayList<Figure> points_linked = new ArrayList<>();
+                    points_linked.addAll(findFiguesById(iso.getIdsLinked()));
+
+                    int sx = 0;
+                    int sy = 0;
+                    for(Figure fff : points_linked){
+                        PointFigure pff = (PointFigure) fff;
+                        sx += pff.getPoint().x;
+                        sy += pff.getPoint().y;
+                    }
+                    sx /= points_linked.size();
+                    sy /= points_linked.size();
+                    iso.move(sx, sy, anchor);
+                }
+            }
+
             anchor = f.move((int) x, (int) y, anchor);
         }
+
         return anchor;
     }
 

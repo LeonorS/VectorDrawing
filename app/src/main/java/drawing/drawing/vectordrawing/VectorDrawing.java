@@ -98,8 +98,10 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                customView.current_action = customView.ISO_ACTION;
                 customView.current_action = CustomView.ISO_ACTION;
                 customView.makeIso();
+                Log.d("VectorDrawing !!!!!!!!!", "make iso done");
             }
         });
 
@@ -119,14 +121,14 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button interBtn = findViewById(R.id.interBtn);
-        interBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.current_action = CustomView.INTER_ACTION;
-                customView.makeInter();
-            }
-        });
+//        Button interBtn = findViewById(R.id.interBtn);
+//        interBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                customView.current_action = customView.INTER_ACTION;
+//                customView.makeInter();
+//            }
+//        });
 
         //Todo create associated drawings
         //==========================================================================================
