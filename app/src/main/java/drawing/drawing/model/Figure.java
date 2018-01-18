@@ -10,13 +10,14 @@ import java.util.Vector;
 
 public abstract class Figure {
 
-    private static Integer id = 0;
-
+    private static Integer nextId = 0;
+    private Integer id;
     private Vector<Point> points;
     public boolean selected = false;
 
     public Figure() {
-        id++;
+        id = nextId;
+        nextId++;
         points = new Vector<>();
     }
 

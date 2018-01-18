@@ -114,6 +114,16 @@ public class CustomView extends View {
 
             if (f instanceof Iso){
                 Iso iso = (Iso) f;
+
+                ArrayList<Integer> ids = iso.getIdsLinked();
+                for(Integer i : ids){
+                    Log.d("onDraw", ""+i);
+                }
+
+                ArrayList<Figure> fffff = model.findFiguesById(iso.getIdsLinked());
+
+
+
                 designer.onDrawIso(canvas, iso, model.findFiguesById(iso.getIdsLinked()));
             }
             else if (f instanceof StraightLine || f instanceof Line){
@@ -133,6 +143,7 @@ public class CustomView extends View {
     }
 
     private void makeFigure(float x, float y){
+
         switch (current_action){
             case POINT_ACTION:
                 model.makePoint(x, y);

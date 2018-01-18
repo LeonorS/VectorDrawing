@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -30,9 +31,43 @@ public class Designer {
         myPaint.setStyle(Paint.Style.FILL);
         myPaint.setStrokeWidth(1);
 
+        Log.d("onDrawIso", "" + points.size());
+
+
         for(Figure f : points){
+
             PointFigure p = (PointFigure) f;
-            canvas.drawLine(i.getPoint().x, i.getPoint().y, p.getPoint().x, p.getPoint().y, myPaint);
+
+            int x1, y1, x2, y2;
+            try {
+                x1 = i.getPoint().x;
+            } catch (Exception e){
+                Log.d("onDrawIso", "x1");
+                e.printStackTrace();
+                return;
+            }
+            try {
+                y1 = i.getPoint().y;
+            } catch (Exception e){
+                Log.d("onDrawIso", "y1");
+                e.printStackTrace();
+                return;
+            }
+            try {
+                x2 = p.getPoint().x;
+            } catch (Exception e){
+                Log.d("onDrawIso", "x2");
+                e.printStackTrace();
+                return;
+            }
+            try {
+                y2 = p.getPoint().y;
+            } catch (Exception e){
+                Log.d("onDrawIso", "y2");
+                e.printStackTrace();
+                return;
+            }
+            canvas.drawLine(x1, y1, x2, y2, myPaint);
         }
         if(i.selected == true){
             myPaint.setColor(Color.RED);

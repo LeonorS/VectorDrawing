@@ -199,7 +199,9 @@ public class Model {
     public ArrayList<Figure> findFiguesById(ArrayList<Integer> ids){
         ArrayList<Figure> figures = new ArrayList<>();
         for (Integer i : ids){
-            figures.add(findFigureById(i));
+            Log.d("findFiguesById", ""+i);
+            Figure f = findFigureById(i);
+            figures.add(f);
         }
         return figures;
     }
