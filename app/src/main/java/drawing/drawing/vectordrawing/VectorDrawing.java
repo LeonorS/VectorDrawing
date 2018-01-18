@@ -2,7 +2,6 @@ package drawing.drawing.vectordrawing;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,19 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import drawing.drawing.profile.Profile;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
-import drawing.drawing.login.Login;
 import drawing.drawing.model.Model;
-import drawing.drawing.personalization.Personalization;
 import drawing.drawing.storage.Storage;
-
-import static drawing.drawing.personalization.Personalization.OUTSIDE_WORKFLOW;
 
 public class VectorDrawing extends AppCompatActivity {
     public static final String DRAWING_NAME = "drawingName";
-    private static final int PRECISION_REQUEST_CODE = 42;
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private CustomView customView;
     private String name;
@@ -157,6 +152,13 @@ public class VectorDrawing extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        final User user = Database.getInstance().getUser();
+        customView.getModel().setPrecision(user.point_margin, user.segment_margin);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
@@ -169,22 +171,27 @@ public class VectorDrawing extends AppCompatActivity {
         switch (item.getItemId()) {
 
             //todo move this to user profile activity
-            case R.id.action_precision:
-                Intent myIntent = new Intent(VectorDrawing.this, Personalization.class);
-                myIntent.putExtra(OUTSIDE_WORKFLOW, true);
-                startActivityForResult(myIntent, PRECISION_REQUEST_CODE);
-                return true;
+//            case R.id.action_precision:
+//                Intent myIntent = new Intent(VectorDrawing.this, Personalization.class);
+//                myIntent.putExtra(OUTSIDE_WORKFLOW, true);
+//                startActivityForResult(myIntent, PRECISION_REQUEST_CODE);
+//                return true;
+//
+//            //todo move this to user profile activity
+//            case R.id.action_logout:
+//                Login.signout(this, new Login.OnSignoutCompleteListener() {
+//                    @Override
+//                    public void onComplete() {
+//                        Intent myIntent = new Intent(VectorDrawing.this, Login.class);
+//                        startActivity(myIntent);
+//                        finish();
+//                    }
+//                });
+//                return true;
 
-            //todo move this to user profile activity
-            case R.id.action_logout:
-                Login.signout(this, new Login.OnSignoutCompleteListener() {
-                    @Override
-                    public void onComplete() {
-                        Intent myIntent = new Intent(VectorDrawing.this, Login.class);
-                        startActivity(myIntent);
-                        finish();
-                    }
-                });
+            case R.id.action_profile:
+                Intent myIntent = new Intent(VectorDrawing.this, Profile.class);
+                startActivity(myIntent);
                 return true;
 
             case R.id.action_undo:
@@ -218,16 +225,6 @@ public class VectorDrawing extends AppCompatActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PRECISION_REQUEST_CODE) {
-            final User user = Database.getInstance().getUser();
-            Log.d(TAG, "update precision: " + user.point_margin + " | " + user.segment_margin);
-            customView.getModel().setPrecision(user.point_margin, user.segment_margin);
-        } else
-            super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

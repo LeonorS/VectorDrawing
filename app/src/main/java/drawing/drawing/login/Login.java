@@ -58,6 +58,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() > 0)
             super.onBackPressed();
+        else
+            finish();
     }
 
     @Override

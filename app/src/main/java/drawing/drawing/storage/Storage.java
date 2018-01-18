@@ -204,7 +204,7 @@ public class Storage {
         }
     }
 
-    public void getPreviewDoenloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {
+    public void getPreviewDownloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {
         final StorageReference drawRef = storageRef.child("preview");
         final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         final StorageReference fileRef = userDrawRef.child(name);
