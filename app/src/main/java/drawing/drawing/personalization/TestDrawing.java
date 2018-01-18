@@ -11,9 +11,12 @@ import android.view.View;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
+import drawing.drawing.model.Intersection;
+import drawing.drawing.model.Iso;
 import drawing.drawing.model.Model;
 import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Line;
+import drawing.drawing.model.StraightLine;
 import drawing.drawing.vectordrawing.CustomView;
 import drawing.drawing.vectordrawing.Designer;
 
@@ -116,9 +119,20 @@ public class TestDrawing extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+
         super.onDraw(canvas);
+
         ArrayList<Figure> figures = model.getFigures();
-        designer.onDraw(canvas, figures, null);
+
+        for (Figure f : figures) {
+
+            if (f instanceof Line){
+                designer.onDrawSegment(canvas, (Line) f);
+            }
+            else if (f instanceof PointFigure){
+                designer.onDrawPointFigure(canvas, (PointFigure) f);
+            }
+        }
     }
 
     public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
@@ -129,14 +143,6 @@ public class TestDrawing extends View {
 
             case CustomView.SEG_ACTION:
                 model.makeLine(action, x, y, anchor);
-                break;
-
-            case CustomView.LINE_ACTION:
-                model.makeLine(action, x, y, anchor);
-                break;
-
-            case CustomView.ISO_ACTION:
-                model.makeIso(selected);
                 break;
         }
     }

@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public abstract class Figure {
 
-    public static int id = 0;
+    private static Integer id = 0;
 
     private Vector<Point> points;
     public boolean selected = false;
@@ -31,6 +31,10 @@ public abstract class Figure {
     public void changePoint(Point p, int index){
         points.remove(index);
         points.insertElementAt(p, index);
+    }
+
+    public Integer getId(){
+        return id;
     }
 
     public abstract boolean contains(float x, float y);

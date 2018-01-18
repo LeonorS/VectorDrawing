@@ -96,8 +96,11 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("VectorDrawing !!!!!!!!!", "isoBtn cliched ");
                 customView.current_action = customView.ISO_ACTION;
+                Log.d("VectorDrawing !!!!!!!!!", "make iso ....");
                 customView.makeIso();
+                Log.d("VectorDrawing !!!!!!!!!", "make iso done");
             }
         });
 

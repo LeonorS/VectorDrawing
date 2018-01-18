@@ -1,6 +1,7 @@
 package drawing.drawing.model;
 
 import android.graphics.Point;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -103,12 +104,13 @@ public class Model {
             return;
         int sx = 0;
         int sy = 0;
-        for(int i = 0; i < selected.size(); i++){
-            if (selected.get(i) instanceof Intersection){
-                selected.remove(i);
-                i--;
-            }
-        }
+//        for(int i = 0; i < selected.size(); i++){
+//            if (selected.get(i) instanceof Intersection){
+//                selected.remove(i);
+//                i--;
+//            }
+//        }
+        Log.d("Make iso !!!!!!!", "calcul ...");
         for(Figure f : selected){
             if (f instanceof PointFigure){
                 sx += f.getPoints().get(0).x;
@@ -119,7 +121,27 @@ public class Model {
         }
         sx /= selected.size();
         sy /= selected.size();
-        figures.add(new Iso(sx, sy, point_margin, selected));
+
+        Log.d("Make iso !!!!!!!", "calcul done");
+
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (Figure f : selected){
+            ids.add(f.getId());
+        }
+
+        Log.d("Make iso !!!!!!!", "ids done");
+
+        Iso i = new Iso(sx, sy, point_margin, ids);
+        figures.add(i);
+
+        Log.d("Make iso !!!!!!!", "iso done");
+
+        for (Figure f : selected){
+            ((PointFigure) f).addBarycenter(i.getId());
+        }
+
+        Log.d("Make iso !!!!!!!", "deps done");
+
     }
 
     public void makeLine(int action, float x, float y, Point anchor){
@@ -166,10 +188,68 @@ public class Model {
 //        }
 //    }
 
+    private Figure findFigureById(int i){
+        for (Figure f : figures){
+            if (f.getId() == i)
+                return f;
+        }
+        return null;
+    }
+
+    public ArrayList<Figure> findFiguesById(ArrayList<Integer> ids){
+        ArrayList<Figure> figures = new ArrayList<>();
+        for (Integer i : ids){
+            figures.add(findFigureById(i));
+        }
+        return figures;
+    }
+
     public Point moveFigure(float x, float y, Figure f, Point anchor){
+
         if (f != null) {
+
+            if (f instanceof Iso){
+
+                Iso iso = (Iso) f;
+                ArrayList<Figure> points_linked = new ArrayList<>();
+                points_linked.addAll(findFiguesById(iso.getIdsLinked()));
+
+                Point p = new Point(iso.getPoint());
+
+                for(Figure ff : points_linked){
+                    PointFigure pf = (PointFigure) ff;
+                    pf.move(pf.getPoint().x + (int) x - p.x, pf.getPoint().y + (int) y - p.y, anchor);
+                }
+            }
+
+            else if (f instanceof PointFigure){
+
+                PointFigure pf = (PointFigure) f;
+                ArrayList<Figure> iso_linked = new ArrayList<>();
+                iso_linked.addAll(findFiguesById(pf.getBarycenterIds()));
+
+                for(Figure ff : iso_linked){
+                    Iso iso = (Iso) ff;
+
+                    ArrayList<Figure> points_linked = new ArrayList<>();
+                    points_linked.addAll(findFiguesById(iso.getIdsLinked()));
+
+                    int sx = 0;
+                    int sy = 0;
+                    for(Figure fff : points_linked){
+                        PointFigure pff = (PointFigure) fff;
+                        sx += pff.getPoint().x;
+                        sy += pff.getPoint().y;
+                    }
+                    sx /= points_linked.size();
+                    sy /= points_linked.size();
+                    iso.move(sx, sy, anchor);
+                }
+            }
+
             anchor = f.move((int) x, (int) y, anchor);
         }
+
         return anchor;
     }
 

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -12,8 +13,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
+import drawing.drawing.model.Intersection;
+import drawing.drawing.model.Iso;
+import drawing.drawing.model.Line;
 import drawing.drawing.model.Model;
+import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Selector;
+import drawing.drawing.model.StraightLine;
 
 /**
  * Created by leo on 03/12/17.
@@ -59,7 +65,7 @@ public class CustomView extends View {
                     touched = model.findFigure(event.getX(), event.getY());
                 }
                 if (current_action == POINT_ACTION) {
-                    makeFigure(current_action, event.getX(), event.getY(), null, null);
+                    makeFigure(event.getX(), event.getY());
                     invalidate();
                 }
                 break;
@@ -75,7 +81,7 @@ public class CustomView extends View {
                     invalidate();
                 }
                 else if (current_action == SEG_ACTION || current_action == LINE_ACTION){
-                    makeFigure(current_action, event.getX(), event.getY(), null, anchor);
+                    makeFigure(event.getX(), event.getY());
                     invalidate();
                 }
                 break;
@@ -98,29 +104,53 @@ public class CustomView extends View {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas){
+
         super.onDraw(canvas);
+
         ArrayList<Figure> figures = model.getFigures();
-        designer.onDraw(canvas, figures, selector);
+
+        for (Figure f : figures) {
+
+            if (f instanceof Iso){
+                Iso iso = (Iso) f;
+                designer.onDrawIso(canvas, iso, model.findFiguesById(iso.getIdsLinked()));
+            }
+            else if (f instanceof StraightLine || f instanceof Line){
+                designer.onDrawSegment(canvas, (Line) f);
+            }
+            else if (f instanceof Intersection){
+                designer.onDrawInter(canvas, (Intersection) f);
+            }
+            else if (f instanceof PointFigure){
+                designer.onDrawPointFigure(canvas, (PointFigure) f);
+            }
+        }
+
+        if (selector != null){
+            designer.onDrawSelector(canvas, selector);
+        }
     }
 
-    public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
-        switch (action){
+    private void makeFigure(float x, float y){
+        switch (current_action){
             case POINT_ACTION:
                 model.makePoint(x, y);
                 break;
 
             case SEG_ACTION:
-                model.makeLine(action, x, y, anchor);
+                model.makeLine(current_action, x, y, anchor);
                 break;
 
             case LINE_ACTION:
-                model.makeLine(action, x, y, anchor);
+                model.makeLine(current_action, x, y, anchor);
                 break;
 
             case ISO_ACTION:
+                Log.d("CustomView", "makeFigure entry");
                 model.makeIso(selected);
                 current_action = DEFAULT_ACTION;
+                Log.d("CustomView", "makeFigure exit");
                 break;
 
 //            case INTER_ACTION:
@@ -157,13 +187,15 @@ public class CustomView extends View {
     }
 
     protected void makeIso(){
-        makeFigure(ISO_ACTION, 0,0, selected, null);
+        Log.d("CustomView", "makeIso entry");
+        makeFigure(0,0);
         resetSelection();
         invalidate();
+        Log.d("CustomView", "makeIso exit");
     }
 
     protected void makeInter(){
-        makeFigure(INTER_ACTION, 0,0, selected, null);
+        makeFigure( 0,0);
         resetSelection();
         invalidate();
     }

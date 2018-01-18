@@ -24,37 +24,14 @@ public class Designer {
         myPaint.setAntiAlias(true);
     }
 
-    public void onDraw(Canvas canvas, ArrayList<Figure> figures, Selector selector){
-
-        for (Figure f : figures) {
-
-            if (f instanceof Iso){
-                onDrawIso(canvas, (Iso)f);
-            }
-            else if (f instanceof StraightLine || f instanceof Line){
-                onDrawSegment(canvas, (Line) f);
-            }
-            else if (f instanceof  Intersection){
-                onDrawInter(canvas, (Intersection) f);
-            }
-            else if (f instanceof PointFigure){
-                onDrawPointFigure(canvas, (PointFigure) f);
-            }
-        }
-
-        if (selector != null){
-            onDrawSelector(canvas, selector);
-        }
-    }
-
-    private void onDrawIso(Canvas canvas, Iso i){
+    public void onDrawIso(Canvas canvas, Iso i, ArrayList<Figure> points){
 
         myPaint.setColor(Color.GRAY);
         myPaint.setStyle(Paint.Style.FILL);
         myPaint.setStrokeWidth(1);
 
-        ArrayList<PointFigure> points = i.getPointsFigure();
-        for(PointFigure p : points){
+        for(Figure f : points){
+            PointFigure p = (PointFigure) f;
             canvas.drawLine(i.getPoint().x, i.getPoint().y, p.getPoint().x, p.getPoint().y, myPaint);
         }
         if(i.selected == true){
@@ -64,7 +41,7 @@ public class Designer {
         canvas.drawCircle(i.getPoint().x, i.getPoint().y, i.getWidthPoint(), myPaint);
     }
 
-    private void onDrawSegment(Canvas canvas, Line s){
+    public void onDrawSegment(Canvas canvas, Line s){
 
         myPaint.setColor(Color.BLACK);
         myPaint.setStyle(Paint.Style.FILL);
@@ -77,7 +54,7 @@ public class Designer {
         canvas.drawLine(s.getP1().x, s.getP1().y, s.getP2().x, s.getP2().y, myPaint);
     }
 
-    private void onDrawPointFigure(Canvas canvas, PointFigure p){
+    public void onDrawPointFigure(Canvas canvas, PointFigure p){
 
         myPaint.setColor(Color.BLACK);
         myPaint.setStyle(Paint.Style.FILL);
@@ -88,7 +65,7 @@ public class Designer {
         canvas.drawCircle(p.getPoint().x, p.getPoint().y, p.getWidthPoint(), myPaint);
     }
 
-    private void onDrawSelector(Canvas canvas, Selector s){
+    public void onDrawSelector(Canvas canvas, Selector s){
 
         Rect rectangle = s.getRectangle();
         myPaint.setColor(Color.RED);
@@ -102,7 +79,7 @@ public class Designer {
         canvas.drawRect(rectangle, myPaint);
     }
 
-    private void onDrawInter(Canvas canvas, Intersection i){
+    public void onDrawInter(Canvas canvas, Intersection i){
 
         myPaint.setColor(Color.GRAY);
         if(i.selected == true){

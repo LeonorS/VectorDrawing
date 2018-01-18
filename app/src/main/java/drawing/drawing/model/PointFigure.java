@@ -11,13 +11,15 @@ import java.util.ArrayList;
 public class PointFigure extends Figure {
 
     protected int             widthPoint = 10;
-    private ArrayList<Iso>    barycenters;
+//    private ArrayList<Iso>    barycenters;
+    private ArrayList<Integer>    barycenterIds;
     private int margin = 0;
 
     public PointFigure(int x, int y, int margin) {
         super();
         addPoint(new Point(x, y));
-        barycenters = new ArrayList<>();
+//        barycenters = new ArrayList<>();
+        barycenterIds = new ArrayList<>();
         this.margin = margin;
     }
 
@@ -35,9 +37,9 @@ public class PointFigure extends Figure {
 
     @Override
     public Point move(int x, int y, Point anchor) {
-        for(Iso i : barycenters){
-            i.movePoint(anchor);
-        }
+//        for(Iso i : barycenters){
+//            i.movePoint(anchor);
+//        }
         changePoint(new Point(x, y), 0);
         return anchor;
     }
@@ -47,8 +49,16 @@ public class PointFigure extends Figure {
         return rect != null && rect.contains(getPoint().x, getPoint().y);
     }
 
-    public void addBarycenter(Iso i){
-        barycenters.add(i);
+//    public void addBarycenter(Iso i){
+//        barycenters.add(i);
+//    }
+
+    public void addBarycenter(Integer i){
+        barycenterIds.add(i);
+    }
+
+    public ArrayList<Integer> getBarycenterIds(){
+        return barycenterIds;
     }
 
     public void setMargin(int value){
