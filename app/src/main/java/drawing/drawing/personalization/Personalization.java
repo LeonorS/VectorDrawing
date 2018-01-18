@@ -72,7 +72,7 @@ public class Personalization extends AppCompatActivity implements Personalizatio
                 } else {
                     setResult(RESULT_OK, new Intent());
                 }
-                Personalization.this.finish();
+                finish();
         }
         ++state;
     }

@@ -1,8 +1,9 @@
 package drawing.drawing.vectordrawing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.icu.text.LocaleDisplayNames;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -12,49 +13,61 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.login.Login;
+import drawing.drawing.model.Model;
 import drawing.drawing.personalization.Personalization;
-import drawing.drawing.utils.JsonHelper;
-import drawing.drawing.utils.NetworkHelper;
+import drawing.drawing.storage.Storage;
 
 import static drawing.drawing.personalization.Personalization.OUTSIDE_WORKFLOW;
 
 public class VectorDrawing extends AppCompatActivity {
+    public static final String DRAWING_NAME = "drawingName";
     private static final int PRECISION_REQUEST_CODE = 42;
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private CustomView customView;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
 
-        final Database database = Database.getInstance();
-        final User user = database.getUser();
-        final int point_margin = user.getPointMargin();
-        final int seg_margin = user.getSegmentMargin();
+        customView = findViewById(R.id.drawingSpace);
 
-        final LinearLayout layout = findViewById(R.id.drawingSpace);
+        final Database database = Database.getInstance();
+
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
+            name = bundle.getString(DRAWING_NAME);
+            Log.d(TAG, "Loading file: " + name);
+            setTitle(name);
+            Storage.getInstance().getModel(name, new Storage.OnStorageCompleteListener() {
+                @Override
+                public void onSuccess(Object obj) {
+                    customView.setModel((Model)obj);
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    finish();
+                }
+            });
+        }
+
+        final User user = database.getUser();
+        customView.getModel().setPrecision(user.point_margin, user.segment_margin);
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        customView.getModel().setSize(metrics.widthPixels, metrics.heightPixels);
+//width, height, point_margin, seg_margin
 
-        customView = new CustomView(VectorDrawing.this, point_margin, seg_margin, metrics.widthPixels, metrics.heightPixels);
-        layout.addView(customView);
-
-        Button clearBtn = findViewById(R.id.clearBtn);
+                Button clearBtn = findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,7 +174,6 @@ public class VectorDrawing extends AppCompatActivity {
                 Intent myIntent = new Intent(VectorDrawing.this, Personalization.class);
                 myIntent.putExtra(OUTSIDE_WORKFLOW, true);
                 startActivityForResult(myIntent, PRECISION_REQUEST_CODE);
-                //startActivity(myIntent);
                 return true;
 
             //todo move this to user profile activity
@@ -189,43 +201,23 @@ public class VectorDrawing extends AppCompatActivity {
                 return true;
 
             case R.id.action_save:
-
-                if (NetworkHelper.requireNetworkActivation(this)) {
-                    return true;
-                }
-
-                final String save = JsonHelper.saveToJson(customView.getModel());
-
-                //Todo move this to drawing storage dedicated class
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference();
-                StorageReference drawRef = storageRef.child("draws");
-                StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                final StorageReference exampleRef = userDrawRef.child("example.json");
-
-                UploadTask uploadTask = exampleRef.putBytes(save.getBytes());
-                uploadTask.addOnFailureListener(new OnFailureListener() {
+                SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(customView.getModel(), customView.getPreview(), new SavingDialogFragment.OnSaveListener() {
                     @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.w(TAG, "UploadFailed: " + exception.getMessage());
-                        // Handle unsuccessful uploads
+                    public void onSave(String name) {
+                        VectorDrawing.this.name = name;
+                        setTitle(name);
                     }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        Log.w(TAG, "UploadSucceeded: " + downloadUrl.toString());
+                    public void onCancel() {
                     }
                 });
-                Log.d(TAG, "JSON: " + save);
+                savingDialog.show(getSupportFragmentManager(), "saving");
                 return true;
 
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -237,6 +229,45 @@ public class VectorDrawing extends AppCompatActivity {
             customView.getModel().setPrecision(user.point_margin, user.segment_margin);
         } else
             super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Save work before exiting?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (name != null) {
+                            Database.getInstance().getUser().addDrawing(name);
+                            Storage.getInstance().setModel(VectorDrawing.this, name, customView.getModel(), null);
+                            Storage.getInstance().setPreview(VectorDrawing.this, name, customView.getPreview(), null);
+                            VectorDrawing.this.finish();
+                        } else {
+                            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(customView.getModel(), customView.getPreview(), new SavingDialogFragment.OnSaveListener() {
+                                @Override
+                                public void onSave(String name) {
+                                    VectorDrawing.this.name = name;
+                                    setTitle(name);
+                                    VectorDrawing.this.finish();
+                                }
+                                @Override
+                                public void onCancel() {
+                                    Log.d(TAG, "failed to save work");
+                                }
+                            });
+                            savingDialog.show(getSupportFragmentManager(), "saving");
+                        }
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        VectorDrawing.this.finish();
+                    }
+                })
+                .create()
+                .show();
     }
 }
 

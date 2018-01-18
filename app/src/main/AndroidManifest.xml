@@ -33,14 +33,19 @@
         <activity
             android:name=".login.Login"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".personalization.Personalization"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".vectordrawing.VectorDrawing"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".workspace.Workspace"></activity>
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".workspace.Workspace"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".workspace.DrawingDetails"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

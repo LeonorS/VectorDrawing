@@ -1,8 +1,10 @@
 package drawing.drawing.vectordrawing;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -37,10 +39,11 @@ public class CustomView extends View {
     private Model model;
     private Designer designer;
 
-    public CustomView(Context context, int point_margin, int seg_margin, double width, double height) {
-        super(context);
+    public CustomView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setDrawingCacheEnabled(true);
         selected = new ArrayList<>();
-        model = new Model(width, height, point_margin, seg_margin);
+        model = new Model();
         designer = new Designer();
     }
 
@@ -192,5 +195,14 @@ public class CustomView extends View {
 
     public Model getModel() {
         return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+        invalidate();
+    }
+
+    public Bitmap getPreview() {
+        return Bitmap.createBitmap(getDrawingCache());
     }
 }

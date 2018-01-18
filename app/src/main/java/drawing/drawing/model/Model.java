@@ -17,6 +17,11 @@ public class Model {
     private int point_margin, seg_margin;
     private Figure currentFigure;
 
+    public Model(){
+        figures = new ArrayList<>();
+        canceled = new ArrayList<>(10);
+    }
+
     public Model(double width, double height, int point_margin, int seg_margin){
         figures = new ArrayList<>();
         canceled = new ArrayList<>(10);
@@ -175,5 +180,10 @@ public class Model {
     public void setPrecision(int point_margin, int seg_margin) {
         this.point_margin = point_margin;
         this.seg_margin = seg_margin;
+    }
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 }
