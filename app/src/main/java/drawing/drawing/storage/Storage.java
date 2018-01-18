@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +40,6 @@ import drawing.drawing.utils.NetworkHelper;
 public class Storage {
     private static final String TAG = "KJKP6_STORAGE";
     private static final long ONE_MEGABYTE = 1024 * 1024;
-    private FirebaseStorage storage;
     private StorageReference storageRef;
 
 
@@ -50,7 +50,7 @@ public class Storage {
     }
 
     private Storage() {
-        storage = FirebaseStorage.getInstance();
+        final FirebaseStorage storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
     }
 
@@ -68,14 +68,17 @@ public class Storage {
                 listener.onFailure("network failure");
         }
 
-        final JsonHelper<Model, Figure> jsonHelper = new JsonHelper<>(Model.class);
+        final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
         jsonHelper.registerTypeAdapter(Figure.class);
         final String save = jsonHelper.saveToJson(model);
 
         Log.d(TAG, "JSON bien saved: " + save);
 
         final StorageReference drawRef = storageRef.child("draws");
-        final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null)
+            return;
+        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
 
         final UploadTask uploadTask = fileRef.putBytes(save.getBytes());
@@ -99,7 +102,10 @@ public class Storage {
 
     public void getModel(String name, @NonNull final OnStorageCompleteListener listener) {
         final StorageReference drawRef = storageRef.child("draws");
-        final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null)
+            return;
+        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
 
         fileRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -107,7 +113,7 @@ public class Storage {
             public void onSuccess(byte[] bytes) {
                 Log.d(TAG, "received JSON: " + new String(bytes));
                 final String jsonString = new String(bytes);
-                final JsonHelper<Model, Figure> jsonHelper = new JsonHelper<>(Model.class);
+                final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
                 jsonHelper.registerTypeAdapter(Figure.class);
                 final Model model = jsonHelper.loadToObject(jsonString);
                 listener.onSuccess(model);
@@ -128,7 +134,10 @@ public class Storage {
         }
 
         final StorageReference drawRef = storageRef.child("preview");
-        final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null)
+            return;
+        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
 
         FileOutputStream out = null;
@@ -177,7 +186,10 @@ public class Storage {
 
     public void getPreview(String name, @NonNull final OnStorageCompleteListener listener) {
         final StorageReference drawRef = storageRef.child("preview");
-        final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null)
+            return;
+        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
 
         try {
@@ -204,9 +216,12 @@ public class Storage {
         }
     }
 
-    public void getPreviewDoenloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {
+    public void getPreviewDownloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {
         final StorageReference drawRef = storageRef.child("preview");
-        final StorageReference userDrawRef = drawRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (fUser == null)
+            return;
+        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
 
         fileRef.getDownloadUrl().addOnFailureListener(new OnFailureListener() {

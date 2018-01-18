@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
@@ -29,6 +30,8 @@ import com.google.firebase.auth.UserInfo;
 import java.util.List;
 
 import drawing.drawing.R;
+import drawing.drawing.messaging.CustomProgressDialog;
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.workspace.Workspace;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
@@ -41,14 +44,20 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private static int remainingProvider;
+    private MessagingInterface messageInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "OnCreate");
+
+        messageInterface = CustomProgressDialog.newInstance(getFragmentManager());
+
         setContentView(R.layout.activity_login);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragment = SigninFragment.newInstance(this);
+        fragment = SigninFragment.newInstance(this, messageInterface);
         fragmentTransaction.add(R.id.container, fragment, "selection");
         fragmentTransaction.commit();
     }
@@ -57,6 +66,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
     public void onBackPressed() {
         if (fragmentManager.getBackStackEntryCount() > 0)
             super.onBackPressed();
+        else
+            finish();
     }
 
     @Override
@@ -73,11 +84,12 @@ public class Login extends AppCompatActivity implements LoginInterface {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null) {
             Log.w(TAG, "unable to signout user, fUser is null");
+            return;
         }
 
         CrashAnalyticsHelper.signOut();
 
-        List<? extends UserInfo> providerData = FirebaseAuth.getInstance().getCurrentUser().getProviderData();
+        List<? extends UserInfo> providerData = fUser.getProviderData();
         remainingProvider = providerData.size();
         for (UserInfo data: providerData) {
             switch (data.getProviderId()) {
@@ -142,6 +154,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private UserListener userDataCheckListener = new UserListener() {
         @Override
         public void onUpdate(User user) {
+            messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Retrieving account...");
             FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
             if (fUser == null) {
                 Log.e(TAG, "firebase user null after Auth");
@@ -149,7 +162,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
             }
             Database.getInstance().removeUserListener(this);
             if (user == null) {
-                Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " is new");
+                messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Creating account...");
+                Log.w(TAG, "user " + fUser.getUid() + " is new");
                 Database.getInstance().addUserListenerWithoutNotifying(userDataCreateListener);
                 Database.getInstance().setUser(new User(fUser.getDisplayName(), fUser.getEmail()));
             } else {
@@ -164,11 +178,17 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private UserListener userDataCreateListener = new UserListener() {
         @Override
         public void onUpdate(User user) {
+            FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (fUser == null) {
+                Log.e(TAG, "firebase user null after Auth");
+                return;
+            }
+
             Database.getInstance().removeUserListener(this);
             if (user == null) {
                 Log.w(TAG, "user creation failed");
             } else {
-                Log.w(TAG, "user " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " is created");
+                Log.w(TAG, "user " + fUser.getUid() + " is created");
                 onSuccessfulUserData();
             }
         }
@@ -187,35 +207,59 @@ public class Login extends AppCompatActivity implements LoginInterface {
     }
 
     public void signinWithAuthCredential(AuthCredential credential) {
+        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            onSuccessfulLogin();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "signInWithCredential:success");
+                        onSuccessfulLogin();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "signInWithCredential:failure", e);
+                        Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
                     }
                 });
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "signInWithCredential:success");
+//                            onSuccessfulLogin();
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
     }
 
-    public void signinWithEmainAndPassword(String email, String password) {
+    public void signinWithEmailAndPassword(String email, String password) {
+        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+//                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d(TAG, "signinUserWithEmail:success");
+//                            onSuccessfulLogin();
+//                        } else {
+//                            Log.w(TAG, "signinUserWithEmail:failure", task.getException());
+//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                })
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signinUserWithEmail:success");
-                            onSuccessfulLogin();
-                        } else {
-                            Log.w(TAG, "signinUserWithEmail:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "signinUserWithEmail:success");
+                        onSuccessfulLogin();
                     }
                 })
                 .addOnFailureListener(Login.this, new OnFailureListener() {
@@ -223,23 +267,34 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "signinUserWithEmail:failure", e);
                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
                     }
                 });
     }
 
     public void registerWithEmailAndPassword(String email, String password) {
+        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Registering...");
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+//                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            Log.d(TAG, "createUserWithEmail:success");
+//                            sendConfirmationEmail();
+//                            onSuccessfulLogin();
+//                        } else {
+//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+//                            Messaging.getInstance().getInterface().show(CustomProgressDialog.DialogType.FAIL, "Registering failed", task.getException().getMessage());
+//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                })
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "createUserWithEmail:success");
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "createUserWithEmail:success");
                             sendConfirmationEmail();
                             onSuccessfulLogin();
-                        } else {
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        }
                     }
                 })
                 .addOnFailureListener(Login.this, new OnFailureListener() {
@@ -247,6 +302,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "createUserWithEmail:failure", e);
                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Registration failed", e.getMessage());
                     }
                 });
     }

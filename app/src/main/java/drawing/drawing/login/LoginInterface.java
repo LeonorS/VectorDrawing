@@ -12,6 +12,6 @@ import com.google.firebase.auth.AuthCredential;
 public interface LoginInterface {
     void setCurrentFragment(Fragment fragment);
     void signinWithAuthCredential(AuthCredential credential);
-    void signinWithEmainAndPassword(String email, String password);
+    void signinWithEmailAndPassword(String email, String password);
     void registerWithEmailAndPassword(String email, String password);
 }

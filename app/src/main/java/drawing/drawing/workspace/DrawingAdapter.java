@@ -1,13 +1,9 @@
 package drawing.drawing.workspace;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -71,7 +67,7 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
         final Drawing drawing = drawings.get(position);
         holder.name.setText(drawing.name);
         holder.date.setText(drawing.lastUpdate);
-        Storage.getInstance().getPreviewDoenloadUrl(drawing.name, new Storage.OnStorageCompleteListener() {
+        Storage.getInstance().getPreviewDownloadUrl(drawing.name, new Storage.OnStorageCompleteListener() {
             @Override
             public void onSuccess(Object obj) {
                 Picasso.with(activity).load(obj.toString()).into(holder.preview);

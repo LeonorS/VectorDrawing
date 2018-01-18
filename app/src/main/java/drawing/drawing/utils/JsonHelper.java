@@ -12,7 +12,7 @@ import drawing.drawing.storage.InterfaceAdapter;
  * Created by pandor on 16/01/18 16:36.
  */
 
-public class JsonHelper<T, C> {
+public class JsonHelper<T> {
     private final Class<T> typeParameterClass;
     private GsonBuilder builder;
 
@@ -28,11 +28,10 @@ public class JsonHelper<T, C> {
 
     public T loadToObject(String jsonString) {
         Gson gson = builder.create();
-        T obj = gson.fromJson(jsonString, typeParameterClass);
-        return obj;
+        return gson.fromJson(jsonString, typeParameterClass);
     }
 
-    public void registerTypeAdapter(Class<C> c) {
+    public <C> void registerTypeAdapter(Class<C> c) {
         builder.registerTypeAdapter(c, new InterfaceAdapter<C>());
     }
 }

@@ -3,6 +3,7 @@ package drawing.drawing.login;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 import drawing.drawing.utils.ReCaptchaHelper;
@@ -40,25 +42,27 @@ public class RegisterFragment extends Fragment {
     private String username;
     private String password;
     private boolean passwordVisible = false;
+    private MessagingInterface messagingInterface;
 
 
-    public static RegisterFragment newInstance(LoginInterface loginInterface) {
+    public static RegisterFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
         RegisterFragment fragment = new RegisterFragment();
         fragment.loginInterface = loginInterface;
+        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_login_register, null);
-        usernameEditText = (EditText) root.findViewById(R.id.username_edittext);
-        emailEditText = (EditText) root.findViewById(R.id.email_edittext);
-        passwordEditText = (EditText) root.findViewById(R.id.password_edittext);
-        registerButton = (Button) root.findViewById(R.id.register_button);
+        usernameEditText = root.findViewById(R.id.username_edittext);
+        emailEditText = root.findViewById(R.id.email_edittext);
+        passwordEditText = root.findViewById(R.id.password_edittext);
+        registerButton = root.findViewById(R.id.register_button);
         return root;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -73,10 +77,10 @@ public class RegisterFragment extends Fragment {
         passwordEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
+                //final int DRAWABLE_LEFT = 0;
+                //final int DRAWABLE_TOP = 1;
                 final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+                //final int DRAWABLE_BOTTOM = 3;
 
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
@@ -88,6 +92,7 @@ public class RegisterFragment extends Fragment {
                         passwordVisible = !passwordVisible;
                         return true;
                     }
+                    v.performClick();
                 }
                 return false;
             }
@@ -103,6 +108,7 @@ public class RegisterFragment extends Fragment {
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
 
+                //Todo notify user on requirement / errors
                 if (!checkInput(email, username, password))
                     return;
 
@@ -123,6 +129,7 @@ public class RegisterFragment extends Fragment {
                             }
                         })
                         .build();
+
                 reCaptcha.verify(getActivity());
             }
         });
@@ -144,7 +151,8 @@ public class RegisterFragment extends Fragment {
         View view = activity.findViewById(android.R.id.content);
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null)
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }

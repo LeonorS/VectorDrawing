@@ -19,7 +19,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="18f55b43960f7ef021b49910e1a2f6f44c6d1533" />
-
         <activity
             android:name=".splashscreen.SplashScreen"
             android:screenOrientation="landscape"
@@ -44,7 +43,7 @@
             android:name=".workspace.Workspace"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".workspace.DrawingDetails"
+            android:name=".profile.Profile"
             android:screenOrientation="landscape"/>
     </application>
 

@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Map;
 
+import drawing.drawing.profile.Profile;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.Drawing;
@@ -83,5 +85,29 @@ public class Workspace extends AppCompatActivity {
                 //dont call finish on this one
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.workspace_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_profile:
+                Intent myIntent = new Intent(Workspace.this, Profile.class);
+                startActivity(myIntent);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

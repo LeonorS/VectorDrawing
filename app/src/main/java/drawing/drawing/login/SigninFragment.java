@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -48,6 +47,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 
@@ -73,30 +73,32 @@ public class SigninFragment extends Fragment {
     private TextView forgot;
     private View root;
     private boolean passwordVisible = false;
+    private MessagingInterface messagingInterface;
 
-    public static SigninFragment newInstance(LoginInterface loginInterface) {
+    public static SigninFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
         SigninFragment fragment = new SigninFragment();
         fragment.loginInterface = loginInterface;
+        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_login_signin, null);
-        emailEditText = (EditText) root.findViewById(R.id.email_edittext);
-        passwordEditText = (EditText) root.findViewById(R.id.password_edittext);
-        signinButton = (Button) root.findViewById(R.id.signin_button);
-        facebookLoginButton = (LoginButton) root.findViewById(R.id.connectWithFbButton);
-        googleLoginButton = (SignInButton) root.findViewById(R.id.sign_in_button);
-        twitterLoginButton = (TwitterLoginButton) root.findViewById(R.id.login_button);
-        register = (TextView) root.findViewById(R.id.register_textview);
-        forgot = (TextView) root.findViewById(R.id.forgot_textview);
+        emailEditText = root.findViewById(R.id.email_edittext);
+        passwordEditText = root.findViewById(R.id.password_edittext);
+        signinButton = root.findViewById(R.id.signin_button);
+        facebookLoginButton = root.findViewById(R.id.connectWithFbButton);
+        googleLoginButton = root.findViewById(R.id.sign_in_button);
+        twitterLoginButton = root.findViewById(R.id.login_button);
+        register = root.findViewById(R.id.register_textview);
+        forgot = root.findViewById(R.id.forgot_textview);
 
         return root;
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         //FACEBOOK
@@ -141,27 +143,34 @@ public class SigninFragment extends Fragment {
         });
 
         //GOOGLE+
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d(TAG, "google:error" + connectionResult.getErrorMessage());
-                        Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                    }
-                } /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        googleLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
-        });
+        final Activity activity = getActivity();
+        if (activity == null) {
+            googleLoginButton.setVisibility(View.INVISIBLE);
+            googleLoginButton.setClickable(false);
+        } else {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            mGoogleApiClient = new GoogleApiClient.Builder(activity)
+                    .enableAutoManage(getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            Log.d(TAG, "google:error" + connectionResult.getErrorMessage());
+                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    } /* OnConnectionFailedListener */)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+            googleLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                }
+            });
+        }
+
 
         //EMAIL AND PASSWORD
         signinButton.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +219,7 @@ public class SigninFragment extends Fragment {
             public void onClick(View v){
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment registerFragment = RegisterFragment.newInstance(loginInterface);
+                Fragment registerFragment = RegisterFragment.newInstance(loginInterface, messagingInterface);
                 fragmentTransaction.replace(R.id.container, registerFragment, "selection");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commitAllowingStateLoss();
@@ -223,7 +232,7 @@ public class SigninFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment signinFragment = ForgotPasswordFragment.newInstance(loginInterface);
+                Fragment signinFragment = ForgotPasswordFragment.newInstance(loginInterface, messagingInterface);
                 fragmentTransaction.replace(R.id.container, signinFragment, "selection");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commitAllowingStateLoss();
@@ -240,13 +249,17 @@ public class SigninFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (!checkInput(email, password))
             return;
-        loginInterface.signinWithEmainAndPassword(email, password);
+        loginInterface.signinWithEmailAndPassword(email, password);
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
+            if (acct == null) {
+                Log.d(TAG, "google:error acct is null");
+                return;
+            }
             AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
             loginInterface.signinWithAuthCredential(credential);
         } else {
@@ -290,7 +303,7 @@ public class SigninFragment extends Fragment {
     public void onPause() {
         super.onPause();
         FragmentActivity activity = getActivity();
-        if (activity != null) {
+        if (activity != null && mGoogleApiClient != null) {
             mGoogleApiClient.stopAutoManage(activity);
             mGoogleApiClient.disconnect();
         }

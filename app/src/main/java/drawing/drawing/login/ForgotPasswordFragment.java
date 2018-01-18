@@ -1,5 +1,7 @@
 package drawing.drawing.login;
 
+import android.app.Activity;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +20,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import drawing.drawing.R;
+import drawing.drawing.messaging.CustomProgressDialog;
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.NetworkHelper;
 
 
@@ -32,22 +36,24 @@ public class ForgotPasswordFragment extends Fragment {
     private Button recover;
     private EditText emailEdittext;
     private String email;
+    private MessagingInterface messagingInterface;
 
-    public static ForgotPasswordFragment newInstance(LoginInterface loginInterface) {
+    public static ForgotPasswordFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         fragment.loginInterface = loginInterface;
+        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login_forgot_password, null);
-        recover = (Button) root.findViewById(R.id.recover_button);
-        emailEdittext = (EditText) root.findViewById(R.id.email_edittext);
+        recover = root.findViewById(R.id.recover_button);
+        emailEdittext = root.findViewById(R.id.email_edittext);
         return root;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         recover.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +64,7 @@ public class ForgotPasswordFragment extends Fragment {
 
                 resetPassword();
 
+                //Todo implement recaptcha
 //                ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
 //                        .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
 //                            @Override
@@ -81,6 +88,13 @@ public class ForgotPasswordFragment extends Fragment {
     private void resetPassword() {
         email = emailEdittext.getText().toString();
 
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.e(TAG, "activity is null");
+            return;
+        }
+
+        messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Sending email...", null);
         try {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.useAppLanguage();
@@ -91,21 +105,24 @@ public class ForgotPasswordFragment extends Fragment {
                             Log.d(TAG, "Email sent to " + email);
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            Fragment signinFragment = SigninFragment.newInstance(loginInterface);
+                            Fragment signinFragment = SigninFragment.newInstance(loginInterface, messagingInterface);
                             fragmentTransaction.replace(R.id.container, signinFragment, "selection");
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commitAllowingStateLoss();
                             loginInterface.setCurrentFragment(signinFragment);
+                            messagingInterface.show(CustomProgressDialog.DialogType.SUCCESS, "Email sent!");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Email not sent to " + email);
+                            Log.w(TAG, "Email not sent: " + e.getMessage());
+                            messagingInterface.show(CustomProgressDialog.DialogType.SUCCESS, "Email not sent!", e.getMessage());
                         }
                     });
         } catch (IllegalArgumentException e) {
             Log.w(TAG, e.toString());
+            //ToDo implement email format validation during typing of email
         }
     }
 }
