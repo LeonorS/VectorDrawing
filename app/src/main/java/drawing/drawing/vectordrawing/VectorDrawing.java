@@ -117,14 +117,14 @@ public class VectorDrawing extends AppCompatActivity {
             }
         });
 
-        Button interBtn = findViewById(R.id.interBtn);
-        interBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customView.current_action = customView.INTER_ACTION;
-                customView.makeInter();
-            }
-        });
+//        Button interBtn = findViewById(R.id.interBtn);
+//        interBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                customView.current_action = customView.INTER_ACTION;
+//                customView.makeInter();
+//            }
+//        });
 
         //Todo create associated drawings
         //==========================================================================================

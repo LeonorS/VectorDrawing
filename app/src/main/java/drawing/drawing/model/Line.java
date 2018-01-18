@@ -3,30 +3,24 @@ package drawing.drawing.model;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import java.util.Vector;
-
-/**
- * Created by leo on 06/12/17.
- */
-
 public class Line extends Figure{
 
     private double margin = 8;
-    private Vector<Intersection> inter;
-    private Model model;
+//    private Vector<Intersection> inter;
+//    private Model model;
 
-    public Line(int x1, int y1, int x2, int y2, double margin, Model model){
+    public Line(int x1, int y1, int x2, int y2, double margin/*, Model model*/){
         super();
         addPoint(new Point(x1, y1));
         addPoint(new Point(x2, y2));
         this.margin = margin;
-        this.inter = new Vector<Intersection>();
-        this.model = model;
+//        this.inter = new Vector<Intersection>();
+//        this.model = model;
     }
 
-    public Vector<Intersection> getInter(){
-        return inter;
-    }
+//    public Vector<Intersection> getInter(){
+//        return inter;
+//    }
 
     public Point getP1(){
         return getPoints().get(0);
@@ -54,12 +48,12 @@ public class Line extends Figure{
         return new Point(x, y);
     }
 
-    public void setDep(){
-        for (int k = 0; k < inter.size(); k++){
-            if(!inter.get(k).setIntersection())
-                k--;
-        }
-    }
+//    public void setDep(){
+//        for (int k = 0; k < inter.size(); k++){
+//            if(!inter.get(k).setIntersection())
+//                k--;
+//        }
+//    }
 
     public void movePoint(Point p, int which){
         super.changePoint(p, which);
@@ -103,10 +97,10 @@ public class Line extends Figure{
     @Override
     public boolean intersects(Selector selector) {
         Rect r = selector.rectangle;
-        Line top = new Line(r.left, r.top, r.right, r.top, margin, model);
-        Line left = new Line(r.left, r.top, r.left, r.bottom, margin, model);
-        Line bottom = new Line(r.left, r.bottom, r.right, r.bottom, margin, model);
-        Line right = new Line(r.right, r.top, r.right, r.bottom, margin, model);
+        Line top = new Line(r.left, r.top, r.right, r.top, margin);
+        Line left = new Line(r.left, r.top, r.left, r.bottom, margin);
+        Line bottom = new Line(r.left, r.bottom, r.right, r.bottom, margin);
+        Line right = new Line(r.right, r.top, r.right, r.bottom, margin);
         boolean topp = intersects(top);
         if (topp) {
             return true;
@@ -126,6 +120,32 @@ public class Line extends Figure{
         return false;
     }
 
+//    @Override
+//    public boolean intersects(Selector selector) {
+//        Rect r = selector.rectangle;
+//        Line top = new Line(r.left, r.top, r.right, r.top, margin, model);
+//        Line left = new Line(r.left, r.top, r.left, r.bottom, margin, model);
+//        Line bottom = new Line(r.left, r.bottom, r.right, r.bottom, margin, model);
+//        Line right = new Line(r.right, r.top, r.right, r.bottom, margin, model);
+//        boolean topp = intersects(top);
+//        if (topp) {
+//            return true;
+//        }
+//        boolean leftp = intersects(left);
+//        if (leftp) {
+//            return true;
+//        }
+//        boolean bottomp = intersects(bottom);
+//        if (bottomp) {
+//            return true;
+//        }
+//        boolean rightp = intersects(right);
+//        if (rightp) {
+//            return true;
+//        }
+//        return false;
+//    }
+
     @Override
     public Point move(int x, int y, Point anchor) {
 
@@ -138,12 +158,12 @@ public class Line extends Figure{
         setP1(new Point(x1, y1));
         setP2(new Point(x2, y2));
 
-        for (int k = 0; k < inter.size(); k++){
-            if(!inter.get(k).setIntersection()) {
-                model.removeInter(inter.get(k));
-                k--;
-            }
-        }
+//        for (int k = 0; k < inter.size(); k++){
+//            if(!inter.get(k).setIntersection()) {
+//                model.removeInter(inter.get(k));
+//                k--;
+//            }
+//        }
 
         return new Point(x, y);
     }

@@ -123,10 +123,10 @@ public class CustomView extends View {
                 current_action = DEFAULT_ACTION;
                 break;
 
-            case INTER_ACTION:
-                model.makeIntersection(selected);
-                current_action = DEFAULT_ACTION;
-                break;
+//            case INTER_ACTION:
+//                model.makeIntersection(selected);
+//                current_action = DEFAULT_ACTION;
+//                break;
         }
     }
 
