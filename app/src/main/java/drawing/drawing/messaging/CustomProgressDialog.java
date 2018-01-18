@@ -70,8 +70,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         imageView.setVisibility(GONE);
         setCancelable(false);
 
-        Log.d(TAG, "onCreateView");
-
         show(type, line1, line2);
         return view;
     }
@@ -82,7 +80,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         this.line2 = line2;
         this.type = type;
 
-        Log.d(TAG, "real show");
         //Todo change this to allow the Show/Hide
         if (!isAdded())
             show(fragmentManager, "info");
@@ -119,11 +116,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     @Override
     public void dismiss() {
         super.dismiss();
-    }
-
-    public void open(FragmentManager fragmentManager) {
-        Log.d(TAG, "dummy show");
-        show(fragmentManager, "info");
     }
 
     //==============================================================================================

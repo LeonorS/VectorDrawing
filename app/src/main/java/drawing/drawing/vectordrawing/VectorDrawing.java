@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import drawing.drawing.messaging.CustomProgressDialog;
+import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.profile.Profile;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
@@ -20,17 +22,21 @@ import drawing.drawing.database.User;
 import drawing.drawing.model.Model;
 import drawing.drawing.storage.Storage;
 
+import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS;
+
 public class VectorDrawing extends AppCompatActivity {
     public static final String DRAWING_NAME = "drawingName";
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private CustomView customView;
     private String name;
+    private MessagingInterface messagingInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
 
+        messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
         customView = findViewById(R.id.drawingSpace);
 
         final Database database = Database.getInstance();
@@ -40,10 +46,12 @@ public class VectorDrawing extends AppCompatActivity {
             name = bundle.getString(DRAWING_NAME);
             Log.d(TAG, "Loading file: " + name);
             setTitle(name);
+            messagingInterface.show(PROGRESS, "Loading saved work");
             Storage.getInstance().getModel(name, new Storage.OnStorageCompleteListener() {
                 @Override
                 public void onSuccess(Object obj) {
                     customView.setModel((Model)obj);
+                    messagingInterface.dismiss();
                 }
 
                 @Override
@@ -65,7 +73,7 @@ public class VectorDrawing extends AppCompatActivity {
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.DEFAULT_ACTION;
+                customView.current_action = CustomView.DEFAULT_ACTION;
                 customView.resetSelection();
             }
         });
@@ -74,7 +82,7 @@ public class VectorDrawing extends AppCompatActivity {
         pointBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.POINT_ACTION;
+                customView.current_action = CustomView.POINT_ACTION;
             }
         });
 
@@ -82,7 +90,7 @@ public class VectorDrawing extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.SELECT_ACTION;
+                customView.current_action = CustomView.SELECT_ACTION;
             }
         });
 
@@ -90,7 +98,7 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.ISO_ACTION;
+                customView.current_action = CustomView.ISO_ACTION;
                 customView.makeIso();
             }
         });
@@ -99,7 +107,7 @@ public class VectorDrawing extends AppCompatActivity {
         segBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.SEG_ACTION;
+                customView.current_action = CustomView.SEG_ACTION;
             }
         });
 
@@ -107,7 +115,7 @@ public class VectorDrawing extends AppCompatActivity {
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.LINE_ACTION;
+                customView.current_action = CustomView.LINE_ACTION;
             }
         });
 
@@ -115,7 +123,7 @@ public class VectorDrawing extends AppCompatActivity {
         interBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.INTER_ACTION;
+                customView.current_action = CustomView.INTER_ACTION;
                 customView.makeInter();
             }
         });
@@ -169,26 +177,6 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            //todo move this to user profile activity
-//            case R.id.action_precision:
-//                Intent myIntent = new Intent(VectorDrawing.this, Personalization.class);
-//                myIntent.putExtra(OUTSIDE_WORKFLOW, true);
-//                startActivityForResult(myIntent, PRECISION_REQUEST_CODE);
-//                return true;
-//
-//            //todo move this to user profile activity
-//            case R.id.action_logout:
-//                Login.signout(this, new Login.OnSignoutCompleteListener() {
-//                    @Override
-//                    public void onComplete() {
-//                        Intent myIntent = new Intent(VectorDrawing.this, Login.class);
-//                        startActivity(myIntent);
-//                        finish();
-//                    }
-//                });
-//                return true;
-
             case R.id.action_profile:
                 Intent myIntent = new Intent(VectorDrawing.this, Profile.class);
                 startActivity(myIntent);
@@ -221,8 +209,6 @@ public class VectorDrawing extends AppCompatActivity {
                 return true;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }
