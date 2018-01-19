@@ -66,7 +66,7 @@
 
     <view
         android:id="@+id/drawingSpace"
-        class="drawing.drawing.vectordrawing.CustomView"
+        class="drawing.drawing.vectordrawing.DrawingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
