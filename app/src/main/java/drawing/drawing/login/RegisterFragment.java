@@ -115,6 +115,8 @@ public class RegisterFragment extends Fragment {
                 if (NetworkHelper.requireNetworkActivation(getActivity()))
                     return;
 
+                loginInterface.setLastUsed(email);
+
                 ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
                         .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
                             @Override

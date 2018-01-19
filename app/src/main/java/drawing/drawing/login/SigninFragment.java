@@ -173,6 +173,8 @@ public class SigninFragment extends Fragment {
 
 
         //EMAIL AND PASSWORD
+        emailEditText.setText(loginInterface.getLastUsed());
+
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,6 +251,7 @@ public class SigninFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (!checkInput(email, password))
             return;
+        loginInterface.setLastUsed(emailEditText.getText().toString());
         loginInterface.signinWithEmailAndPassword(email, password);
     }
 

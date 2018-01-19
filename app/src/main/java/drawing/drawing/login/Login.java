@@ -1,7 +1,9 @@
 package drawing.drawing.login;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -41,6 +43,7 @@ import drawing.drawing.utils.CrashAnalyticsHelper;
 
 public class Login extends AppCompatActivity implements LoginInterface {
     private final static String TAG = "KJKP6_LOGIN";
+    private final static String LAST_USED_KEY = "last_used";
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private static int remainingProvider;
@@ -339,5 +342,17 @@ public class Login extends AppCompatActivity implements LoginInterface {
                         Log.e(TAG, "Email not sent.");
                     }
                 });
+    }
+
+    public void setLastUsed(String last) {
+        final SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(LAST_USED_KEY, last);
+        editor.commit();
+    }
+
+    public String getLastUsed() {
+        final SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getString(LAST_USED_KEY, "");
     }
 }
