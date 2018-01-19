@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<declare-styleable name="EditTextWithDrawable">
+    <attr name="leftDrawableToggleable" format="boolean" />
+    <attr name="rightDrawableToggleable" format="boolean" />
+    <attr name="topDrawableToggleable" format="boolean" />
+    <attr name="bottomDrawableToggleable" format="boolean" />
+
+    <attr name="drawableLeftBis" format="reference" />
+    <attr name="drawableRightBis" format="reference" />
+    <attr name="drawableTopBis" format="reference" />
+    <attr name="drawableBottomBis" format="reference" />
+</declare-styleable>
+</resources>

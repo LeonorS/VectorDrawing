@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -24,7 +25,7 @@
             android:textColorHighlight="?android:attr/textColorPrimary"
             android:textColorHint="?android:attr/textColorPrimary" />
 
-        <EditText
+        <drawing.drawing.utils.EditTextWithDrawable
             android:id="@+id/password_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +36,9 @@
             android:inputType="textPassword"
             android:textColor="?android:attr/textColorPrimary"
             android:textColorHighlight="?android:attr/textColorPrimary"
-            android:textColorHint="?android:attr/textColorPrimary" />
+            android:textColorHint="?android:attr/textColorPrimary"
+            custom:drawableRightBis="@android:drawable/ic_menu_search"
+            custom:rightDrawableToggleable="true" />
 
         <Button
             android:id="@+id/signin_button"

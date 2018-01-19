@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.utils.EditTextWithDrawable;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 import drawing.drawing.utils.ReCaptchaHelper;
@@ -35,13 +36,12 @@ public class RegisterFragment extends Fragment {
     private LoginInterface loginInterface;
     private EditText usernameEditText;
     private EditText emailEditText;
-    private EditText passwordEditText;
+    private EditTextWithDrawable passwordEditText;
     private Button registerButton;
     private View root;
     private String email;
     private String username;
     private String password;
-    private boolean passwordVisible = false;
     private MessagingInterface messagingInterface;
 
 
@@ -74,27 +74,14 @@ public class RegisterFragment extends Fragment {
                 return false;
             }
         });
-        passwordEditText.setOnTouchListener(new View.OnTouchListener() {
+        passwordEditText.setRightDrawableListener(new EditTextWithDrawable.OnDrawableClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //final int DRAWABLE_LEFT = 0;
-                //final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                //final int DRAWABLE_BOTTOM = 3;
-
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (passwordVisible) {
-                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        } else {
-                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                        }
-                        passwordVisible = !passwordVisible;
-                        return true;
-                    }
-                    v.performClick();
+            public void onClick(View v, boolean bis) {
+                if (bis) {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                } else {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
-                return false;
             }
         });
 

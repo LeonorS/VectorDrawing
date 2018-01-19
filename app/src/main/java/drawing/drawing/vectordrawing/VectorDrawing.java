@@ -27,9 +27,10 @@ import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS
 public class VectorDrawing extends AppCompatActivity {
     public static final String DRAWING_NAME = "drawingName";
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
-    private CustomView customView;
     private String name;
     private MessagingInterface messagingInterface;
+
+    private CustomView customView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,6 @@ public class VectorDrawing extends AppCompatActivity {
 
         messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
         customView = findViewById(R.id.drawingSpace);
-
-        final Database database = Database.getInstance();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
@@ -61,13 +60,12 @@ public class VectorDrawing extends AppCompatActivity {
             });
         }
 
-        final User user = database.getUser();
+        final User user = Database.getInstance().getUser();
         customView.getModel().setPrecision(user.point_margin, user.segment_margin);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         customView.getModel().setSize(metrics.widthPixels, metrics.heightPixels);
-//width, height, point_margin, seg_margin
 
         Button clearBtn = findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +96,6 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.ISO_ACTION;
                 customView.current_action = CustomView.ISO_ACTION;
                 customView.makeIso();
                 Log.d("VectorDrawing !!!!!!!!!", "make iso done");
@@ -206,7 +203,7 @@ public class VectorDrawing extends AppCompatActivity {
                     @Override
                     public void onCancel() {
                     }
-                });
+                }, messagingInterface);
                 savingDialog.show(getSupportFragmentManager(), "saving");
                 return true;
 
@@ -238,7 +235,7 @@ public class VectorDrawing extends AppCompatActivity {
                                 public void onCancel() {
                                     Log.d(TAG, "failed to save work");
                                 }
-                            });
+                            }, messagingInterface);
                             savingDialog.show(getSupportFragmentManager(), "saving");
                         }
                     }

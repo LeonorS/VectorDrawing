@@ -66,4 +66,8 @@ public class User {
         database.setUser(user);
         Log.d(TAG, "saving new user file named: " + name);
     }
+
+    public boolean isOverwriting(String name) {
+        return drawings.keySet().contains(name);
+    }
 }

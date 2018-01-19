@@ -27,6 +27,7 @@ import drawing.drawing.model.StraightLine;
 
 public class CustomView extends View {
 
+    //todo Make it an enum
     public  static final    int     DEFAULT_ACTION      = -1;
     public  static final    int     POINT_ACTION        = 1;
     public  static final    int     SELECT_ACTION       = 2;
