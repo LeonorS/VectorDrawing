@@ -48,6 +48,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.utils.EditTextWithDrawable;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
 
@@ -62,7 +63,7 @@ public class SigninFragment extends Fragment {
     private final static int RC_SIGN_IN = 456;
     private LoginInterface loginInterface;
     private EditText emailEditText;
-    private EditText passwordEditText;
+    private EditTextWithDrawable passwordEditText;
     private Button signinButton;
     private LoginButton facebookLoginButton;
     private CallbackManager facebookCallbackManager;
@@ -72,7 +73,6 @@ public class SigninFragment extends Fragment {
     private TextView register;
     private TextView forgot;
     private View root;
-    private boolean passwordVisible = false;
     private MessagingInterface messagingInterface;
 
     public static SigninFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
@@ -173,6 +173,8 @@ public class SigninFragment extends Fragment {
 
 
         //EMAIL AND PASSWORD
+        emailEditText.setText(loginInterface.getLastUsed());
+
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,26 +193,14 @@ public class SigninFragment extends Fragment {
                 return false;
             }
         });
-        passwordEditText.setOnTouchListener(new View.OnTouchListener() {
+        passwordEditText.setRightDrawableListener(new EditTextWithDrawable.OnDrawableClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (passwordVisible) {
-                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        } else {
-                            passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                        }
-                        passwordVisible = !passwordVisible;
-                        return true;
-                    }
+            public void onClick(View v, boolean bis) {
+                if (bis) {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                } else {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
-                return false;
             }
         });
 
@@ -249,6 +239,7 @@ public class SigninFragment extends Fragment {
         String password = passwordEditText.getText().toString();
         if (!checkInput(email, password))
             return;
+        loginInterface.setLastUsed(emailEditText.getText().toString());
         loginInterface.signinWithEmailAndPassword(email, password);
     }
 

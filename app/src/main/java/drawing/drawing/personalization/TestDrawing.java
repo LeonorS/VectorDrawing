@@ -11,14 +11,14 @@ import android.view.View;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
-import drawing.drawing.model.Intersection;
-import drawing.drawing.model.Iso;
 import drawing.drawing.model.Model;
 import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Line;
-import drawing.drawing.model.StraightLine;
-import drawing.drawing.vectordrawing.CustomView;
+import drawing.drawing.vectordrawing.DrawingView;
 import drawing.drawing.vectordrawing.Designer;
+
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.POINT_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
 
 /**
  * Created by leo on 14/01/18.
@@ -48,7 +48,7 @@ public class TestDrawing extends View {
     public TestDrawing(Context context, AttributeSet attrs) {
         super(context, attrs);
         model = new Model(0, 0, 0, 0);
-        makeFigure(CustomView.POINT_ACTION, 200, 200, null, null);
+        makeFigure(POINT_ACTION, 200, 200, null, null);
         CURRENT_TEST = POINT_TEST;
         designer = new Designer();
     }
@@ -102,7 +102,7 @@ public class TestDrawing extends View {
                 if (CURRENT_TEST == POINT_TEST && touched != null){
                     CURRENT_TEST = SEG_TEST;
                     model.reset();
-                    makeFigure(CustomView.SEG_ACTION, 100, 300, null, new Point(600, 300));
+                    makeFigure(SEG_ACTION, 100, 300, null, new Point(600, 300));
                     invalidate();
                 }
 
@@ -135,13 +135,13 @@ public class TestDrawing extends View {
         }
     }
 
-    public void makeFigure(int action, float x, float y, ArrayList<Figure> selected, Point anchor){
+    public void makeFigure(DrawingView.DrawingAction action, float x, float y, ArrayList<Figure> selected, Point anchor){
         switch (action){
-            case CustomView.POINT_ACTION:
+            case POINT_ACTION:
                 model.makePoint(x, y);
                 break;
 
-            case CustomView.SEG_ACTION:
+            case SEG_ACTION:
                 model.makeLine(action, x, y, anchor);
                 break;
         }

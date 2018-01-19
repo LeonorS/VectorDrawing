@@ -5,7 +5,10 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import drawing.drawing.vectordrawing.CustomView;
+import drawing.drawing.vectordrawing.DrawingView;
+
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.LINE_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
 
 /**
  * Created by leo on 15/01/18.
@@ -144,11 +147,11 @@ public class Model {
 
     }
 
-    public void makeLine(int action, float x, float y, Point anchor){
+    public void makeLine(DrawingView.DrawingAction action, float x, float y, Point anchor){
             figures.remove(currentFigure);
-            if (action == CustomView.SEG_ACTION) {
+            if (action == SEG_ACTION) {
                 currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
-            } else if (action == CustomView.LINE_ACTION) {
+            } else if (action == LINE_ACTION) {
                 currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
             }
             figures.add(currentFigure);

@@ -6,7 +6,8 @@
     android:background="@android:color/transparent"
     android:orientation="vertical"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <EditText
         android:id="@+id/username_edittext"
@@ -26,15 +27,20 @@
         android:hint="Email"
         android:inputType="textEmailAddress|textVisiblePassword" />
 
-    <!-- TODO: handle eye click -->
-    <EditText
+    <drawing.drawing.utils.EditTextWithDrawable
         android:id="@+id/password_edittext"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawableRight="@android:drawable/ic_menu_view"
         android:hint="Password"
-        android:inputType="textVisiblePassword" />
+        android:imeOptions="actionSend"
+        android:inputType="textPassword"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textColorHighlight="?android:attr/textColorPrimary"
+        android:textColorHint="?android:attr/textColorPrimary"
+        custom:drawableRightBis="@android:drawable/ic_menu_search"
+        custom:rightDrawableToggleable="true" />
 
     <Button
         android:id="@+id/register_button"

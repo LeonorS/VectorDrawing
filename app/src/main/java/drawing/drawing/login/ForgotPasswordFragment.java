@@ -87,6 +87,7 @@ public class ForgotPasswordFragment extends Fragment {
 
     private void resetPassword() {
         email = emailEdittext.getText().toString();
+        loginInterface.setLastUsed(email);
 
         Activity activity = getActivity();
         if (activity == null) {

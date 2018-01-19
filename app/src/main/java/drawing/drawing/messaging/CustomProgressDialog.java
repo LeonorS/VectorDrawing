@@ -25,7 +25,7 @@ import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS
  */
 
 public class CustomProgressDialog extends DialogFragment implements MessagingInterface {
-    private static final String TAG = "KJKP6_";
+    private static final String TAG = "KJKP6_PROGRESS_DIALOG";
     private FragmentManager fragmentManager;
     private String line1;
     private String line2;

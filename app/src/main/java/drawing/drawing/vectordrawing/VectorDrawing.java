@@ -12,7 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import drawing.drawing.controller.Controller;
 import drawing.drawing.messaging.CustomProgressDialog;
 import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.profile.Profile;
@@ -23,13 +25,20 @@ import drawing.drawing.model.Model;
 import drawing.drawing.storage.Storage;
 
 import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.ISO_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.LINE_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.POINT_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
+import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SELECT_ACTION;
 
-public class VectorDrawing extends AppCompatActivity {
+public class VectorDrawing extends AppCompatActivity implements ControllerActivityInterface {
     public static final String DRAWING_NAME = "drawingName";
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
-    private CustomView customView;
     private String name;
     private MessagingInterface messagingInterface;
+
+    private Controller controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +46,7 @@ public class VectorDrawing extends AppCompatActivity {
         setContentView(R.layout.activity_vector_drawing);
 
         messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
-        customView = findViewById(R.id.drawingSpace);
-
-        final Database database = Database.getInstance();
+        final DrawingView drawingView = findViewById(R.id.drawingSpace);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
@@ -50,7 +57,11 @@ public class VectorDrawing extends AppCompatActivity {
             Storage.getInstance().getModel(name, new Storage.OnStorageCompleteListener() {
                 @Override
                 public void onSuccess(Object obj) {
-                    customView.setModel((Model)obj);
+                    Model model = (Model) obj;
+                    final User user = Database.getInstance().getUser();
+                    model.setPrecision(user.point_margin, user.segment_margin);
+                    controller = new Controller(model, drawingView, VectorDrawing.this);
+                    drawingView.invalidate();
                     messagingInterface.dismiss();
                 }
 
@@ -59,22 +70,24 @@ public class VectorDrawing extends AppCompatActivity {
                     finish();
                 }
             });
+        } else {
+            final Model model = new Model();
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            model.setSize(metrics.widthPixels, metrics.heightPixels);
+            controller = new Controller(model, drawingView, this);
         }
 
-        final User user = database.getUser();
-        customView.getModel().setPrecision(user.point_margin, user.segment_margin);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        customView.getModel().setSize(metrics.widthPixels, metrics.heightPixels);
-//width, height, point_margin, seg_margin
+        //should be useless till its called in onResume... TO CHECK
+//        final User user = Database.getInstance().getUser();
+//        model.setPrecision(user.point_margin, user.segment_margin);
 
         Button clearBtn = findViewById(R.id.clearBtn);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = CustomView.DEFAULT_ACTION;
-                customView.resetSelection();
+                drawingView.current_action = DEFAULT_ACTION;
+                drawingView.resetSelection();
             }
         });
 
@@ -82,7 +95,7 @@ public class VectorDrawing extends AppCompatActivity {
         pointBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = CustomView.POINT_ACTION;
+                drawingView.current_action = POINT_ACTION;
             }
         });
 
@@ -90,7 +103,7 @@ public class VectorDrawing extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = CustomView.SELECT_ACTION;
+                drawingView.current_action = SELECT_ACTION;
             }
         });
 
@@ -98,9 +111,8 @@ public class VectorDrawing extends AppCompatActivity {
         isoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = customView.ISO_ACTION;
-                customView.current_action = CustomView.ISO_ACTION;
-                customView.makeIso();
+                drawingView.current_action = ISO_ACTION;
+                drawingView.makeIso();
                 Log.d("VectorDrawing !!!!!!!!!", "make iso done");
             }
         });
@@ -109,7 +121,7 @@ public class VectorDrawing extends AppCompatActivity {
         segBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = CustomView.SEG_ACTION;
+                drawingView.current_action = SEG_ACTION;
             }
         });
 
@@ -117,7 +129,7 @@ public class VectorDrawing extends AppCompatActivity {
         lineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customView.current_action = CustomView.LINE_ACTION;
+                drawingView.current_action = LINE_ACTION;
             }
         });
 
@@ -125,8 +137,8 @@ public class VectorDrawing extends AppCompatActivity {
 //        interBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                customView.current_action = customView.INTER_ACTION;
-//                customView.makeInter();
+//                drawingView.current_action = drawingView.INTER_ACTION;
+//                drawingView.makeInter();
 //            }
 //        });
 
@@ -164,8 +176,8 @@ public class VectorDrawing extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        final User user = Database.getInstance().getUser();
-        customView.getModel().setPrecision(user.point_margin, user.segment_margin);
+        if (controller != null)
+            controller.updatePrecision();
     }
 
     @Override
@@ -177,6 +189,15 @@ public class VectorDrawing extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem undo = menu.findItem(R.id.action_undo);
+        undo.setEnabled(controller != null && controller.canUndo());
+        final MenuItem redo = menu.findItem(R.id.action_redo);
+        redo.setEnabled(controller != null && controller.canRedo());
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_profile:
@@ -185,19 +206,19 @@ public class VectorDrawing extends AppCompatActivity {
                 return true;
 
             case R.id.action_undo:
-                customView.undo();
+                controller.undo();
                 return true;
 
             case R.id.action_redo:
-                customView.redo();
+                controller.redo();
                 return true;
 
             case R.id.action_reset:
-                customView.reset();
+                controller.reset();
                 return true;
 
             case R.id.action_save:
-                SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(customView.getModel(), customView.getPreview(), new SavingDialogFragment.OnSaveListener() {
+                SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), new SavingDialogFragment.OnSaveListener() {
                     @Override
                     public void onSave(String name) {
                         VectorDrawing.this.name = name;
@@ -206,7 +227,7 @@ public class VectorDrawing extends AppCompatActivity {
                     @Override
                     public void onCancel() {
                     }
-                });
+                }, messagingInterface);
                 savingDialog.show(getSupportFragmentManager(), "saving");
                 return true;
 
@@ -223,11 +244,11 @@ public class VectorDrawing extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (name != null) {
-                            Storage.getInstance().setModel(VectorDrawing.this, name, customView.getModel(), null);
-                            Storage.getInstance().setPreview(VectorDrawing.this, name, customView.getPreview(), null);
+                            Storage.getInstance().setModel(VectorDrawing.this, name, controller.getModel(), null);
+                            Storage.getInstance().setPreview(VectorDrawing.this, name, controller.getView().getPreview(), null);
                             VectorDrawing.this.finish();
                         } else {
-                            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(customView.getModel(), customView.getPreview(), new SavingDialogFragment.OnSaveListener() {
+                            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), new SavingDialogFragment.OnSaveListener() {
                                 @Override
                                 public void onSave(String name) {
                                     VectorDrawing.this.name = name;
@@ -238,7 +259,7 @@ public class VectorDrawing extends AppCompatActivity {
                                 public void onCancel() {
                                     Log.d(TAG, "failed to save work");
                                 }
-                            });
+                            }, messagingInterface);
                             savingDialog.show(getSupportFragmentManager(), "saving");
                         }
                     }
@@ -251,6 +272,12 @@ public class VectorDrawing extends AppCompatActivity {
                 })
                 .create()
                 .show();
+    }
+
+    //==============================================================================================
+
+    public void invalidateOptionMenu() {
+        super.invalidateOptionsMenu();
     }
 }
 

@@ -14,4 +14,6 @@ public interface LoginInterface {
     void signinWithAuthCredential(AuthCredential credential);
     void signinWithEmailAndPassword(String email, String password);
     void registerWithEmailAndPassword(String email, String password);
+    void setLastUsed(String email);
+    String getLastUsed();
 }
