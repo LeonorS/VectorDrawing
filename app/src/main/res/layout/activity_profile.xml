@@ -52,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/precision"
         android:layout_centerHorizontal="true"
-        android:text="Lougout" />
+        android:text="Logout" />
 
 </android.widget.RelativeLayout>
