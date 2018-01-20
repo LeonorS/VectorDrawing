@@ -10,19 +10,16 @@ import java.util.ArrayList;
  */
 
 public class Model {
-    private ArrayList<Figure> figures, canceled;
+    private ArrayList<Figure> figures;
     private double width, height;
     private int point_margin, seg_margin;
-    private Figure currentFigure;
 
     public Model(){
         figures = new ArrayList<>();
-        canceled = new ArrayList<>(10);
     }
 
     public Model(double width, double height, int point_margin, int seg_margin){
         figures = new ArrayList<>();
-        canceled = new ArrayList<>(10);
         this.width = width;
         this.height = height;
         this.point_margin = point_margin;
@@ -45,34 +42,17 @@ public class Model {
         return f;
     }
 
-    public int sizeFigures(){
-        return figures.size();
-    }
-
-    public int sizeCanceled(){
-        return canceled.size();
-    }
-
     public void removeLastFigure(){
-        Figure f = figures.remove(sizeFigures() - 1);
-        if (canceled.size() == 10){
-            canceled.remove(0);
-        }
-        canceled.add(f);
+        figures.remove(figures.size() - 1);
     }
 
-    public void addLastCanceled(){
-        Figure f = canceled.remove(canceled.size() - 1);
-        figures.add(f);
+    public void removeFigure(Figure figure) {
+        figures.remove(figure);
     }
+
 
     public void reset(){
         figures = new ArrayList<Figure>();
-        canceled = new ArrayList<>(10);
-    }
-
-    public void cleanCurrentFigure(){
-        currentFigure = null;
     }
 
     public ArrayList<Figure> selectFigure(Selector selector){
@@ -103,13 +83,15 @@ public class Model {
         }
     }
 
-    public void makePoint(float x, float y){
-        figures.add(new PointFigure((int) x, (int) y, point_margin));
+    public Figure makePoint(float x, float y){
+        final Figure figure = new PointFigure((int) x, (int) y, point_margin);
+        figures.add(figure);
+        return figure;
     }
 
-    public void makeIso(ArrayList<Figure> selected){
+    public Figure makeIso(ArrayList<Figure> selected){
         if (selected == null || selected.size() < 2)
-            return;
+            return null;
         int sx = 0;
         int sy = 0;
 //        for(int i = 0; i < selected.size(); i++){
@@ -125,7 +107,7 @@ public class Model {
                 sy += f.getPoints().get(0).y;
             }
             else
-                return;
+                return null;
         }
         sx /= selected.size();
         sy /= selected.size();
@@ -150,20 +132,19 @@ public class Model {
 
         Log.d("Make iso !!!!!!!", "deps done");
 
+        return i;
     }
 
-    public void makeLine(float x, float y, Point anchor){
-        if (currentFigure != null)
-            figures.remove(currentFigure);
-        currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
-        figures.add(currentFigure);
+    public Figure makeLine(float x, float y, Point anchor){
+        final Figure figure =new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
+        figures.add(figure);
+        return figure;
     }
 
-    public void makeSegment(float x, float y, Point anchor){
-        if (currentFigure != null)
-            figures.remove(currentFigure);
-        currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
-        figures.add(currentFigure);
+    public Figure makeSegment(float x, float y, Point anchor){
+        final Figure figure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
+        figures.add(figure);
+        return figure;
     }
 
 //    public void makeIntersection(ArrayList<Figure> selected){

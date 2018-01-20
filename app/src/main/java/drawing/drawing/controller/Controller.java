@@ -1,10 +1,12 @@
 package drawing.drawing.controller;
 
 import android.graphics.Point;
-import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Deque;
 
+import drawing.drawing.controller.action.Action;
+import drawing.drawing.controller.action.CreateAction;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.controller.tools.DefaultTool;
@@ -21,19 +23,21 @@ import drawing.drawing.vectordrawing.DrawingView;
  */
 
 public class Controller implements ControllerViewInterface, ToolListener {
-
     private Model model;
     private DrawingView drawingView;
     private ControllerActivityInterface controllerActivityInterface;
     private Tool tool;
+    private Deque<Action> done;
+    private Deque<Action> undone;
+    private static final int MAX_ACTIONS = 10;
 
     public Controller(Model model, DrawingView drawingView, ControllerActivityInterface controllerActivityInterface) {
         this.model = model;
         this.controllerActivityInterface = controllerActivityInterface;
         this.drawingView = drawingView;
 
-        tool = new DefaultTool(this);
         drawingView.setController(this);
+        reset();
     }
 
     public void reset() {
@@ -68,18 +72,30 @@ public class Controller implements ControllerViewInterface, ToolListener {
         return model.findFigure(x, y);
     }
 
-    public void createPoint(float x, float y) {
-        model.makePoint(x, y);
+    public Figure createPoint(float x, float y) {
+        final Figure figure = model.makePoint(x, y);
+        createAction(figure);
+        return figure;
     }
-    public void createSegment(Point anchor, float x, float y) {
-        model.makeSegment(x, y, anchor);
+    public Figure createSegment(Point anchor, float x, float y) {
+        Figure figure = model.makeSegment(x, y, anchor);
+        createAction(figure);
+        return figure;
     }
-    public void createLine(Point anchor, float x, float y) {
-        model.makeLine(x, y, anchor);
+    public Figure createLine(Point anchor, float x, float y) {
+        Figure figure = model.makeLine(x, y, anchor);
+        createAction(figure);
+        return figure;
     }
-    public void createIso() {
-        model.makeIso(model.getSelected());
+    public Figure createIso() {
+        final Figure figure = model.makeIso(model.getSelected());
+        createAction(figure);
+        return figure;
     }
+    public void remove(Figure figure) {
+        model.removeFigure(figure);
+    }
+
     public Point move(float x, float y, Figure figure, Point anchor) {
         return model.moveFigure(x, y, figure, anchor);
     }
@@ -87,30 +103,29 @@ public class Controller implements ControllerViewInterface, ToolListener {
 
         model.selectFigure(selector);
     }
-    public void unselect() {
-        model.uncheckFigure();
-    }
-    public void clean() {model.cleanCurrentFigure();}
+    public void unselect() {model.uncheckFigure();}
 
     /**********************************************************************************************/
     public boolean canUndo() {
-        return model.sizeFigures() > 0;
+        return done.size() > 0;
     }
 
     public boolean canRedo() {
-        return model.sizeCanceled() > 0;
+        return undone.size() > 0;
     }
 
     public void undo(){
-        if(model.sizeFigures() == 0){
+        if(done.size() == 0) {
             return;
         }
-        model.removeLastFigure();
+        final Action action = done.getLast();
+        action.undo();
+        done.removeLast();
         drawingView.invalidate();
     }
 
     public void redo(){
-        if (model.sizeCanceled() == 0){
+        if (undone.sizeCanceled() == 0) {
             return;
         }
         model.addLastCanceled();
@@ -128,5 +143,13 @@ public class Controller implements ControllerViewInterface, ToolListener {
     public void updatePrecision() {
         final User user = Database.getInstance().getUser();
         model.setPrecision(user.point_margin, user.segment_margin);
+    }
+
+    /**********************************************************************************************/
+    private void createAction(Figure figure) {
+        final Action action = new CreateAction(figure);
+        if (done.size() >= MAX_ACTIONS)
+            done.removeFirst();
+        done.addLast(action);
     }
 }

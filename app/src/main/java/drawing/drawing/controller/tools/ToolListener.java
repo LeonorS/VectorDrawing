@@ -13,13 +13,13 @@ import drawing.drawing.model.Selector;
 public interface ToolListener {
     Figure getTouched(float x, float y);
 
-    void createPoint(float x, float y);
-    void createSegment(Point anchor, float x, float y);
-    void createLine(Point anchor, float x, float y);
-    void createIso();
+    Figure createPoint(float x, float y);
+    Figure createSegment(Point anchor, float x, float y);
+    Figure createLine(Point anchor, float x, float y);
+    Figure createIso();
 
     Point move(float x, float y, Figure figure, Point anchor);
     void select(Selector selector);
     void unselect();
-    void clean();
+    void remove(Figure figure);
 }

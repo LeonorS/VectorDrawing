@@ -16,7 +16,6 @@ public class Tool {
     protected Figure touched;
     protected Point anchor;
     protected Selector selector;
-    protected Figure figure;
 
     public Tool(ToolListener listener) {
         this.listener = listener;

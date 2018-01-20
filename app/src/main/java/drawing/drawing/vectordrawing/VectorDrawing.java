@@ -153,7 +153,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
 //            }
 //        });
 
-        //Todo create associated drawings
         //==========================================================================================
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));

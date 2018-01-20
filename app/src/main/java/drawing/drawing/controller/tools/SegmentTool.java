@@ -3,6 +3,8 @@ package drawing.drawing.controller.tools;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import drawing.drawing.model.Figure;
+
 /**
  * VectorDrawing for FretX
  * Created by pandor on 20/01/18 02:04.
@@ -10,6 +12,7 @@ import android.view.MotionEvent;
 
 public class SegmentTool extends Tool {
     private static final String TAG = "KJKP6_SEGMENT_TOOL";
+    private Figure figure;
 
     public SegmentTool(ToolListener listener) {
         super(listener);
@@ -20,13 +23,9 @@ public class SegmentTool extends Tool {
     @Override
     public boolean onMove(MotionEvent event) {
         super.onMove(event);
-        listener.createSegment(anchor, event.getX(), event.getY());
+        if (figure != null)
+            listener.remove(figure);
+        figure = listener.createSegment(anchor, event.getX(), event.getY());
         return true;
-    }
-
-    @Override
-    public boolean onUp(MotionEvent event) {
-        listener.clean();
-        return false;
     }
 }
