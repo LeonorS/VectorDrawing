@@ -48,6 +48,8 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
     private String name;
     private MessagingInterface messagingInterface;
     private Controller controller;
+    private int remaining;
+    private boolean errorHappened;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,17 +208,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 controller.reset();
                 return true;
             case R.id.action_save:
-                SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), new SavingDialogFragment.OnSaveListener() {
-                    @Override
-                    public void onSave(String name) {
-                        VectorDrawing.this.name = name;
-                        setTitle(name);
-                    }
-                    @Override
-                    public void onCancel() {
-                    }
-                }, messagingInterface);
-                savingDialog.show(getSupportFragmentManager(), "saving");
+                save(false);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -230,25 +222,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (name != null) {
-                            Storage.getInstance().setModel(VectorDrawing.this, name, controller.getModel(), null);
-                            Storage.getInstance().setPreview(VectorDrawing.this, name, controller.getView().getPreview(), null);
-                            VectorDrawing.this.finish();
-                        } else {
-                            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), new SavingDialogFragment.OnSaveListener() {
-                                @Override
-                                public void onSave(String name) {
-                                    VectorDrawing.this.name = name;
-                                    setTitle(name);
-                                    VectorDrawing.this.finish();
-                                }
-                                @Override
-                                public void onCancel() {
-                                    Log.d(TAG, "failed to save work");
-                                }
-                            }, messagingInterface);
-                            savingDialog.show(getSupportFragmentManager(), "saving");
-                        }
+                        save(true);
                     }
                 })
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -259,6 +233,73 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 })
                 .create()
                 .show();
+    }
+
+    private void save(final boolean exit) {
+        errorHappened = false;
+        remaining = 2;
+        if (name != null) {
+            messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
+            Storage.OnStorageCompleteListener listener = new Storage.OnStorageCompleteListener() {
+                @Override
+                public void onSuccess(Object obj) {
+                    saveComplete(false, null, exit);
+                }
+                @Override
+                public void onFailure(String error) {
+                    saveComplete(true, error, exit);
+                }
+            };
+            Storage.getInstance().setModel(VectorDrawing.this, name, controller.getModel(), listener);
+            Storage.getInstance().setPreview(VectorDrawing.this, name, controller.getView().getPreview(), listener);
+            //VectorDrawing.this.finish();
+        } else {
+            SavingDialogFragment.OnSaveListener listener;
+            if (exit) {
+                listener = new SavingDialogFragment.OnSaveListener() {
+                    @Override
+                    public void onSave(String name) {
+                        VectorDrawing.this.name = name;
+                        setTitle(name);
+                        VectorDrawing.this.finish();
+                    }
+                    @Override
+                    public void onCancel() {}
+                };
+            } else {
+                listener = new SavingDialogFragment.OnSaveListener() {
+                    @Override
+                    public void onSave(String name) {
+                        VectorDrawing.this.name = name;
+                        setTitle(name);
+                    }
+                    @Override
+                    public void onCancel() {}
+                };
+            }
+            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), listener, messagingInterface);
+            savingDialog.show(getSupportFragmentManager(), "saving");
+        }
+    }
+
+    private void saveComplete(boolean error, String message, boolean exit) {
+        --remaining;
+        Log.d(TAG, "remaining: " + remaining);
+
+        if (!errorHappened && error) {
+            Log.d(TAG, "saving failed: " + message);
+            errorHappened = true;
+            messagingInterface.show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
+        } else if (!errorHappened && remaining == 0) {
+            if (exit) {
+                Log.d(TAG, "finish");
+                finish();
+            } else {
+                Log.d(TAG, "dismiss");
+                messagingInterface.dismiss();
+            }
+
+        }
     }
 
     public void invalidateOptionMenu() {

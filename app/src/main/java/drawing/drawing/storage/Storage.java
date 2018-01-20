@@ -137,6 +137,7 @@ public class Storage {
             String s = f.getCanonicalPath();
             out = new FileOutputStream(s + "/temp.png");
             preview.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            preview.recycle();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

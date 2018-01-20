@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,8 @@ public class SavingDialogFragment extends DialogFragment {
     private EditText edt;
     private MessagingInterface messagingInterface;
     private boolean override;
+    private int remaining;
+    private boolean errorHappened;
 
     public interface OnSaveListener {
         void onSave(String name);
@@ -83,15 +86,52 @@ public class SavingDialogFragment extends DialogFragment {
                     override = true;
                     return;
                 }
+                errorHappened = false;
+                remaining = 2;
+                messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
                 Database.getInstance().getUser().addDrawing(name);
-                Storage.getInstance().setModel(getActivity(), name, model, null);
-                Storage.getInstance().setPreview(getActivity(), name, preview, null);
-                if (listener != null) {
-                    listener.onSave(name);
-                }
+                Storage.getInstance().setModel(getActivity(), name, model, new Storage.OnStorageCompleteListener() {
+                    @Override
+                    public void onSuccess(Object obj) {
+                        saveComplete(false, name);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        saveComplete(true, error);
+                    }
+                });
+                Storage.getInstance().setPreview(getActivity(), name, preview, new Storage.OnStorageCompleteListener() {
+                    @Override
+                    public void onSuccess(Object obj) {
+                        saveComplete(false, name);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        errorHappened = true;
+                        saveComplete(true, error);
+                    }
+                });
                 dismiss();
-                //todo handle saving errors
             }
         });
+    }
+
+    private void saveComplete(boolean error, String message) {
+        --remaining;
+        Log.d(TAG, "remaining: " + remaining);
+
+        if (!errorHappened && error) {
+            Log.d(TAG, "saving failed: " + message);
+            errorHappened = true;
+            messagingInterface.show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
+        } else if (!errorHappened && remaining == 0) {
+            Log.d(TAG, "dismiss");
+            messagingInterface.dismiss();
+            if (listener != null) {
+                listener.onSave(message);
+            }
+        }
     }
 }
