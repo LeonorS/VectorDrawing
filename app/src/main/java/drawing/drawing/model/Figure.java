@@ -9,7 +9,6 @@ import java.util.Vector;
  */
 
 public abstract class Figure {
-
     private static Integer nextId = 0;
     private Integer id;
     private Vector<Point> points;
@@ -39,6 +38,8 @@ public abstract class Figure {
     }
 
     public abstract boolean contains(float x, float y);
+
     public abstract Point move(int x, int y, Point anchor);
+
     public abstract boolean intersects(Selector selector);
 }

@@ -32,13 +32,10 @@ public class DrawingView extends View {
     private ControllerViewInterface controllerInterface;
     public enum DrawingAction {DEFAULT_ACTION, POINT_ACTION, SELECT_ACTION, SEG_ACTION, LINE_ACTION, ISO_ACTION}
     public DrawingAction current_action = DEFAULT_ACTION;
-
     private Figure touched = null;
     private Selector selector = null;
     private Point  anchor;
-
     private ArrayList<Figure> selected;
-
     private Designer designer;
 
     public DrawingView(Context context, AttributeSet attrs) {
@@ -46,7 +43,6 @@ public class DrawingView extends View {
         setDrawingCacheEnabled(true);
         selected = new ArrayList<>();
         designer = new Designer();
-
     }
 
     public void setController(ControllerViewInterface controller) {
@@ -55,12 +51,9 @@ public class DrawingView extends View {
 
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-
             case MotionEvent.ACTION_DOWN:
-
                 touched = null;
                 makeAnchor(event.getX(), event.getY());
-
                 if (current_action == DEFAULT_ACTION) {
                     touched = controllerInterface.findFigure(event.getX(), event.getY());
                 }
@@ -69,9 +62,7 @@ public class DrawingView extends View {
                     invalidate();
                 }
                 break;
-
             case MotionEvent.ACTION_MOVE:
-
                 if (current_action == DEFAULT_ACTION) {
                     anchor = controllerInterface.moveFigure(event.getX(), event.getY(), touched, anchor);
                     invalidate();
@@ -85,9 +76,7 @@ public class DrawingView extends View {
                     invalidate();
                 }
                 break;
-
             case MotionEvent.ACTION_UP:
-
                 if (current_action == DEFAULT_ACTION) {
                     resetSelection();
                 }
@@ -99,25 +88,18 @@ public class DrawingView extends View {
                 }
                 break;
         }
-
         return (true);
     }
 
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
         if (controllerInterface == null)
             return;
-
         for (Figure figure : controllerInterface.getFigures()) {
-
             if (figure instanceof Iso){
                 Iso iso = (Iso) figure;
                 ArrayList<Integer> ids = iso.getIdsLinked();
-                for(Integer i : ids){
-                    Log.d("onDraw", ""+i);
-                }
                 final ArrayList<Figure> linkedFigures = controllerInterface.findFiguresById(iso.getIdsLinked());
                 designer.onDrawIso(canvas, iso, linkedFigures);
             }
@@ -131,7 +113,6 @@ public class DrawingView extends View {
                 designer.onDrawPointFigure(canvas, (PointFigure) figure);
             }
         }
-
         if (selector != null){
             designer.onDrawSelector(canvas, selector);
         }

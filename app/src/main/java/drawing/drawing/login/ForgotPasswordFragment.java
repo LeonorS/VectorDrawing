@@ -53,7 +53,6 @@ public class ForgotPasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         recover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +67,6 @@ public class ForgotPasswordFragment extends Fragment {
     private void resetPassword() {
         email = emailEdittext.getText().toString();
         loginInterface.setLastUsed(email);
-
         Activity activity = getActivity();
         if (activity == null) {
             Log.e(TAG, "activity is null");

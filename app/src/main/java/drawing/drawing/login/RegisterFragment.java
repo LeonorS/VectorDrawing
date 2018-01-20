@@ -42,7 +42,6 @@ public class RegisterFragment extends Fragment {
     private String password;
     private MessagingInterface messagingInterface;
 
-
     public static RegisterFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
         RegisterFragment fragment = new RegisterFragment();
         fragment.loginInterface = loginInterface;
@@ -62,7 +61,6 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -82,26 +80,20 @@ public class RegisterFragment extends Fragment {
                 }
             }
         });
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboard(getActivity());
                 root.requestFocus();
-
                 email = emailEditText.getText().toString();
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
-
                 //Todo notify user on requirement / errors
                 if (!checkInput(email, username, password))
                     return;
-
                 if (NetworkHelper.requireNetworkActivation(getActivity()))
                     return;
-
                 loginInterface.setLastUsed(email);
-
                 ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
                         .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
                             @Override
@@ -116,7 +108,6 @@ public class RegisterFragment extends Fragment {
                             }
                         })
                         .build();
-
                 reCaptcha.verify(getActivity());
             }
         });

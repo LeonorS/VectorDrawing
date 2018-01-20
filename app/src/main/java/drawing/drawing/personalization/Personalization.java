@@ -27,12 +27,10 @@ public class Personalization extends AppCompatActivity implements Personalizatio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(OUTSIDE_WORKFLOW)) {
             outsideWorkflow = bundle.getBoolean(OUTSIDE_WORKFLOW);
         }
-
         setContentView(R.layout.activity_personalization);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

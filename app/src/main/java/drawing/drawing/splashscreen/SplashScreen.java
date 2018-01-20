@@ -54,12 +54,10 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.w(TAG, "user is not logged in");
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);

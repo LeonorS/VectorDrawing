@@ -9,9 +9,8 @@ import java.util.ArrayList;
  */
 
 public class PointFigure extends Figure {
-
-    protected int             widthPoint = 10;
-    private ArrayList<Integer>    barycenterIds;
+    protected int  widthPoint = 10;
+    private ArrayList<Integer> barycenterIds;
     private int margin = 0;
 
     public PointFigure(int x, int y, int margin) {

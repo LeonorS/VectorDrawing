@@ -18,7 +18,6 @@ public class User {
     private final static String TAG = "KJKP6_USER";
     private final static int DEFAULT_POINT_MARGIN = -1;
     private final static int DEFAULT_SEGMENT_MARGIN = -1;
-
     public String username;
     public String email;
     public int point_margin;

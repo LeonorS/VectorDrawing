@@ -71,20 +71,15 @@ public class Controller implements ControllerViewInterface {
             case POINT_ACTION:
                 model.makePoint(x, y);
                 break;
-
             case SEG_ACTION:
                 model.makeLine(current_action, x, y, anchor);
                 break;
-
             case LINE_ACTION:
                 model.makeLine(current_action, x, y, anchor);
                 break;
-
             case ISO_ACTION:
-                Log.d(TAG, "makeFigure entry");
                 model.makeIso(selected);
                 drawingView.current_action = DEFAULT_ACTION;
-                Log.d(TAG, "makeFigure exit");
                 break;
         }
         controllerActivityInterface.invalidateOptionMenu();
@@ -94,7 +89,6 @@ public class Controller implements ControllerViewInterface {
         return model.findFiguesById(ids);
     }
 
-    //==============================================================================================
     public boolean canUndo() {
         return model.sizeFigures() > 0;
     }

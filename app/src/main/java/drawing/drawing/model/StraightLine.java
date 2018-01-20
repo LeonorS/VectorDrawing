@@ -16,24 +16,15 @@ public class StraightLine extends Line {
         this.width = width;
         this.height = height;
         setPoints();
-
-        Log.d("StraightLine", "width : " + width);
-        Log.d("StraightLine", "height : " + height);
-        Log.d("StraightLine", "x1 : " + x1 + "; y1 : " + y1 + "; x2 : " + x2 + "; y2 : " + y2);
-
-        Log.d("StraightLine get point","x1 : " + getP1().x + "; y1 : " + getP1().y + "; x2 : " + getP2().x + "; y2 : " + getP2().y);
     }
 
     public void setPoints(){
-
         Point p1, p2, pp1, pp2;
         double tmpx, tmpy;
-
         if (getP1().x < getP2().x) {
             p1 = getP1();
             p2 = getP2();
         }
-
         else if (getP1().x > getP2().x) {
             p1 = getP2();
             p2 = getP1();
@@ -50,41 +41,29 @@ public class StraightLine extends Line {
             setP2(p2);
             setP1(p1);
         }
-
         double m = (double)(p1.y - p2.y) / (double)(p1.x - p2.x);
-
         tmpy = (double)p2.y + m * (width - (double)p2.x);
-
         if (tmpy < height && tmpy >= 0)
             pp2 = new Point ((int) width, (int)tmpy);
-
         else if (tmpy >= height){
             tmpx = (height - (double)p2.y) / m + (double)p2.x;
             pp2 = new Point ((int) tmpx, (int)height);
         }
-
         else {
             tmpx = (0 - (double)p2.y) / m + (double)p2.x;
             pp2 = new Point ((int) tmpx, 0);
-
         }
-
         tmpy = (double)p1.y + m * (0 - (double)p1.x);
-
         if (tmpy < height && tmpy >= 0)
             pp1 = new Point (0, (int)tmpy);
-
         else if (tmpy >= height){
             tmpx = (height - (double)p1.y) / m + (double)p1.x;
             pp1 = new Point ((int) tmpx, (int)height);
         }
-
         else {
             tmpx = (0 - (double)p1.y) / m + (double)p1.x;
             pp1 = new Point ((int) tmpx, 0);
-
         }
-
         setP1(pp1);
         setP2(pp2);
     }

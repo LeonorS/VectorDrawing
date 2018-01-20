@@ -36,18 +36,14 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         setTitle("Profile");
-
         final ImageView mProfileImage = findViewById(R.id.ivProfile);
         final TextView mUsernameTextView = findViewById(R.id.username);
         final TextView mEmailTextView = findViewById(R.id.email);
         final Button mPrecisionButton = findViewById(R.id.precision);
         final Button mLougoutButton = findViewById(R.id.logout);
-
         mUsernameTextView.setText(Database.getInstance().getUser().username);
         mEmailTextView.setText(Database.getInstance().getUser().email);
-
         Uri photoURI = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
         Picasso.with(this).load(photoURI).into(mProfileImage, new Callback() {
             @Override
@@ -58,13 +54,11 @@ public class Profile extends AppCompatActivity {
                 mDrawable.setColorFilter(ContextCompat.getColor(Profile.this, R.color.colorPrimaryDark), PorterDuff.Mode.DST_OVER);
                 mProfileImage.setImageDrawable(mDrawable);
             }
-
             @Override
             public void onError() {
                 //toDo handle error
             }
         });
-
         mPrecisionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +67,6 @@ public class Profile extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
-
         mLougoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

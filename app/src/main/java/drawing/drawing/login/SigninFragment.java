@@ -90,7 +90,6 @@ public class SigninFragment extends Fragment {
         twitterLoginButton = root.findViewById(R.id.login_button);
         register = root.findViewById(R.id.register_textview);
         forgot = root.findViewById(R.id.forgot_textview);
-
         return root;
     }
 
@@ -98,7 +97,6 @@ public class SigninFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         //FACEBOOK
         facebookLoginButton.setReadPermissions("email", "public_profile");
         facebookLoginButton.setFragment(this);
@@ -121,7 +119,6 @@ public class SigninFragment extends Fragment {
                 Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
-
         //TWITTER
         twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -132,14 +129,12 @@ public class SigninFragment extends Fragment {
                         result.data.getAuthToken().secret);
                 loginInterface.signinWithAuthCredential(credential);
             }
-
             @Override
             public void failure(TwitterException exception) {
                 Log.d(TAG, "twitter:failure");
                 Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
         });
-
         //GOOGLE+
         final Activity activity = getActivity();
         if (activity == null) {
@@ -168,10 +163,8 @@ public class SigninFragment extends Fragment {
                 }
             });
         }
-
         //EMAIL AND PASSWORD
         emailEditText.setText(loginInterface.getLastUsed());
-
         signinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +173,6 @@ public class SigninFragment extends Fragment {
                 signinWithEmailAndPassword();
             }
         });
-
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
@@ -200,7 +192,6 @@ public class SigninFragment extends Fragment {
                 }
             }
         });
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -213,7 +204,6 @@ public class SigninFragment extends Fragment {
                 loginInterface.setCurrentFragment(registerFragment);
             }
         });
-
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,7 +217,6 @@ public class SigninFragment extends Fragment {
             }
         });
     }
-
 
     private void signinWithEmailAndPassword() {
         root.requestFocus();

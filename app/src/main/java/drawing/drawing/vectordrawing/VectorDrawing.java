@@ -47,17 +47,14 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
     private static final int SIZE = 125;
     private String name;
     private MessagingInterface messagingInterface;
-
     private Controller controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
-
         messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
         final DrawingView drawingView = findViewById(R.id.drawingSpace);
-
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
             name = bundle.getString(DRAWING_NAME);
@@ -74,7 +71,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                     drawingView.invalidate();
                     messagingInterface.dismiss();
                 }
-
                 @Override
                 public void onFailure(String error) {
                     finish();
@@ -87,7 +83,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
             model.setSize(metrics.widthPixels, metrics.heightPixels);
             controller = new Controller(model, drawingView, this);
         }
-
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
@@ -95,12 +90,10 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 .setPosition(FloatingActionButton.POSITION_BOTTOM_CENTER)
                 .build();
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
-
         ImageView itemIcon1 = new ImageView(this);
         itemIcon1.setImageDrawable(getResources().getDrawable(R.drawable.drag_drop));
         SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
         button1.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,69 +101,57 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 drawingView.resetSelection();
             }
         });
-
         ImageView itemIcon2 = new ImageView(this);
         itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.select));
         SubActionButton button2 = itemBuilder.setContentView(itemIcon2).build();
         button2.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawingView.current_action = SELECT_ACTION;
             }
         });
-
         ImageView itemIcon3 = new ImageView(this);
         itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.point));
         SubActionButton button3 = itemBuilder.setContentView(itemIcon3).build();
         button3.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawingView.current_action = POINT_ACTION;
             }
         });
-
         ImageView itemIcon4 = new ImageView(this);
         itemIcon4.setImageDrawable(getResources().getDrawable(R.drawable.iso));
         SubActionButton button4 = itemBuilder.setContentView(itemIcon4).build();
         button4.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawingView.current_action = ISO_ACTION;
                 drawingView.makeIso();
-                Log.d("VectorDrawing !!!!!!!!!", "make iso done");
             }
         });
-
         ImageView itemIcon5 = new ImageView(this);
         itemIcon5.setImageDrawable(getResources().getDrawable(R.drawable.seg));
         SubActionButton button5 = itemBuilder.setContentView(itemIcon5).build();
         button5.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawingView.current_action = SEG_ACTION;
             }
         });
-
         ImageView itemIcon6 = new ImageView(this);
         itemIcon6.setImageDrawable(getResources().getDrawable(R.drawable.line));
         SubActionButton button6 = itemBuilder.setContentView(itemIcon6).build();
         button6.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
-
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 drawingView.current_action = LINE_ACTION;
             }
         });
-
         FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
                 .addSubActionView(button1)
                 .addSubActionView(button2)
@@ -215,19 +196,15 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 Intent myIntent = new Intent(VectorDrawing.this, Profile.class);
                 startActivity(myIntent);
                 return true;
-
             case R.id.action_undo:
                 controller.undo();
                 return true;
-
             case R.id.action_redo:
                 controller.redo();
                 return true;
-
             case R.id.action_reset:
                 controller.reset();
                 return true;
-
             case R.id.action_save:
                 SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), new SavingDialogFragment.OnSaveListener() {
                     @Override
@@ -241,7 +218,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 }, messagingInterface);
                 savingDialog.show(getSupportFragmentManager(), "saving");
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

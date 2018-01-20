@@ -56,11 +56,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d(TAG, "OnCreate");
-
         messageInterface = CustomProgressDialog.newInstance(getFragmentManager());
-
         setContentView(R.layout.activity_login);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -93,9 +90,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
             Log.w(TAG, "unable to signout user, fUser is null");
             return;
         }
-
         CrashAnalyticsHelper.signOut();
-
         List<? extends UserInfo> providerData = fUser.getProviderData();
         remainingProvider = providerData.size();
         for (UserInfo data: providerData) {
@@ -136,7 +131,6 @@ public class Login extends AppCompatActivity implements LoginInterface {
     //todo wait until signout or timeout
     public static void signoutCheck(final OnSignoutCompleteListener listener) {
         Log.d(TAG,"remainingProvider: " + remainingProvider);
-
         if (remainingProvider == 0) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -146,10 +140,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 }
             }, 300);
         }
-
     }
 
-    // ==================================USER DATA CHECK============================================
     private void onSuccessfulLogin() {
         CrashAnalyticsHelper.signIn(FirebaseAuth.getInstance().getCurrentUser());
         Database.getInstance().addUserListenerWithoutNotifying(userDataCheckListener);
@@ -188,7 +180,6 @@ public class Login extends AppCompatActivity implements LoginInterface {
                 Log.e(TAG, "firebase user null after Auth");
                 return;
             }
-
             Database.getInstance().removeUserListener(this);
             if (user == null) {
                 Log.w(TAG, "user creation failed");
@@ -199,20 +190,17 @@ public class Login extends AppCompatActivity implements LoginInterface {
         }
     };
 
-
     private void onSuccessfulUserData() {
         Intent i = new Intent(Login.this, Personalization.class);
         startActivity(i);
         finish();
     }
 
-    // =============================LOGIN INTERFACE IMPLEMENTATION==================================
     public void setCurrentFragment(Fragment fragment) {
         this.fragment = fragment;
     }
 
     public void signinWithAuthCredential(AuthCredential credential) {
-        Log.d("TAG", "firebase !!!");
         messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -276,17 +264,14 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private void sendConfirmationEmail() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser fUser = auth.getCurrentUser();
-
         if (fUser == null) {
             Log.e(TAG, "firebase user is null after registration");
             return;
         }
-
         //Todo use url to redirect user to login page
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
                 .setAndroidPackageName("drawing.drawing", false, null)
                 .build();
-
         fUser.sendEmailVerification(actionCodeSettings)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

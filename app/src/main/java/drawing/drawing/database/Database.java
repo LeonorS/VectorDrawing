@@ -19,7 +19,6 @@ import java.util.Vector;
 public class Database {
     private final static String TAG = "KJKP6_DATABASE";
     private FirebaseDatabase database;
-
     private DatabaseReference usersRef;
     private final Vector<UserListener> userListeners = new Vector<>();
     private User user = null;
@@ -38,7 +37,6 @@ public class Database {
         return Holder.instance;
     }
 
-    //==============================================================================================
     //Todo remove race conditions
     public void addUserEventListener() {
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -50,7 +48,6 @@ public class Database {
                     Log.d(TAG, "Database.user updated!");
                     notifyUserListeners();
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.d(TAG, "Database.user update failed:" + databaseError.getMessage());

@@ -20,7 +20,6 @@ public class Iso extends PointFigure {
 
     @Override
     public Point move(int x, int y, Point anchor){
-
         super.move(x, y, anchor);
         return anchor;
     }

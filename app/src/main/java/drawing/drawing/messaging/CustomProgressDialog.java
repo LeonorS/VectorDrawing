@@ -33,14 +33,13 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     private TextView singleTxt;
     private TextView dualTxt1;
     private TextView dualTxt2;
-
     private boolean singleLineSelected = true;
+
     public enum DialogType {
         PROGRESS, FAIL, SUCCESS, WARNING, INFO
     }
     private DialogType currentType = PROGRESS;
 
-    //DialogType type, String line1, String line2
     public static MessagingInterface newInstance(FragmentManager fragmentManager) {
         CustomProgressDialog dialog = new CustomProgressDialog();
         dialog.fragmentManager = fragmentManager;
@@ -51,20 +50,16 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_info, container, false);
-
         progressBar = view.findViewById(R.id.progress);
         singleLayout = view.findViewById(R.id.single);
         dualLayout = view.findViewById(R.id.dual);
         singleTxt = view.findViewById(R.id.singleTxt);
         dualTxt1 = view.findViewById(R.id.dualTxt1);
         dualTxt2 = view.findViewById(R.id.dualTxt2);
-
         singleLayout.setVisibility(View.VISIBLE);
         dualLayout.setVisibility(GONE);
         progressBar.setVisibility(View.VISIBLE);
-        //imageView.setVisibility(GONE);
         setCancelable(false);
-
         show(type, line1, line2);
         return view;
     }
@@ -74,7 +69,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         this.line1 = line1;
         this.line2 = line2;
         this.type = type;
-
         //Todo change this to allow the Show/Hide
         if (!isAdded())
             show(fragmentManager, "info");
@@ -104,16 +98,11 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         show(INFO, line1, null);
     }
 
-    public void allowCancellation() {
-        setCancelable(true);
-    }
-
     @Override
     public void dismiss() {
         super.dismiss();
     }
 
-    //==============================================================================================
     private void setSingleLine() {
         if (!singleLineSelected) {
             dualLayout.setVisibility(GONE);
@@ -133,28 +122,17 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     private void setType(DialogType type) {
         if (type == currentType)
             return;
-
         switch (type) {
             case PROGRESS:
                 progressBar.setVisibility(View.VISIBLE);
                 currentType = PROGRESS;
                 setCancelable(false);
                 break;
-            case FAIL:
-                setCancelable(true);
-                break;
-            case INFO:
-                setCancelable(true);
-                break;
-            case SUCCESS:
-                setCancelable(true);
-                break;
-            case WARNING:
+            case FAIL: case INFO: case SUCCESS: case WARNING:
                 setCancelable(true);
                 break;
             default:
         }
-
         if (type != PROGRESS && currentType == PROGRESS) {
             currentType = type;
             progressBar.setVisibility(GONE);

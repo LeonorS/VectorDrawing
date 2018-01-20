@@ -8,7 +8,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 public class Line extends Figure{
-
     private double margin = 8;
 
     public Line(int x1, int y1, int x2, int y2, double margin/*, Model model*/){
@@ -36,31 +35,23 @@ public class Line extends Figure{
 
     @Override
     public boolean contains(float x, float y) {
-
         int x1 = Math.min(getP1().x, getP2().x);
         int x2 = Math.max(getP1().x, getP2().x);
         int y1 = Math.min(getP1().y, getP2().y);
         int y2 = Math.max(getP1().y, getP2().y);
-
         if(x1 == x2){
             return x >= x1 - margin && x <= x1 + margin && y >= y1 && y <= y2;
         }
-
         if(y1 == y2){
             return x >= x1 && x <= x2 && y >= y1 - margin * 3.5 && y <= y2 + margin * 3.5 ;
         }
-
         if(x >= x1 && x <= x2 && y >= y1 && y <= y2){
-
             double m = (double)(getP1().y - getP2().y) / (double)(getP1().x - getP2().x);
-
             double m1 = (double)(getP1().y - y) / (double)(getP1().x - x);
             double m2 = (double)(getP2().y - y) / (double)(getP2().x - x);
-
             double margin_2 = (margin * 3.5)/(double)(x2 - x1 + y2 - y1);
             return m >= m1 - margin_2 && m <= m1 + margin_2 || m >= m2 - margin_2 && m <= m2 + margin_2;
         }
-
         return false;
     }
 
@@ -92,7 +83,6 @@ public class Line extends Figure{
 
     @Override
     public Point move(int x, int y, Point anchor) {
-
         Point p1 = getP1();
         Point p2 = getP2();
         int x1 = p1.x + x - anchor.x;
@@ -101,7 +91,6 @@ public class Line extends Figure{
         int y2 = p2.y + y - anchor.y;
         setP1(new Point(x1, y1));
         setP2(new Point(x2, y2));
-
         return new Point(x, y);
     }
 

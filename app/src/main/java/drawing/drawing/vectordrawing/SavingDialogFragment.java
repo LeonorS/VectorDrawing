@@ -52,9 +52,7 @@ public class SavingDialogFragment extends DialogFragment {
         final LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_save, null);
         builder.setView(view);
-
         edt = view.findViewById(R.id.editText);
-
         builder.setPositiveButton("save", null)
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -76,10 +74,8 @@ public class SavingDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 final String name = edt.getText().toString();
-
                 if (name.isEmpty())
                     return;
-
                 if (!override && Database.getInstance().getUser().isOverwriting(name)) {
                     messagingInterface.show(CustomProgressDialog.DialogType.WARNING,
                             "A file with this name already exist",
@@ -87,7 +83,6 @@ public class SavingDialogFragment extends DialogFragment {
                     override = true;
                     return;
                 }
-
                 Database.getInstance().getUser().addDrawing(name);
                 Storage.getInstance().setModel(getActivity(), name, model, null);
                 Storage.getInstance().setPreview(getActivity(), name, preview, null);

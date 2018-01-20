@@ -41,7 +41,6 @@ public class Storage {
     private static final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference storageRef;
 
-
     //ToDo make this listener generic for all storage actions
     public interface OnStorageCompleteListener {
         void onSuccess(Object obj);
@@ -66,20 +65,16 @@ public class Storage {
             if (listener != null)
                 listener.onFailure("network failure");
         }
-
         final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
         jsonHelper.registerTypeAdapter(Figure.class);
         final String save = jsonHelper.saveToJson(model);
-
         Log.d(TAG, "JSON bien saved: " + save);
-
         final StorageReference drawRef = storageRef.child("draws");
         final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null)
             return;
         final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
-
         final UploadTask uploadTask = fileRef.putBytes(save.getBytes());
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -106,7 +101,6 @@ public class Storage {
             return;
         final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
-
         fileRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -131,14 +125,12 @@ public class Storage {
             if (listener != null)
                 listener.onFailure("network failure");
         }
-
         final StorageReference drawRef = storageRef.child("preview");
         final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null)
             return;
         final StorageReference userDrawRef = drawRef.child(fUser.getUid());
         final StorageReference fileRef = userDrawRef.child(name);
-
         FileOutputStream out = null;
         try {
             File f = activity.getFilesDir();
@@ -156,7 +148,6 @@ public class Storage {
                 e.printStackTrace();
             }
         }
-
         try {
             InputStream stream = new FileInputStream(new File(activity.getFilesDir(), "temp.png"));
             UploadTask uploadTask = fileRef.putStream(stream);
@@ -179,7 +170,6 @@ public class Storage {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void getPreviewDownloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {

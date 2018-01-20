@@ -66,14 +66,11 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 attrs,
                 R.styleable.EditTextWithDrawable,
                 0, 0);
-
         try {
             leftDrawableToggleable = a.getBoolean(R.styleable.EditTextWithDrawable_leftDrawableToggleable, false);
             rightDrawableToggleable = a.getBoolean(R.styleable.EditTextWithDrawable_rightDrawableToggleable, false);
             topDrawableToggleable = a.getBoolean(R.styleable.EditTextWithDrawable_topDrawableToggleable, false);
             bottomDrawableToggleable = a.getBoolean(R.styleable.EditTextWithDrawable_bottomDrawableToggleable, false);
-
-            //int resId;
             drawableLeftBis = a.getDrawable(R.styleable.EditTextWithDrawable_drawableLeftBis);
             drawableRightBis = a.getDrawable(R.styleable.EditTextWithDrawable_drawableRightBis);
             drawableTopBis = a.getDrawable(R.styleable.EditTextWithDrawable_drawableTopBis);
@@ -86,22 +83,18 @@ public class EditTextWithDrawable extends AppCompatEditText {
         } finally {
             a.recycle();
         }
-
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         if(event.getAction() == MotionEvent.ACTION_UP) {
             final Drawable[] drawables = getCompoundDrawables();
-
             if(drawables[DRAWABLE_LEFT.ordinal()] != null
                     && event.getRawX() <= (getLeft() + drawables[DRAWABLE_LEFT.ordinal()].getBounds().width())) {
                 onLeftBis = !onLeftBis;
                 if (leftDrawableToggleable && drawableLeftBis != null) {
                     updateDrawable();
                 }
-
                 if (leftListener != null) {
                     leftListener.onClick(this, onLeftBis);
                 }
@@ -112,7 +105,6 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 if (rightDrawableToggleable && drawableRightBis != null) {
                     updateDrawable();
                 }
-
                 if (rightListener != null) {
                     rightListener.onClick(this, onRightBis);
                 }
@@ -123,7 +115,6 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 if (topDrawableToggleable && drawableTopBis != null) {
                     updateDrawable();
                 }
-
                 if (topListener != null) {
                     topListener.onClick(this, onTopBis);
                 }
@@ -134,7 +125,6 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 if (bottomDrawableToggleable && drawableBottomBis != null) {
                     updateDrawable();
                 }
-
                 if (bottomListener != null) {
                     bottomListener.onClick(this, onBottomBis);
                 }
@@ -159,5 +149,4 @@ public class EditTextWithDrawable extends AppCompatEditText {
         setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
         invalidate();
     }
-
 }

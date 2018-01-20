@@ -1,7 +1,6 @@
 package drawing.drawing.model;
 
 import android.graphics.Point;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION
  */
 
 public class Model {
-
     private ArrayList<Figure> figures, canceled;
     private double width, height;
     private int point_margin, seg_margin;
@@ -107,7 +105,6 @@ public class Model {
             return;
         int sx = 0;
         int sy = 0;
-        Log.d("Make iso !!!!!!!", "calcul ...");
         for(Figure f : selected){
             if (f instanceof PointFigure){
                 sx += f.getPoints().get(0).x;
@@ -118,37 +115,25 @@ public class Model {
         }
         sx /= selected.size();
         sy /= selected.size();
-
-        Log.d("Make iso !!!!!!!", "calcul done");
-
         ArrayList<Integer> ids = new ArrayList<>();
         for (Figure f : selected){
             ids.add(f.getId());
         }
-
-        Log.d("Make iso !!!!!!!", "ids done");
-
         Iso i = new Iso(sx, sy, point_margin, ids);
         figures.add(i);
-
-        Log.d("Make iso !!!!!!!", "iso done");
-
         for (Figure f : selected){
             ((PointFigure) f).addBarycenter(i.getId());
         }
-
-        Log.d("Make iso !!!!!!!", "deps done");
-
     }
 
     public void makeLine(DrawingView.DrawingAction action, float x, float y, Point anchor){
-            figures.remove(currentFigure);
-            if (action == SEG_ACTION) {
-                currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
-            } else if (action == LINE_ACTION) {
-                currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
-            }
-            figures.add(currentFigure);
+        figures.remove(currentFigure);
+        if (action == SEG_ACTION) {
+            currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
+        } else if (action == LINE_ACTION) {
+            currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
+        }
+        figures.add(currentFigure);
     }
 
     private Figure findFigureById(int i){
@@ -162,7 +147,6 @@ public class Model {
     public ArrayList<Figure> findFiguesById(ArrayList<Integer> ids){
         ArrayList<Figure> figures = new ArrayList<>();
         for (Integer i : ids){
-            Log.d("findFiguesById", ""+i);
             Figure f = findFigureById(i);
             figures.add(f);
         }
@@ -170,17 +154,12 @@ public class Model {
     }
 
     public Point moveFigure(float x, float y, Figure f, Point anchor){
-
         if (f != null) {
-
             if (f instanceof Iso){
-
                 Iso iso = (Iso) f;
                 ArrayList<Figure> points_linked = new ArrayList<>();
                 points_linked.addAll(findFiguesById(iso.getIdsLinked()));
-
                 Point p = new Point(iso.getPoint());
-
                 for(Figure ff : points_linked){
                     PointFigure pf = (PointFigure) ff;
                     pf.move(pf.getPoint().x + (int) x - p.x, pf.getPoint().y + (int) y - p.y, anchor);
@@ -188,17 +167,13 @@ public class Model {
             }
 
             else if (f instanceof PointFigure){
-
                 PointFigure pf = (PointFigure) f;
                 ArrayList<Figure> iso_linked = new ArrayList<>();
                 iso_linked.addAll(findFiguesById(pf.getBarycenterIds()));
-
                 for(Figure ff : iso_linked){
                     Iso iso = (Iso) ff;
-
                     ArrayList<Figure> points_linked = new ArrayList<>();
                     points_linked.addAll(findFiguesById(iso.getIdsLinked()));
-
                     int sx = 0;
                     int sy = 0;
                     for(Figure fff : points_linked){
@@ -211,10 +186,8 @@ public class Model {
                     iso.move(sx, sy, anchor);
                 }
             }
-
             anchor = f.move((int) x, (int) y, anchor);
         }
-
         return anchor;
     }
 
