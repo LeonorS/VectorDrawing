@@ -5,65 +5,6 @@
     android:layout_height="match_parent"
     tools:context="drawing.drawing.vectordrawing.VectorDrawing">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@android:color/background_light">
-
-        <Button
-            android:id="@+id/clearBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="clear" />
-
-        <Button
-            android:id="@+id/selectBtn"
-            style="@style/ColoredButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="select" />
-
-        <Button
-            android:id="@+id/pointBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="point" />
-
-        <Button
-            android:id="@+id/isoBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="iso" />
-
-        <Button
-            android:id="@+id/segBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="seg" />
-
-        <Button
-            android:id="@+id/lineBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Line" />
-
-        <!--
-        <Button
-            android:id="@+id/interBtn"
-            style="@style/ColoredButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Inter"/>
-            -->
-
-    </LinearLayout>
-
     <view
         android:id="@+id/drawingSpace"
         class="drawing.drawing.vectordrawing.DrawingView"

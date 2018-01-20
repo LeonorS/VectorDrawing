@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -40,9 +42,12 @@ import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS
 public class VectorDrawing extends AppCompatActivity implements ControllerActivityInterface {
     public static final String DRAWING_NAME = "drawingName";
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
+    private static final int SIZE = 150;
     private String name;
     private MessagingInterface messagingInterface;
     private Controller controller;
+    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,80 +87,9 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
             controller = new Controller(model, drawingView, this);
         }
 
-        //should be useless till its called in onResume... TO CHECK
-//        final User user = Database.getInstance().getUser();
-//        model.setPrecision(user.point_margin, user.segment_margin);
-
-        Button clearBtn = findViewById(R.id.clearBtn);
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new DefaultTool(controller));
-//                drawingView.current_action = DEFAULT_ACTION;
-                //drawingView.resetSelection();
-            }
-        });
-
-        Button pointBtn = findViewById(R.id.pointBtn);
-        pointBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new PointTool(controller));
-//                drawingView.current_action = POINT_ACTION;
-            }
-        });
-
-        Button selectBtn = findViewById(R.id.selectBtn);
-        selectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new SelectTool(controller));
-//                drawingView.current_action = SELECT_ACTION;
-            }
-        });
-
-        Button isoBtn = findViewById(R.id.isoBtn);
-        isoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new IsoTool(controller));
-//                drawingView.current_action = ISO_ACTION;
-//                drawingView.makeIso();
-//                Log.d("VectorDrawing !!!!!!!!!", "make iso done");
-            }
-        });
-
-        Button segBtn = findViewById(R.id.segBtn);
-        segBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new SegmentTool(controller));
-//                drawingView.current_action = SEG_ACTION;
-            }
-        });
-
-        Button lineBtn = findViewById(R.id.lineBtn);
-        lineBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controller.setTool(new LineTool(controller));
-//                drawingView.current_action = LINE_ACTION;
-            }
-        });
-
-//        Button interBtn = findViewById(R.id.interBtn);
-//        interBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = drawingView.INTER_ACTION;
-//                drawingView.makeInter();
-//            }
-//        });
-
-        //==========================================================================================
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+        actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(icon)
                 .setPosition(FloatingActionButton.POSITION_BOTTOM_CENTER)
                 .build();
@@ -163,22 +97,87 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
 
         // repeat many times:
         ImageView itemIcon1 = new ImageView(this);
-        itemIcon1.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
-        SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
+        itemIcon1.setImageDrawable(getResources().getDrawable(R.drawable.drag_drop));
+        final SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
+        button1.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new DefaultTool(controller));
+                actionMenu.close(true);
+            }
+        });
 
         ImageView itemIcon2 = new ImageView(this);
-        itemIcon2.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+        itemIcon2.setImageDrawable(getResources().getDrawable(R.drawable.select));
         SubActionButton button2 = itemBuilder.setContentView(itemIcon2).build();
+        button2.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new SelectTool(controller));
+                actionMenu.close(true);
+            }
+        });
 
         ImageView itemIcon3 = new ImageView(this);
-        itemIcon3.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
+        itemIcon3.setImageDrawable(getResources().getDrawable(R.drawable.point));
         SubActionButton button3 = itemBuilder.setContentView(itemIcon3).build();
+        button3.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new PointTool(controller));
+                actionMenu.close(true);
+            }
+        });
 
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+        ImageView itemIcon4 = new ImageView(this);
+        itemIcon4.setImageDrawable(getResources().getDrawable(R.drawable.iso));
+        SubActionButton button4 = itemBuilder.setContentView(itemIcon4).build();
+        button4.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new IsoTool(controller));
+                actionMenu.close(true);
+            }
+        });
+
+        ImageView itemIcon5 = new ImageView(this);
+        itemIcon5.setImageDrawable(getResources().getDrawable(R.drawable.seg));
+        SubActionButton button5 = itemBuilder.setContentView(itemIcon5).build();
+        button5.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new SegmentTool(controller));
+                actionMenu.close(true);
+            }
+        });
+
+        ImageView itemIcon6 = new ImageView(this);
+        itemIcon6.setImageDrawable(getResources().getDrawable(R.drawable.line));
+        SubActionButton button6 = itemBuilder.setContentView(itemIcon6).build();
+        button6.setLayoutParams(new FrameLayout.LayoutParams(SIZE, SIZE, Gravity.CENTER));
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.setTool(new LineTool(controller));
+                actionMenu.close(true);
+            }
+        });
+
+        actionMenu = new FloatingActionMenu.Builder(this)
                 .addSubActionView(button1)
                 .addSubActionView(button2)
                 .addSubActionView(button3)
+                .addSubActionView(button4)
+                .addSubActionView(button5)
+                .addSubActionView(button6)
                 .attachTo(actionButton)
+                .setStartAngle(180)
+                .setEndAngle(360)
                 .build();
     }
 
