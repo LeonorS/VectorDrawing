@@ -125,11 +125,9 @@ public class Login extends AppCompatActivity implements LoginInterface {
                         }
                     });
                     break;
-                case "twitter.com":
-                    //todo check that nothing need to be done
+                default:
                     --remainingProvider;
                     signoutCheck(listener);
-                    break;
             }
             Log.d(TAG, "signed oud of " + data.getProviderId());
         }
