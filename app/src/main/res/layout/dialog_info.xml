@@ -12,11 +12,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/com_facebook_button_send_icon_blue" />
+    <!--<ImageView-->
+        <!--android:id="@+id/icon"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--app:srcCompat="@drawable/com_facebook_button_send_icon_blue" />-->
 
     <LinearLayout
         android:id="@+id/single"

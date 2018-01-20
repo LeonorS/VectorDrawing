@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -12,7 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <EditText
             android:id="@+id/email_edittext"
@@ -37,19 +39,22 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textColorHighlight="?android:attr/textColorPrimary"
             android:textColorHint="?android:attr/textColorPrimary"
-            custom:drawableRightBis="@android:drawable/ic_menu_search"
-            custom:rightDrawableToggleable="true" />
+            custom:drawableRightBis="@android:drawable/ic_menu_view"
+            custom:rightDrawableToggleable="false" />
 
         <Button
             android:id="@+id/signin_button"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SIGN IN" />
+            android:text="SIGN IN"
+            android:layout_margin="8dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
 
             <TextView
                 android:id="@+id/register_textview"
@@ -58,7 +63,8 @@
                 android:layout_weight="1"
                 android:text="Create account? "
                 android:textAlignment="viewEnd"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/forgot_textview"
@@ -66,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:text="forgot password?"
                 android:textAlignment="viewEnd"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -74,7 +81,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/textView"
@@ -82,6 +90,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="or"
+            android:textSize="20sp"
             android:textColor="?android:attr/textColorPrimary" />
 
     </LinearLayout>
@@ -90,7 +99,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
+
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/connectWithFbButton"
@@ -100,7 +111,8 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="  connect_with_facebook"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_margin="6dp"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -112,7 +124,8 @@
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="6dp"/>
 
     </LinearLayout>
 

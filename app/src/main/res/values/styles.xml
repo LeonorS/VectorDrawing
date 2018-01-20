@@ -27,7 +27,7 @@
     </style>
 
     <style name="ColoredButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:colorButtonNormal">@color/colorAccent</item>
         <item name="android:textSize">21sp</item>
     </style>
 

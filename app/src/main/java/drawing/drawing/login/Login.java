@@ -210,6 +210,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     }
 
     public void signinWithAuthCredential(AuthCredential credential) {
+        Log.d("TAG", "firebase !!!");
         messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {

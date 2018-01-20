@@ -44,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/email"
         android:layout_centerHorizontal="true"
-        android:text="Precision" />
+        android:text="Precision"
+        android:background="@color/colorPrimary"/>
 
     <Button
         android:id="@+id/logout"
@@ -52,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/precision"
         android:layout_centerHorizontal="true"
-        android:text="Logout" />
+        android:text="Logout"
+        android:background="@color/colorPrimary"/>
 
 </android.widget.RelativeLayout>

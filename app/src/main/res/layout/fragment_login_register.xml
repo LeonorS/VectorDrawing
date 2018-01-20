@@ -39,8 +39,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textColorHighlight="?android:attr/textColorPrimary"
         android:textColorHint="?android:attr/textColorPrimary"
-        custom:drawableRightBis="@android:drawable/ic_menu_search"
-        custom:rightDrawableToggleable="true" />
+        custom:drawableRightBis="@android:drawable/ic_menu_view"
+        custom:rightDrawableToggleable="false" />
 
     <Button
         android:id="@+id/register_button"
