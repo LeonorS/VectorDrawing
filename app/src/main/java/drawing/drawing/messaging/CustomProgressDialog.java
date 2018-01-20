@@ -31,7 +31,7 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     private String line2;
     private DialogType type;
     private ProgressBar progressBar;
-    private ImageView imageView;
+//    private ImageView imageView;
     private LinearLayout singleLayout;
     private LinearLayout dualLayout;
     private TextView singleTxt;
@@ -57,7 +57,7 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         View view = inflater.inflate(R.layout.dialog_info, container, false);
 
         progressBar = view.findViewById(R.id.progress);
-        imageView = view.findViewById(R.id.icon);
+//        imageView = view.findViewById(R.id.icon);
         singleLayout = view.findViewById(R.id.single);
         dualLayout = view.findViewById(R.id.dual);
         singleTxt = view.findViewById(R.id.singleTxt);
@@ -135,40 +135,40 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         }
     }
 
-//    private void setType(DialogType type) {
-//        if (type == currentType)
-//            return;
-//
-//        switch (type) {
-//            case PROGRESS:
+    private void setType(DialogType type) {
+        if (type == currentType)
+            return;
+
+        switch (type) {
+            case PROGRESS:
 //                imageView.setVisibility(GONE);
-//                progressBar.setVisibility(View.VISIBLE);
-//                currentType = PROGRESS;
-//                setCancelable(false);
-//                break;
-//            case FAIL:
+                progressBar.setVisibility(View.VISIBLE);
+                currentType = PROGRESS;
+                setCancelable(false);
+                break;
+            case FAIL:
 //                imageView.setImageResource(R.drawable.button_action);
-//                setCancelable(true);
-//                break;
-//            case INFO:
+                setCancelable(true);
+                break;
+            case INFO:
 //                imageView.setImageResource(R.drawable.button_action);
-//                setCancelable(true);
-//                break;
-//            case SUCCESS:
+                setCancelable(true);
+                break;
+            case SUCCESS:
 //                imageView.setImageResource(R.drawable.button_action);
-//                setCancelable(true);
-//                break;
-//            case WARNING:
+                setCancelable(true);
+                break;
+            case WARNING:
 //                imageView.setImageResource(R.drawable.button_action);
-//                setCancelable(true);
-//                break;
-//            default:
-//        }
-//
-//        if (type != PROGRESS && currentType == PROGRESS) {
-//            currentType = type;
-//            progressBar.setVisibility(GONE);
+                setCancelable(true);
+                break;
+            default:
+        }
+
+        if (type != PROGRESS && currentType == PROGRESS) {
+            currentType = type;
+            progressBar.setVisibility(GONE);
 //            imageView.setVisibility(View.VISIBLE);
-//        }
-//    }
+        }
+    }
 }
