@@ -42,7 +42,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private String name;
     private MessagingInterface messagingInterface;
-
     private Controller controller;
 
     @Override
@@ -254,6 +253,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (name != null) {
+                            //Todo wait for save
                             Storage.getInstance().setModel(VectorDrawing.this, name, controller.getModel(), null);
                             Storage.getInstance().setPreview(VectorDrawing.this, name, controller.getView().getPreview(), null);
                             VectorDrawing.this.finish();

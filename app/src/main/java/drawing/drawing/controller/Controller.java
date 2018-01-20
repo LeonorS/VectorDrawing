@@ -1,12 +1,18 @@
 package drawing.drawing.controller;
 
 import android.graphics.Point;
+import android.support.annotation.NonNull;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
+import java.util.Iterator;
 
 import drawing.drawing.controller.action.Action;
 import drawing.drawing.controller.action.CreateAction;
+import drawing.drawing.controller.action.MoveAction;
+import drawing.drawing.controller.action.SelectAction;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
 import drawing.drawing.controller.tools.DefaultTool;
@@ -43,6 +49,8 @@ public class Controller implements ControllerViewInterface, ToolListener {
     public void reset() {
         tool = new DefaultTool(this);
         model.reset();
+        done = new ArrayDeque<>();
+        undone = new ArrayDeque<>();
         drawingView.invalidate();
     }
 
@@ -99,8 +107,10 @@ public class Controller implements ControllerViewInterface, ToolListener {
     public Point move(float x, float y, Figure figure, Point anchor) {
         return model.moveFigure(x, y, figure, anchor);
     }
+    public void finalMove(float x, float y, Figure figure, Point anchor) {
+        moveAction(x, y, figure, anchor);
+    }
     public void select(Selector selector) {
-
         model.selectFigure(selector);
     }
     public void unselect() {model.uncheckFigure();}
@@ -119,16 +129,24 @@ public class Controller implements ControllerViewInterface, ToolListener {
             return;
         }
         final Action action = done.getLast();
-        action.undo();
+        action.undo(model);
         done.removeLast();
+        if (undone.size() >= MAX_ACTIONS)
+            undone.removeFirst();
+        undone.addLast(action);
         drawingView.invalidate();
     }
 
     public void redo(){
-        if (undone.sizeCanceled() == 0) {
+        if (undone.size() == 0) {
             return;
         }
-        model.addLastCanceled();
+        final Action action = undone.getLast();
+        action.redo(model);
+        undone.removeLast();
+        if (done.size() >= MAX_ACTIONS)
+            done.removeFirst();
+        done.addLast(action);
         drawingView.invalidate();
     }
 
@@ -148,6 +166,13 @@ public class Controller implements ControllerViewInterface, ToolListener {
     /**********************************************************************************************/
     private void createAction(Figure figure) {
         final Action action = new CreateAction(figure);
+        if (done.size() >= MAX_ACTIONS)
+            done.removeFirst();
+        done.addLast(action);
+    }
+
+    private void moveAction(float x, float y, Figure figure, Point anchor) {
+        final Action action = new MoveAction(x, y, figure, anchor);
         if (done.size() >= MAX_ACTIONS)
             done.removeFirst();
         done.addLast(action);

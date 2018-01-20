@@ -1,5 +1,6 @@
 package drawing.drawing.controller.tools;
 
+import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -10,6 +11,8 @@ import android.view.MotionEvent;
 
 public class DefaultTool extends Tool {
     private static final String TAG = "KJKP6_DEFAULT_TOOL";
+    private Point initialPos;
+
     public DefaultTool(ToolListener listener) {
         super(listener);
         Log.d(TAG, "Create tool");
@@ -19,6 +22,7 @@ public class DefaultTool extends Tool {
     @Override
     public boolean onDown(MotionEvent event) {
         super.onDown(event);
+        initialPos = new Point((int)event.getX(), (int)event.getY());
         Log.d(TAG, "selected = " + (touched != null));
         return true;
     }
@@ -37,6 +41,7 @@ public class DefaultTool extends Tool {
     @Override
     public boolean onUp(MotionEvent event) {
         super.onUp(event);
+        listener.finalMove(event.getX(), event.getY(), touched, initialPos);
         listener.unselect();
         return true;
     }

@@ -19,6 +19,7 @@ public interface ToolListener {
     Figure createIso();
 
     Point move(float x, float y, Figure figure, Point anchor);
+    void finalMove(float x, float y, Figure figure, Point anchor);
     void select(Selector selector);
     void unselect();
     void remove(Figure figure);

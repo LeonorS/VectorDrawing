@@ -46,6 +46,10 @@ public class Model {
         figures.remove(figures.size() - 1);
     }
 
+    public void addFigure(Figure figure) {
+        figures.add(figure);
+    }
+
     public void removeFigure(Figure figure) {
         figures.remove(figure);
     }
@@ -260,5 +264,17 @@ public class Model {
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
+    }
+
+    public void select(ArrayList<Figure> selection) {
+        for (Figure figure: selection) {
+            figure.selected = true;
+        }
+    }
+
+    public void unselect(ArrayList<Figure> selection) {
+        for (Figure figure: selection) {
+            figure.selected = false;
+        }
     }
 }
