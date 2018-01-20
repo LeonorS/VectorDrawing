@@ -89,4 +89,10 @@ public class StraightLine extends Line {
         setP2(pp2);
     }
 
+    @Override
+    public Point move(int x, int y, Point anchor) {
+        anchor = super.move(x, y, anchor);
+        setPoints();
+        return anchor;
+    }
 }

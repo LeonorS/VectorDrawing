@@ -77,7 +77,7 @@ public class Line extends Figure{
         }
 
         if(y1 == y2){
-            return x >= x1 && x <= x2 && y >= y1 - margin && y <= y2 + margin;
+            return x >= x1 && x <= x2 && y >= y1 - margin * 3.5 && y <= y2 + margin * 3.5 ;
         }
 
         if(x >= x1 && x <= x2 && y >= y1 && y <= y2){

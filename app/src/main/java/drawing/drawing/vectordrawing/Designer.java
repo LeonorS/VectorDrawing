@@ -87,6 +87,21 @@ public class Designer {
         }
         myPaint.setStrokeWidth(3);
         canvas.drawLine(s.getP1().x, s.getP1().y, s.getP2().x, s.getP2().y, myPaint);
+        canvas.drawCircle(s.getP1().x, s.getP1().y, 5, myPaint);
+        canvas.drawCircle(s.getP2().x, s.getP2().y, 5, myPaint);
+    }
+
+    public void onDrawLine(Canvas canvas, Line s){
+
+        myPaint.setColor(Color.BLACK);
+        myPaint.setStyle(Paint.Style.FILL);
+
+        if(s.selected == true){
+            myPaint.setColor(Color.RED);
+            myPaint.setStyle(Paint.Style.FILL);
+        }
+        myPaint.setStrokeWidth(3);
+        canvas.drawLine(s.getP1().x, s.getP1().y, s.getP2().x, s.getP2().y, myPaint);
     }
 
     public void onDrawPointFigure(Canvas canvas, PointFigure p){

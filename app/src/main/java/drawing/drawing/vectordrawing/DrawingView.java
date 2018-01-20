@@ -48,6 +48,7 @@ public class DrawingView extends View {
         setDrawingCacheEnabled(true);
         selected = new ArrayList<>();
         designer = new Designer();
+
     }
 
     public void setController(ControllerViewInterface controller) {
@@ -112,6 +113,7 @@ public class DrawingView extends View {
             return;
 
         for (Figure figure : controllerInterface.getFigures()) {
+
             if (figure instanceof Iso){
                 Iso iso = (Iso) figure;
                 ArrayList<Integer> ids = iso.getIdsLinked();
@@ -121,7 +123,10 @@ public class DrawingView extends View {
                 final ArrayList<Figure> linkedFigures = controllerInterface.findFiguresById(iso.getIdsLinked());
                 designer.onDrawIso(canvas, iso, linkedFigures);
             }
-            else if (figure instanceof StraightLine || figure instanceof Line){
+            else if (figure instanceof StraightLine){
+                designer.onDrawLine(canvas, (Line) figure);
+            }
+            else if (figure instanceof Line){
                 designer.onDrawSegment(canvas, (Line) figure);
             }
             else if (figure instanceof Intersection){
