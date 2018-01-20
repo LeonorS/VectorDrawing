@@ -8,7 +8,6 @@ import android.util.Log;
  */
 
 public class StraightLine extends Line {
-
     private double width, height;
 
     public StraightLine(int x1, int y1, int x2, int y2, double margin, double width, double height/*, Model model*/) {
@@ -89,4 +88,10 @@ public class StraightLine extends Line {
         setP2(pp2);
     }
 
+    @Override
+    public Point move(int x, int y, Point anchor) {
+        anchor = super.move(x, y, anchor);
+        setPoints();
+        return anchor;
+    }
 }
