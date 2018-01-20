@@ -58,6 +58,7 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.w(TAG, "user is not logged in");
                     Intent myIntent = new Intent(SplashScreen.this, Login.class);

@@ -4,9 +4,9 @@
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@drawable/splash</item>
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@android:color/primary_text_dark</item>
         <item name="android:textColorPrimaryInverse">@android:color/primary_text_light</item>
         <item name="android:textColorSecondary">@android:color/secondary_text_dark</item>
@@ -19,15 +19,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:buttonStyle">@style/ColoredButton</item>
         <item name="android:textAppearance">@style/MyDefaultTextAppearance</item>
     </style>
 
     <style name="ColoredButton" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:colorButtonNormal">@color/colorPrimaryDark</item>
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textSize">21sp</item>
     </style>
 
