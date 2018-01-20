@@ -12,7 +12,6 @@ import android.view.View;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
-import drawing.drawing.model.Intersection;
 import drawing.drawing.model.Iso;
 import drawing.drawing.model.Line;
 import drawing.drawing.model.PointFigure;
@@ -30,7 +29,6 @@ import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SELECT_ACT
  */
 
 public class DrawingView extends View {
-    private static final String TAG = "KJKP6_VIEW";
     private ControllerViewInterface controllerInterface;
     public enum DrawingAction {DEFAULT_ACTION, POINT_ACTION, SELECT_ACTION, SEG_ACTION, LINE_ACTION, ISO_ACTION}
     public DrawingAction current_action = DEFAULT_ACTION;
@@ -128,9 +126,6 @@ public class DrawingView extends View {
             }
             else if (figure instanceof Line){
                 designer.onDrawSegment(canvas, (Line) figure);
-            }
-            else if (figure instanceof Intersection){
-                designer.onDrawInter(canvas, (Intersection) figure);
             }
             else if (figure instanceof PointFigure){
                 designer.onDrawPointFigure(canvas, (PointFigure) figure);

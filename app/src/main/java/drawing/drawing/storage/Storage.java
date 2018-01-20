@@ -145,7 +145,6 @@ public class Storage {
             String s = f.getCanonicalPath();
             out = new FileOutputStream(s + "/temp.png");
             preview.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -181,38 +180,6 @@ public class Storage {
             e.printStackTrace();
         }
 
-    }
-
-    public void getPreview(String name, @NonNull final OnStorageCompleteListener listener) {
-        final StorageReference drawRef = storageRef.child("preview");
-        final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (fUser == null)
-            return;
-        final StorageReference userDrawRef = drawRef.child(fUser.getUid());
-        final StorageReference fileRef = userDrawRef.child(name);
-
-        try {
-            final File localFile = File.createTempFile("temp", "jpg");
-            fileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Bitmap b = null;
-                    try {
-                        b = BitmapFactory.decodeStream(new FileInputStream(localFile));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    listener.onSuccess(b);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    listener.onFailure("download failed");
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void getPreviewDownloadUrl(String name, @NonNull final OnStorageCompleteListener listener) {

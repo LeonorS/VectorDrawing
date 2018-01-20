@@ -10,6 +10,5 @@ public interface MessagingInterface {
     void show(CustomProgressDialog.DialogType type, String line1);
     void show(String line1, String line2);
     void show(String line1);
-    void allowCancellation();
     void dismiss();
 }

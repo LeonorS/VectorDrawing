@@ -6,7 +6,6 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import drawing.drawing.database.Database;
-import drawing.drawing.database.Drawing;
 import drawing.drawing.database.User;
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.Model;
@@ -22,6 +21,7 @@ import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_AC
  */
 
 public class Controller implements ControllerViewInterface {
+    private final static String TAG = "KJKP6_CONTROLER";
     private Model model;
     private DrawingView drawingView;
     private ControllerActivityInterface controllerActivityInterface;
@@ -81,16 +81,11 @@ public class Controller implements ControllerViewInterface {
                 break;
 
             case ISO_ACTION:
-                Log.d("CustomView", "makeFigure entry");
+                Log.d(TAG, "makeFigure entry");
                 model.makeIso(selected);
                 drawingView.current_action = DEFAULT_ACTION;
-                Log.d("CustomView", "makeFigure exit");
+                Log.d(TAG, "makeFigure exit");
                 break;
-
-//            case INTER_ACTION:
-//                model.makeIntersection(selected);
-//                current_action = DEFAULT_ACTION;
-//                break;
         }
         controllerActivityInterface.invalidateOptionMenu();
     }

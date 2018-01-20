@@ -147,20 +147,8 @@ public class EditTextWithDrawable extends AppCompatEditText {
         }
     }
 
-    public void setLeftDrawableListener(OnDrawableClickListener listener) {
-        leftListener = listener;
-    }
-
     public void setRightDrawableListener(OnDrawableClickListener listener) {
         rightListener = listener;
-    }
-
-    public void setTopDrawableListener(OnDrawableClickListener listener) {
-        topListener = listener;
-    }
-
-    public void setBottomDrawableListener(OnDrawableClickListener listener) {
-        bottomListener = listener;
     }
 
     private void updateDrawable() {

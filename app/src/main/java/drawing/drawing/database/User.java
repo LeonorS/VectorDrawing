@@ -1,15 +1,12 @@
 package drawing.drawing.database;
 
 import android.util.Log;
-import android.widget.ListView;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +19,6 @@ public class User {
     private final static int DEFAULT_POINT_MARGIN = -1;
     private final static int DEFAULT_SEGMENT_MARGIN = -1;
 
-    // Public attributes required for calls to DataSnapshot.getValue(User.class)
     public String username;
     public String email;
     public int point_margin;
@@ -49,7 +45,7 @@ public class User {
     public void setPrecision(int point_margin, int segment_margin) {
         this.point_margin = point_margin;
         this.segment_margin = segment_margin;
-        Log.d("User", "point_margin : " + point_margin + "; seg_margin ; " + segment_margin );
+        Log.d(TAG, "point_margin : " + point_margin + "; seg_margin ; " + segment_margin );
     }
 
     public Map<String, Drawing> getDrawings() {

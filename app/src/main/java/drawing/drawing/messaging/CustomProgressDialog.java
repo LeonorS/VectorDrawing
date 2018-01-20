@@ -4,11 +4,9 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +28,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     private String line2;
     private DialogType type;
     private ProgressBar progressBar;
-//    private ImageView imageView;
     private LinearLayout singleLayout;
     private LinearLayout dualLayout;
     private TextView singleTxt;
@@ -56,7 +53,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         View view = inflater.inflate(R.layout.dialog_info, container, false);
 
         progressBar = view.findViewById(R.id.progress);
-//        imageView = view.findViewById(R.id.icon);
         singleLayout = view.findViewById(R.id.single);
         dualLayout = view.findViewById(R.id.dual);
         singleTxt = view.findViewById(R.id.singleTxt);
@@ -92,7 +88,7 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
                 setSingleLine();
             }
 
-//            setType(type);
+            setType(type);
         }
     }
 
@@ -140,25 +136,20 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
 
         switch (type) {
             case PROGRESS:
-//                imageView.setVisibility(GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 currentType = PROGRESS;
                 setCancelable(false);
                 break;
             case FAIL:
-//                imageView.setImageResource(R.drawable.button_action);
                 setCancelable(true);
                 break;
             case INFO:
-//                imageView.setImageResource(R.drawable.button_action);
                 setCancelable(true);
                 break;
             case SUCCESS:
-//                imageView.setImageResource(R.drawable.button_action);
                 setCancelable(true);
                 break;
             case WARNING:
-//                imageView.setImageResource(R.drawable.button_action);
                 setCancelable(true);
                 break;
             default:
@@ -167,7 +158,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         if (type != PROGRESS && currentType == PROGRESS) {
             currentType = type;
             progressBar.setVisibility(GONE);
-//            imageView.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -13,9 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import drawing.drawing.model.Figure;
-import drawing.drawing.model.Intersection;
 import drawing.drawing.model.Iso;
-import drawing.drawing.model.StraightLine;
 import drawing.drawing.model.PointFigure;
 import drawing.drawing.model.Line;
 import drawing.drawing.model.Selector;
@@ -131,15 +129,5 @@ public class Designer {
         myPaint.setAlpha(100);
         myPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(rectangle, myPaint);
-    }
-
-    public void onDrawInter(Canvas canvas, Intersection i){
-
-        myPaint.setColor(Color.GRAY);
-        if(i.selected == true){
-            myPaint.setColor(Color.RED);
-            myPaint.setStyle(Paint.Style.FILL);
-        }
-        canvas.drawCircle(i.getPoint().x, i.getPoint().y, i.getWidthPoint(), myPaint);
     }
 }

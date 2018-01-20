@@ -1,11 +1,7 @@
 package drawing.drawing.model;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 /**
  * Created by leo on 05/12/17.

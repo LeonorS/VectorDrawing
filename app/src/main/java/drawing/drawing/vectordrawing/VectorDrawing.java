@@ -16,10 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
@@ -35,7 +33,6 @@ import drawing.drawing.database.User;
 import drawing.drawing.model.Model;
 import drawing.drawing.storage.Storage;
 
-import static android.view.Gravity.*;
 import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_ACTION;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.ISO_ACTION;
@@ -91,72 +88,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
             controller = new Controller(model, drawingView, this);
         }
 
-        //should be useless till its called in onResume... TO CHECK
-//        final User user = Database.getInstance().getUser();
-//        model.setPrecision(user.point_margin, user.segment_margin);
-
-//        Button clearBtn = findViewById(R.id.clearBtn);
-//        clearBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = DEFAULT_ACTION;
-//                drawingView.resetSelection();
-//            }
-//        });
-//
-//        Button pointBtn = findViewById(R.id.pointBtn);
-//        pointBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = POINT_ACTION;
-//            }
-//        });
-//
-//        Button selectBtn = findViewById(R.id.selectBtn);
-//        selectBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = SELECT_ACTION;
-//            }
-//        });
-//
-//        Button isoBtn = findViewById(R.id.isoBtn);
-//        isoBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = ISO_ACTION;
-//                drawingView.makeIso();
-//                Log.d("VectorDrawing !!!!!!!!!", "make iso done");
-//            }
-//        });
-//
-//        Button segBtn = findViewById(R.id.segBtn);
-//        segBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = SEG_ACTION;
-//            }
-//        });
-//
-//        Button lineBtn = findViewById(R.id.lineBtn);
-//        lineBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = LINE_ACTION;
-//            }
-//        });
-
-//        Button interBtn = findViewById(R.id.interBtn);
-//        interBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawingView.current_action = drawingView.INTER_ACTION;
-//                drawingView.makeInter();
-//            }
-//        });
-
-        //Todo create associated drawings
-        //==========================================================================================
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
@@ -165,7 +96,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 .build();
         SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
 
-        // repeat many times:
         ImageView itemIcon1 = new ImageView(this);
         itemIcon1.setImageDrawable(getResources().getDrawable(R.drawable.drag_drop));
         SubActionButton button1 = itemBuilder.setContentView(itemIcon1).build();
@@ -354,8 +284,6 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 .create()
                 .show();
     }
-
-    //==============================================================================================
 
     public void invalidateOptionMenu() {
         super.invalidateOptionsMenu();

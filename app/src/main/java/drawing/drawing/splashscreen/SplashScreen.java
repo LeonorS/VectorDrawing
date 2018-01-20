@@ -55,9 +55,6 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-//        final SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-//        final boolean firstLaunch = !sharedPref.contains(getString(R.string.preference_first_launch));
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -76,20 +73,5 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }, SPLASH_SCREEN_DELAY);
-
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (firstLaunch) {
-//                    Intent myIntent = new Intent(SplashScreen.this, MainActivity.class);
-//                    startActivity(myIntent);
-//                } else {
-//                    Intent myIntent = new Intent(SplashScreen.this, VectorDrawingApp.class);
-//                    startActivity(myIntent);
-//                }
-//                SplashScreen.this.finish();
-//            }
-//        }, SPLASH_SCREEN_DELAY);
     }
 }

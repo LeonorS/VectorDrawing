@@ -10,21 +10,13 @@ import android.graphics.Rect;
 public class Line extends Figure{
 
     private double margin = 8;
-//    private Vector<Intersection> inter;
-//    private Model model;
 
     public Line(int x1, int y1, int x2, int y2, double margin/*, Model model*/){
         super();
         addPoint(new Point(x1, y1));
         addPoint(new Point(x2, y2));
         this.margin = margin;
-//        this.inter = new Vector<Intersection>();
-//        this.model = model;
     }
-
-//    public Vector<Intersection> getInter(){
-//        return inter;
-//    }
 
     public Point getP1(){
         return getPoints().get(0);
@@ -40,32 +32,6 @@ public class Line extends Figure{
 
     public void setP2(Point p){
         this.changePoint(p, 1);
-    }
-
-    public Point set(int x, int y, Point anchor){
-
-        this.getP1().x += x - anchor.x;
-        this.getP1().y += y - anchor.y;
-        this.getP2().x += x - anchor.x;
-        this.getP2().y += y - anchor.y;
-
-        return new Point(x, y);
-    }
-
-//    public void setDep(){
-//        for (int k = 0; k < inter.size(); k++){
-//            if(!inter.get(k).setIntersection())
-//                k--;
-//        }
-//    }
-
-    public void movePoint(Point p, int which){
-        super.changePoint(p, which);
-    }
-
-    public void movePoint(Point p1, Point p2){
-        super.changePoint(p1, 0);
-        super.changePoint(p2, 1);
     }
 
     @Override
@@ -124,32 +90,6 @@ public class Line extends Figure{
         return false;
     }
 
-//    @Override
-//    public boolean intersects(Selector selector) {
-//        Rect r = selector.rectangle;
-//        Line top = new Line(r.left, r.top, r.right, r.top, margin, model);
-//        Line left = new Line(r.left, r.top, r.left, r.bottom, margin, model);
-//        Line bottom = new Line(r.left, r.bottom, r.right, r.bottom, margin, model);
-//        Line right = new Line(r.right, r.top, r.right, r.bottom, margin, model);
-//        boolean topp = intersects(top);
-//        if (topp) {
-//            return true;
-//        }
-//        boolean leftp = intersects(left);
-//        if (leftp) {
-//            return true;
-//        }
-//        boolean bottomp = intersects(bottom);
-//        if (bottomp) {
-//            return true;
-//        }
-//        boolean rightp = intersects(right);
-//        if (rightp) {
-//            return true;
-//        }
-//        return false;
-//    }
-
     @Override
     public Point move(int x, int y, Point anchor) {
 
@@ -161,13 +101,6 @@ public class Line extends Figure{
         int y2 = p2.y + y - anchor.y;
         setP1(new Point(x1, y1));
         setP2(new Point(x2, y2));
-
-//        for (int k = 0; k < inter.size(); k++){
-//            if(!inter.get(k).setIntersection()) {
-//                model.removeInter(inter.get(k));
-//                k--;
-//            }
-//        }
 
         return new Point(x, y);
     }

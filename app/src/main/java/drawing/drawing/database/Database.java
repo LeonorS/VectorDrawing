@@ -64,11 +64,6 @@ public class Database {
         userListeners.add(listener);
     }
 
-    public void addUserListener(UserListener listener) {
-        userListeners.add(listener);
-        listener.onUpdate(user);
-    }
-
     public void removeUserListener(UserListener listener) {
         userListeners.remove(listener);
     }

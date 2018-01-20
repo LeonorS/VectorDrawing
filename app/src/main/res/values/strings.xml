@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">Drawing</string>
 
-    <!-- SHARED PREFS -->
     <string name="preference_file_key">drawing.drawing.sharedPreferenceFile</string>
     <string name="preference_first_launch">firstLaunch</string>
-
-    <!-- LOGIN -->
     <string name="facebook_app_id">1589349084474923</string>
     <string name="fb_login_protocol_scheme">fb1589349084474923</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY">uQnvb2gBPVzXunXkX6syYQzs8</string>

@@ -107,12 +107,6 @@ public class Model {
             return;
         int sx = 0;
         int sy = 0;
-//        for(int i = 0; i < selected.size(); i++){
-//            if (selected.get(i) instanceof Intersection){
-//                selected.remove(i);
-//                i--;
-//            }
-//        }
         Log.d("Make iso !!!!!!!", "calcul ...");
         for(Figure f : selected){
             if (f instanceof PointFigure){
@@ -156,40 +150,6 @@ public class Model {
             }
             figures.add(currentFigure);
     }
-
-//    public void makeIntersection(ArrayList<Figure> selected){
-//        if (selected.size() != 2)
-//            return;
-//
-//        for(Figure f : selected)
-//            if(!(f instanceof Line))
-//                return;
-//
-//        Line s1, s2;
-//        s1 = (Line)selected.get(0);
-//        s2 = (Line)selected.get(1);
-//
-//        int x1 = s1.getP1().x;
-//        int y1 = s1.getP1().y;
-//        int x2 = s1.getP2().x;
-//        int y2 = s1.getP2().y;
-//        int x3 = s2.getP1().x;
-//        int y3 = s2.getP1().y;
-//        int x4 = s2.getP2().x;
-//        int y4 = s2.getP2().y;
-//
-//        int x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-//        int y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
-//
-//        Point p = new Point(x, y);
-//
-//        if(s1.contains(p.x, p.y) && s2.contains(p.x, p.y)){
-//            Intersection i = new Intersection(p.x, p.y, s1, s2, point_margin);
-//            figures.add(i);
-//            s1.getInter().add(i);
-//            s2.getInter().add(i);
-//        }
-//    }
 
     private Figure findFigureById(int i){
         for (Figure f : figures){
@@ -256,10 +216,6 @@ public class Model {
         }
 
         return anchor;
-    }
-
-    public void removeInter(Intersection i){
-        figures.remove(i);
     }
 
     public void setPrecision(int point_margin, int seg_margin) {

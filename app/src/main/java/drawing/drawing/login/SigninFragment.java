@@ -15,7 +15,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -169,7 +168,6 @@ public class SigninFragment extends Fragment {
                 }
             });
         }
-
 
         //EMAIL AND PASSWORD
         emailEditText.setText(loginInterface.getLastUsed());

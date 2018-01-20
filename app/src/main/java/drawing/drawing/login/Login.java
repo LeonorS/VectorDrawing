@@ -230,37 +230,11 @@ public class Login extends AppCompatActivity implements LoginInterface {
                         messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
                     }
                 });
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithCredential:success");
-//                            onSuccessfulLogin();
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
     }
 
     public void signinWithEmailAndPassword(String email, String password) {
         messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "signinUserWithEmail:success");
-//                            onSuccessfulLogin();
-//                        } else {
-//                            Log.w(TAG, "signinUserWithEmail:failure", task.getException());
-//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -281,20 +255,6 @@ public class Login extends AppCompatActivity implements LoginInterface {
     public void registerWithEmailAndPassword(String email, String password) {
         messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Registering...");
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            Log.d(TAG, "createUserWithEmail:success");
-//                            sendConfirmationEmail();
-//                            onSuccessfulLogin();
-//                        } else {
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Messaging.getInstance().getInterface().show(CustomProgressDialog.DialogType.FAIL, "Registering failed", task.getException().getMessage());
-//                            Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                })
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -323,11 +283,8 @@ public class Login extends AppCompatActivity implements LoginInterface {
         }
 
         //Todo use url to redirect user to login page
-        //String url = "http://www.example.com/verify?uid=" + fUser.getUid();
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                //.setUrl(url)
                 .setAndroidPackageName("drawing.drawing", false, null)
-                //.setIOSBundleId("com.example.ios")
                 .build();
 
         fUser.sendEmailVerification(actionCodeSettings)

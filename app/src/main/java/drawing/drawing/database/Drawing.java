@@ -6,7 +6,6 @@ package drawing.drawing.database;
 
 public class Drawing {
 
-    // Public attributes required for calls to DataSnapshot.getValue(User.class)
     public String name;
     public String lastUpdate;
     public String creation;

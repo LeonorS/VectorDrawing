@@ -50,13 +50,6 @@ public class DrawingFragment extends Fragment {
                 Database.getInstance().addUserListenerWithoutNotifying(userDataUpdateListener);
                 Log.d(TAG, "set user");
                 database.setUser(user);
-
-//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization_old.this);
-//                SharedPreferences.Editor edit = preferences.edit();
-//                edit.putInt("point_margin", point_margin);
-//                edit.apply();
-//                edit.putInt("seg_margin", seg_margin);
-//                edit.apply();
             }
         });
     }

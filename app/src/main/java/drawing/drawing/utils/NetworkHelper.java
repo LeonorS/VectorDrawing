@@ -38,7 +38,6 @@ public class NetworkHelper {
     public static class NoInternetConnectionDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage("Internet connection is required, please activate it and retry")
                     .setTitle("No internet connection")

@@ -23,5 +23,3 @@
         app:srcCompat="@android:drawable/ic_menu_add" />
 
 </android.support.design.widget.CoordinatorLayout>
-
-    <!--app:layout_behavior="drawing.drawing.workspace.ScrollAwareFABBehavior"-->

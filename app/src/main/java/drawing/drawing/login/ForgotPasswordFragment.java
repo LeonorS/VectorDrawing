@@ -1,7 +1,6 @@
 package drawing.drawing.login;
 
 import android.app.Activity;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,24 +61,6 @@ public class ForgotPasswordFragment extends Fragment {
                     return;
 
                 resetPassword();
-
-                //Todo implement recaptcha
-//                ReCaptchaHelper reCaptcha = new ReCaptchaHelper.Builder()
-//                        .addOnSuccessListener(new ReCaptchaHelper.OnSuccessListener() {
-//                            @Override
-//                            public void onSuccess() {
-//                                Log.d(TAG, "captcha has succeeded");
-//                                resetPassword();
-//                            }
-//                        })
-//                        .addOnFailureListener(new ReCaptchaHelper.OnFailureListener() {
-//                            @Override
-//                            public void onFailure() {
-//                                Log.d(TAG, "captcha has failed");
-//                            }
-//                        })
-//                        .build();
-//                reCaptcha.verify(getActivity());
             }
         });
     }
