@@ -26,8 +26,7 @@ import drawing.drawing.utils.NetworkHelper;
 
 
 /**
- * Parade for FretX
- * Created by pandor on 26/08/17 16:52.
+ * Created by leo on 17/01/18.
  */
 
 public class ForgotPasswordFragment extends Fragment {

@@ -13,8 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Vector;
 
 /**
- * Parade for FretX
- * Created by pandor on 29/08/17 10:45.
+ * Created by leo on 17/01/18.
  */
 
 public class Database {

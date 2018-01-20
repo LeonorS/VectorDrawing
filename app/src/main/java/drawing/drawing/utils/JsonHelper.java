@@ -8,8 +8,7 @@ import org.json.JSONArray;
 import drawing.drawing.storage.InterfaceAdapter;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 16/01/18 16:36.
+ * Created by leo on 16/01/18.
  */
 
 public class JsonHelper<T> {

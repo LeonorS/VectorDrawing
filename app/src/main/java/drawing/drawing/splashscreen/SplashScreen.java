@@ -1,5 +1,9 @@
 package drawing.drawing.splashscreen;
 
+/**
+ * Created by leo on 26/08/17.
+ */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;

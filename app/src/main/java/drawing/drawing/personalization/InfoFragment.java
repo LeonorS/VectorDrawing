@@ -13,8 +13,7 @@ import android.widget.TextView;
 import drawing.drawing.R;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 16/01/18 03:53.
+ * Created by leo on 16/01/18.
  */
 
 public class InfoFragment extends Fragment {

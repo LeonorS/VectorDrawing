@@ -14,8 +14,7 @@ import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 16/01/18 04:23.
+ * Created by leo on 16/01/18.
  */
 
 public class DrawingFragment extends Fragment {

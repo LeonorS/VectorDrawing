@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import com.google.firebase.auth.AuthCredential;
 
 /**
- * Parade for FretX
- * Created by pandor on 27/08/17 23:24.
+ * Created by leo on 17/01/18.
  */
 
 public interface LoginInterface {

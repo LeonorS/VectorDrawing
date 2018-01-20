@@ -1,8 +1,7 @@
 package drawing.drawing.database;
 
 /**
- * Parade for FretX
- * Created by pandor on 29/08/17 11:06.
+ * Created by leo on 17/01/18.
  */
 
 public interface UserListener {

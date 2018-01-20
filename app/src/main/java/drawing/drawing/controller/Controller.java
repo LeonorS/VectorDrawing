@@ -18,8 +18,7 @@ import drawing.drawing.vectordrawing.DrawingView;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_ACTION;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 20/01/18 01:18.
+ * Created by leo on 20/01/18.
  */
 
 public class Controller implements ControllerViewInterface {

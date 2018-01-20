@@ -12,8 +12,7 @@ import drawing.drawing.R;
 import drawing.drawing.workspace.Workspace;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 16/01/18 04:01.
+ * Created by leo on 16/01/18.
  */
 
 public class Personalization extends AppCompatActivity implements PersonalizationListener {

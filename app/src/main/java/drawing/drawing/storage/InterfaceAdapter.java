@@ -1,8 +1,7 @@
 package drawing.drawing.storage;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 18/01/18 04:06.
+ * Created by leo on 18/01/18.
  */
 
 import java.lang.reflect.Type;

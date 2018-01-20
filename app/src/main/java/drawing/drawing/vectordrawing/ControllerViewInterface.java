@@ -8,8 +8,7 @@ import drawing.drawing.model.Figure;
 import drawing.drawing.model.Selector;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 19/01/18 23:11.
+ * Created by leo on 19/01/18.
  */
 
 public interface ControllerViewInterface {

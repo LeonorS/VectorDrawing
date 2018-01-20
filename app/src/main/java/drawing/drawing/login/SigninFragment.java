@@ -54,8 +54,7 @@ import drawing.drawing.R;
 
 
 /**
- * Parade for FretX
- * Created by pandor on 26/08/17 17:15.
+ * Created by leo on 17/01/18.
  */
 
 public class SigninFragment extends Fragment {

@@ -16,8 +16,7 @@ import static drawing.drawing.utils.EditTextWithDrawable.Position.DRAWABLE_RIGHT
 import static drawing.drawing.utils.EditTextWithDrawable.Position.DRAWABLE_TOP;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 19/01/18 18:50.
+ * Created by leo on 19/01/18.
  */
 
 public class EditTextWithDrawable extends AppCompatEditText {

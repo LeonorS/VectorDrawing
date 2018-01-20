@@ -11,8 +11,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 15/01/18 21:00.
+ * Created by leo on 15/01/18.
  */
 
 public class NetworkHelper {

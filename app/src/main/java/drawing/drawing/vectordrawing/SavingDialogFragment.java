@@ -20,8 +20,7 @@ import drawing.drawing.model.Model;
 import drawing.drawing.storage.Storage;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 17/01/18 21:52.
+ * Created by leo on 17/01/18.
  */
 
 public class SavingDialogFragment extends DialogFragment {

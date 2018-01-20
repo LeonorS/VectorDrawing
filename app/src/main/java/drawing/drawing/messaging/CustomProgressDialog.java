@@ -20,8 +20,7 @@ import static drawing.drawing.messaging.CustomProgressDialog.DialogType.INFO;
 import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 18/01/18 19:01.
+ * Created by leo on 18/01/18.
  */
 
 public class CustomProgressDialog extends DialogFragment implements MessagingInterface {

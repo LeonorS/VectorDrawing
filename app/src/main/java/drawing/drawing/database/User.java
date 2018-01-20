@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Parade for FretX
- * Created by pandor on 29/08/17 00:48.
+ * Created by leo on 17/01/18.
  */
 
 @IgnoreExtraProperties

@@ -19,8 +19,7 @@ import org.json.JSONObject;
 import drawing.drawing.R;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 15/01/18 22:36.
+ * Created by leo on 15/01/18.
  */
 
 public class ReCaptchaHelper {

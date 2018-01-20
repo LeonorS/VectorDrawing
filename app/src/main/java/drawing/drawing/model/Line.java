@@ -1,5 +1,9 @@
 package drawing.drawing.model;
 
+/**
+ * Created by leo on 06/12/17.
+ */
+
 import android.graphics.Point;
 import android.graphics.Rect;
 

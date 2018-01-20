@@ -33,8 +33,7 @@ import drawing.drawing.utils.JsonHelper;
 import drawing.drawing.utils.NetworkHelper;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 18/01/18 00:25.
+ * Created by leo on 18/01/18.
  */
 
 public class Storage {

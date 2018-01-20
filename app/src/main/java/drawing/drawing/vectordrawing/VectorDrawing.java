@@ -1,5 +1,9 @@
 package drawing.drawing.vectordrawing;
 
+/**
+ * Created by leo on 03/12/17.
+ */
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;

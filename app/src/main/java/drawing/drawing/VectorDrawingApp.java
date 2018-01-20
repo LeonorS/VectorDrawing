@@ -12,8 +12,7 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import io.fabric.sdk.android.Fabric;
 
 /**
- * Parade for FretX
- * Created by pandor on 28/08/17 15:41.
+ * Created by leo on 19/01/18.
  */
 
 public class VectorDrawingApp extends Application {

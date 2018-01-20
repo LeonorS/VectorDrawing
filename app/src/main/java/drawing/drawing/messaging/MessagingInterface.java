@@ -1,8 +1,7 @@
 package drawing.drawing.messaging;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 18/01/18 20:07.
+ * Created by leo on 18/01/18.
  */
 
 

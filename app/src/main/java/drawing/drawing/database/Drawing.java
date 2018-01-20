@@ -1,8 +1,7 @@
 package drawing.drawing.database;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 17/01/18 17:13.
+ * Created by leo on 17/01/18.
  */
 
 public class Drawing {

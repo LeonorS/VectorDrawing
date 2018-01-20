@@ -1,8 +1,7 @@
 package drawing.drawing.vectordrawing;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 20/01/18 01:40.
+ * Created by leo on 20/01/18.
  */
 
 public interface ControllerActivityInterface {

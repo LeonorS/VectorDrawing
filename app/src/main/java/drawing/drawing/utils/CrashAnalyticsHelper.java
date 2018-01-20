@@ -6,8 +6,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 16/01/18 15:49.
+ * Created by leo on 16/01/18.
  */
 
 public class CrashAnalyticsHelper {
