@@ -15,6 +15,7 @@ import android.os.Bundle;
  * Created by pandor on 15/01/18 21:00.
  */
 
+//todo register a listener to get notified when Internet access goes up/down
 public class NetworkHelper {
     public static boolean requireNetworkActivation(Activity activity) {
         if (!isOnline(activity)) {
