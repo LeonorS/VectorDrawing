@@ -1,4 +1,4 @@
-package drawing.drawing.vectordrawing;
+package drawing.drawing.controller;
 
 /**
  * VectorDrawing for FretX

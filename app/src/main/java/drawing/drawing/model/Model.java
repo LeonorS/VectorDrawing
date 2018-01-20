@@ -5,17 +5,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import drawing.drawing.vectordrawing.DrawingView;
-
-import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.LINE_ACTION;
-import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
-
 /**
  * Created by leo on 15/01/18.
  */
 
 public class Model {
-
     private ArrayList<Figure> figures, canceled;
     private double width, height;
     private int point_margin, seg_margin;
@@ -87,7 +81,18 @@ public class Model {
             if (f.intersects(selector)) {
                 selected.add(f);
                 f.selected = true;
+            } else {
+                f.selected = false;
             }
+        }
+        return selected;
+    }
+
+    public ArrayList<Figure> getSelected() {
+        ArrayList<Figure> selected = new ArrayList<>();
+        for (Figure f : figures) {
+            if (f.selected)
+                selected.add(f);
         }
         return selected;
     }
@@ -147,14 +152,18 @@ public class Model {
 
     }
 
-    public void makeLine(DrawingView.DrawingAction action, float x, float y, Point anchor){
+    public void makeLine(float x, float y, Point anchor){
+        if (currentFigure != null)
             figures.remove(currentFigure);
-            if (action == SEG_ACTION) {
-                currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
-            } else if (action == LINE_ACTION) {
-                currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
-            }
-            figures.add(currentFigure);
+        currentFigure = new StraightLine(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin, width, height/*, this*/);
+        figures.add(currentFigure);
+    }
+
+    public void makeSegment(float x, float y, Point anchor){
+        if (currentFigure != null)
+            figures.remove(currentFigure);
+        currentFigure = new Line(anchor.x, anchor.y, (int)x, (int)y, (double) seg_margin/*, this*/);
+        figures.add(currentFigure);
     }
 
 //    public void makeIntersection(ArrayList<Figure> selected){

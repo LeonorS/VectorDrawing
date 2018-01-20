@@ -6,54 +6,45 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import drawing.drawing.database.Database;
-import drawing.drawing.database.Drawing;
 import drawing.drawing.database.User;
+import drawing.drawing.controller.tools.DefaultTool;
+import drawing.drawing.controller.tools.Tool;
+import drawing.drawing.controller.tools.ToolListener;
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.Model;
 import drawing.drawing.model.Selector;
-import drawing.drawing.vectordrawing.ControllerActivityInterface;
-import drawing.drawing.vectordrawing.ControllerViewInterface;
 import drawing.drawing.vectordrawing.DrawingView;
-
-import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_ACTION;
 
 /**
  * VectorDrawing for FretX
  * Created by pandor on 20/01/18 01:18.
  */
 
-public class Controller implements ControllerViewInterface {
+public class Controller implements ControllerViewInterface, ToolListener {
+
     private Model model;
     private DrawingView drawingView;
     private ControllerActivityInterface controllerActivityInterface;
+    private Tool tool;
 
     public Controller(Model model, DrawingView drawingView, ControllerActivityInterface controllerActivityInterface) {
         this.model = model;
         this.controllerActivityInterface = controllerActivityInterface;
         this.drawingView = drawingView;
+
+        tool = new DefaultTool(this);
         drawingView.setController(this);
     }
 
-    //==============================================================================================
-    public void cleanFigure() {
-        model.cleanCurrentFigure();
-    }
-
     public void reset() {
+        tool = new DefaultTool(this);
         model.reset();
-        drawingView.reset();
+        drawingView.invalidate();
     }
 
-    public void uncheckFigure() {
-        model.uncheckFigure();
-    }
-
-    public ArrayList<Figure> selectFigure(Selector selector) {
-        return model.selectFigure(selector);
-    }
-
-    public Figure findFigure(float x, float y) {
-        return model.findFigure(x, y);
+    /**********************************************************************************************/
+    public Tool getTool() {
+        return tool;
     }
 
     public ArrayList<Figure> getFigures() {
@@ -63,44 +54,45 @@ public class Controller implements ControllerViewInterface {
             return new ArrayList<>();
     }
 
-    public Point moveFigure(float x, float y, Figure figure, Point anchor) {
+    public ArrayList<Figure> getLinkedFigures(ArrayList<Integer> linkedId) {
+        return model.findFiguesById(linkedId);
+    }
+
+    /**********************************************************************************************/
+    public void setTool(Tool tool) {
+        this.tool = tool;
+        drawingView.invalidate();
+    }
+
+    public Figure getTouched(float x, float y) {
+        return model.findFigure(x, y);
+    }
+
+    public void createPoint(float x, float y) {
+        model.makePoint(x, y);
+    }
+    public void createSegment(Point anchor, float x, float y) {
+        model.makeSegment(x, y, anchor);
+    }
+    public void createLine(Point anchor, float x, float y) {
+        model.makeLine(x, y, anchor);
+    }
+    public void createIso() {
+        model.makeIso(model.getSelected());
+    }
+    public Point move(float x, float y, Figure figure, Point anchor) {
         return model.moveFigure(x, y, figure, anchor);
     }
+    public void select(Selector selector) {
 
-    public void makeFigure(float x, float y, DrawingView.DrawingAction current_action, Point anchor, ArrayList<Figure> selected) {
-        switch (current_action) {
-            case POINT_ACTION:
-                model.makePoint(x, y);
-                break;
-
-            case SEG_ACTION:
-                model.makeLine(current_action, x, y, anchor);
-                break;
-
-            case LINE_ACTION:
-                model.makeLine(current_action, x, y, anchor);
-                break;
-
-            case ISO_ACTION:
-                Log.d("CustomView", "makeFigure entry");
-                model.makeIso(selected);
-                drawingView.current_action = DEFAULT_ACTION;
-                Log.d("CustomView", "makeFigure exit");
-                break;
-
-//            case INTER_ACTION:
-//                model.makeIntersection(selected);
-//                current_action = DEFAULT_ACTION;
-//                break;
-        }
-        controllerActivityInterface.invalidateOptionMenu();
+        model.selectFigure(selector);
     }
-
-    public ArrayList<Figure> findFiguresById(ArrayList<Integer> ids) {
-        return model.findFiguesById(ids);
+    public void unselect() {
+        model.uncheckFigure();
     }
+    public void clean() {model.cleanCurrentFigure();}
 
-    //==============================================================================================
+    /**********************************************************************************************/
     public boolean canUndo() {
         return model.sizeFigures() > 0;
     }

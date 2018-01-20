@@ -1,6 +1,7 @@
 package drawing.drawing.personalization;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,21 +30,19 @@ public class DrawingFragment extends Fragment {
         return fragment;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_personalization_drawing, null);
-        drawingView = (TestDrawing) root.findViewById(R.id.drawing_view);
+        drawingView = root.findViewById(R.id.drawing_view);
         return root;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         drawingView.setCustomObjectListener(new TestDrawing.MyCustomObjectListener() {
             @Override
             public void endingTest(int point_margin, int seg_margin) {
-
-                //Todo race condition if going to next activity too fast
                 final Database database = Database.getInstance();
                 final User user = database.getUser();
                 Log.d("DrawingFragment", "point_margin : " + point_margin + "; seg_margin ; " + seg_margin );
@@ -51,13 +50,6 @@ public class DrawingFragment extends Fragment {
                 Database.getInstance().addUserListenerWithoutNotifying(userDataUpdateListener);
                 Log.d(TAG, "set user");
                 database.setUser(user);
-
-//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Personalization_old.this);
-//                SharedPreferences.Editor edit = preferences.edit();
-//                edit.putInt("point_margin", point_margin);
-//                edit.apply();
-//                edit.putInt("seg_margin", seg_margin);
-//                edit.apply();
             }
         });
     }
