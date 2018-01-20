@@ -28,4 +28,11 @@ public class LineTool extends Tool {
         figure = listener.createLine(anchor, event.getX(), event.getY());
         return true;
     }
+
+    @Override
+    public boolean onUp(MotionEvent event) {
+        super.onUp(event);
+        listener.finalLine(figure);
+        return false;
+    }
 }

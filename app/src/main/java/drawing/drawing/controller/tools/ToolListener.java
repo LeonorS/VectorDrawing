@@ -17,9 +17,12 @@ public interface ToolListener {
     Figure createSegment(Point anchor, float x, float y);
     Figure createLine(Point anchor, float x, float y);
     Figure createIso();
+    void finalLine(Figure figure);
+    void finalSegment(Figure figure);
 
     Point move(float x, float y, Figure figure, Point anchor);
     void finalMove(float x, float y, Figure figure, Point anchor);
+
     void select(Selector selector);
     void unselect();
     void remove(Figure figure);

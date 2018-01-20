@@ -28,4 +28,11 @@ public class SegmentTool extends Tool {
         figure = listener.createSegment(anchor, event.getX(), event.getY());
         return true;
     }
+
+    @Override
+    public boolean onUp(MotionEvent event) {
+        super.onUp(event);
+        listener.finalSegment(figure);
+        return false;
+    }
 }

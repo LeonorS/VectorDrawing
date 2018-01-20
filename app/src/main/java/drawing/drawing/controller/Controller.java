@@ -87,18 +87,22 @@ public class Controller implements ControllerViewInterface, ToolListener {
     }
     public Figure createSegment(Point anchor, float x, float y) {
         Figure figure = model.makeSegment(x, y, anchor);
-        createAction(figure);
         return figure;
     }
     public Figure createLine(Point anchor, float x, float y) {
         Figure figure = model.makeLine(x, y, anchor);
-        createAction(figure);
         return figure;
     }
     public Figure createIso() {
         final Figure figure = model.makeIso(model.getSelected());
         createAction(figure);
         return figure;
+    }
+    public void finalLine(Figure figure) {
+        createAction(figure);
+    }
+    public void finalSegment(Figure figure) {
+        createAction(figure);
     }
     public void remove(Figure figure) {
         model.removeFigure(figure);
