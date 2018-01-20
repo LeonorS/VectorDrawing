@@ -97,8 +97,8 @@ public class EditTextWithDrawable extends AppCompatEditText {
 
             if(drawables[DRAWABLE_LEFT.ordinal()] != null
                     && event.getRawX() <= (getLeft() + drawables[DRAWABLE_LEFT.ordinal()].getBounds().width())) {
+                onLeftBis = !onLeftBis;
                 if (leftDrawableToggleable && drawableLeftBis != null) {
-                    onLeftBis = !onLeftBis;
                     updateDrawable();
                 }
 
@@ -108,8 +108,8 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 return false;
             } else if(drawables[DRAWABLE_RIGHT.ordinal()] != null
                     && event.getRawX() >= (getRight() - drawables[DRAWABLE_RIGHT.ordinal()].getBounds().width())) {
+                onRightBis = !onRightBis;
                 if (rightDrawableToggleable && drawableRightBis != null) {
-                    onRightBis = !onRightBis;
                     updateDrawable();
                 }
 
@@ -119,8 +119,8 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 return false;
             } else if(drawables[DRAWABLE_TOP.ordinal()] != null
                     && event.getRawY() <= (getTop() + drawables[DRAWABLE_TOP.ordinal()].getBounds().height())) {
+                onTopBis = !onTopBis;
                 if (topDrawableToggleable && drawableTopBis != null) {
-                    onTopBis = !onTopBis;
                     updateDrawable();
                 }
 
@@ -130,8 +130,8 @@ public class EditTextWithDrawable extends AppCompatEditText {
                 return false;
             } else if(drawables[DRAWABLE_BOTTOM.ordinal()] != null
                     && event.getRawY() >= (getBottom() - drawables[DRAWABLE_BOTTOM.ordinal()].getBounds().width())) {
+                onBottomBis = !onBottomBis;
                 if (bottomDrawableToggleable && drawableBottomBis != null) {
-                    onBottomBis = !onBottomBis;
                     updateDrawable();
                 }
 

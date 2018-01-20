@@ -17,7 +17,8 @@
         android:hint="Username"
         android:inputType="text"
         android:nextFocusLeft="@id/username_edittext"
-        android:nextFocusUp="@id/username_edittext" />
+        android:nextFocusUp="@id/username_edittext"
+        android:textColorHint="@android:color/black" />
 
     <EditText
         android:id="@+id/email_edittext"
@@ -25,7 +26,8 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="Email"
-        android:inputType="textEmailAddress|textVisiblePassword" />
+        android:inputType="textEmailAddress|textVisiblePassword"
+        android:textColorHint="@android:color/black" />
 
     <drawing.drawing.utils.EditTextWithDrawable
         android:id="@+id/password_edittext"
