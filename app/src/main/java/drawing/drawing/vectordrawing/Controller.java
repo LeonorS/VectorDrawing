@@ -1,4 +1,4 @@
-package drawing.drawing.controller;
+package drawing.drawing.vectordrawing;
 
 import android.graphics.Point;
 import android.util.Log;

@@ -6,6 +6,7 @@ package drawing.drawing.vectordrawing;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,6 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
-import drawing.drawing.controller.Controller;
 import drawing.drawing.messaging.CustomProgressDialog;
 import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.profile.Profile;
@@ -50,11 +50,13 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
     private Controller controller;
     private int remaining;
     private boolean errorHappened;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
+        handler = new Handler();
         messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
         final DrawingView drawingView = findViewById(R.id.drawingSpace);
         Bundle bundle = getIntent().getExtras();
@@ -293,7 +295,12 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
         } else if (!errorHappened && remaining == 0) {
             if (exit) {
                 Log.d(TAG, "finish");
-                finish();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 500);
             } else {
                 Log.d(TAG, "dismiss");
                 messagingInterface.dismiss();
