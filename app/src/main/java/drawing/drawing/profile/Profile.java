@@ -1,9 +1,5 @@
 package drawing.drawing.profile;
 
-/**
- * Created by leo on 26/08/17.
- */
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -31,8 +27,11 @@ import drawing.drawing.personalization.Personalization;
 
 import static drawing.drawing.personalization.Personalization.OUTSIDE_WORKFLOW;
 
-public class Profile extends BaseActivity {
 
+/**
+ * Created by leo on 13/01/17.
+ */
+public class Profile extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

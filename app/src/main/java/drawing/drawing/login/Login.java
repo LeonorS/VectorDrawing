@@ -1,9 +1,5 @@
 package drawing.drawing.login;
 
-/**
- * Created by leo on 17/01/18.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +41,10 @@ import drawing.drawing.database.User;
 import drawing.drawing.database.UserListener;
 import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.CrashAnalyticsHelper;
+
+/**
+ * Created by leo on 12/01/18.
+ */
 
 public class Login extends BaseActivity implements LoginInterface {
     private final static String TAG = "KJKP6_LOGIN";

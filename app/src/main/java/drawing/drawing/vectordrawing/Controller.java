@@ -1,7 +1,6 @@
 package drawing.drawing.vectordrawing;
 
 import android.graphics.Point;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -10,9 +9,6 @@ import drawing.drawing.database.User;
 import drawing.drawing.model.Figure;
 import drawing.drawing.model.Model;
 import drawing.drawing.model.Selector;
-import drawing.drawing.vectordrawing.ControllerActivityInterface;
-import drawing.drawing.vectordrawing.ControllerViewInterface;
-import drawing.drawing.vectordrawing.DrawingView;
 
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.DEFAULT_ACTION;
 
@@ -34,7 +30,6 @@ public class Controller implements ControllerViewInterface {
         drawingView.invalidate();
     }
 
-    //==============================================================================================
     public void cleanFigure() {
         model.cleanCurrentFigure();
     }

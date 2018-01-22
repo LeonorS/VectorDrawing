@@ -3,8 +3,6 @@ package drawing.drawing.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONArray;
-
 import drawing.drawing.storage.InterfaceAdapter;
 
 /**

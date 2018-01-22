@@ -1,9 +1,5 @@
 package drawing.drawing.vectordrawing;
 
-/**
- * Created by leo on 03/12/17.
- */
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -40,6 +36,10 @@ import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.LINE_ACTIO
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.POINT_ACTION;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SELECT_ACTION;
+
+/**
+ * Created by leo on 03/12/17.
+ */
 
 public class VectorDrawing extends BaseActivity implements ControllerActivityInterface {
     public static final String DRAWING_NAME = "drawingName";
@@ -296,7 +296,6 @@ public class VectorDrawing extends BaseActivity implements ControllerActivityInt
     private void saveComplete(boolean error, String message, boolean exit) {
         --remaining;
         Log.d(TAG, "remaining: " + remaining);
-
         if (!errorHappened && error) {
             Log.d(TAG, "saving failed: " + message);
             errorHappened = true;
@@ -314,7 +313,6 @@ public class VectorDrawing extends BaseActivity implements ControllerActivityInt
                 Log.d(TAG, "dismiss");
                 MessagingHandler.getInstance().dismiss();
             }
-
         }
     }
 

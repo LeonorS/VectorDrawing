@@ -69,6 +69,7 @@ public class CustomProgressDialog extends DialogFragment {
 
     //==============================================================================================
     void show(FragmentManager fragmentManager, DialogType type, String line1, String line2) {
+
         this.line1 = line1;
         this.line2 = line2;
         this.type = type;

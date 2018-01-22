@@ -1,7 +1,7 @@
 package drawing.drawing.splashscreen;
 
 /**
- * Created by leo on 26/08/17.
+ * Created by leo on 13/01/17.
  */
 
 import android.content.Intent;
