@@ -1,11 +1,11 @@
 package drawing.drawing.model;
 
+import android.graphics.Point;
+import android.graphics.Rect;
+
 /**
  * Created by leo on 06/12/17.
  */
-
-import android.graphics.Point;
-import android.graphics.Rect;
 
 public class Line extends Figure{
     private double margin = 8;

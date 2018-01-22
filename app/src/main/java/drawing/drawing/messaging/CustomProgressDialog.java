@@ -64,7 +64,6 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         return view;
     }
 
-    //==============================================================================================
     public void show(DialogType type, String line1, String line2) {
         this.line1 = line1;
         this.line2 = line2;
@@ -100,7 +99,7 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        super.dismissAllowingStateLoss();
     }
 
     private void setSingleLine() {

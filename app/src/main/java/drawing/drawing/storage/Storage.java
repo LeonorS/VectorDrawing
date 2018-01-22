@@ -68,7 +68,6 @@ public class Storage {
         final JsonHelper<Model> jsonHelper = new JsonHelper<>(Model.class);
         jsonHelper.registerTypeAdapter(Figure.class);
         final String save = jsonHelper.saveToJson(model);
-        Log.d(TAG, "JSON bien saved: " + save);
         final StorageReference drawRef = storageRef.child("draws");
         final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null)

@@ -25,7 +25,7 @@ import drawing.drawing.utils.NetworkHelper;
 
 
 /**
- * Created by leo on 17/01/18.
+ * Created by leo on 12/01/18.
  */
 
 public class ForgotPasswordFragment extends Fragment {
@@ -43,6 +43,7 @@ public class ForgotPasswordFragment extends Fragment {
         return fragment;
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login_forgot_password, null);
         recover = root.findViewById(R.id.recover_button);
@@ -96,7 +97,7 @@ public class ForgotPasswordFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Email not sent: " + e.getMessage());
-                            messagingInterface.show(CustomProgressDialog.DialogType.SUCCESS, "Email not sent!", e.getMessage());
+                            messagingInterface.show(CustomProgressDialog.DialogType.FAIL, "Email not sent!", e.getMessage());
                         }
                     });
         } catch (IllegalArgumentException e) {

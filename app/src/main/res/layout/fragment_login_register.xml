@@ -12,7 +12,6 @@
         android:id="@+id/username_edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="Username"
         android:inputType="text"
         android:nextFocusLeft="@id/username_edittext"
@@ -23,7 +22,6 @@
         android:id="@+id/email_edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/ic_menu_search"
         android:hint="Email"
         android:inputType="textEmailAddress|textVisiblePassword"
         android:textColorHint="@android:color/black" />
@@ -32,7 +30,6 @@
         android:id="@+id/password_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawableRight="@android:drawable/ic_menu_view"
         android:hint="Password"
         android:imeOptions="actionSend"
@@ -47,7 +44,8 @@
         android:id="@+id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="REGISTER"
-        android:background="@color/colorPrimary"/>
+        android:text="Register"
+        style="@style/ColoredButton"
+        android:textAllCaps="false"/>
 
 </LinearLayout>

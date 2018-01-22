@@ -27,7 +27,7 @@ public class ReCaptchaHelper {
     private OnSuccessListener successListener;
     private OnFailureListener failureListener;
 
-    private ReCaptchaHelper(){};
+    private ReCaptchaHelper(){}
 
     public interface OnSuccessListener {
         void onSuccess();

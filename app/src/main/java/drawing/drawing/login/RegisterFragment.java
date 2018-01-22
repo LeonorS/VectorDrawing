@@ -25,7 +25,7 @@ import drawing.drawing.R;
 import drawing.drawing.utils.ReCaptchaHelper;
 
 /**
- * Created by leo on 17/01/18.
+ * Created by leo on 12/01/18.
  */
 
 public class RegisterFragment extends Fragment {

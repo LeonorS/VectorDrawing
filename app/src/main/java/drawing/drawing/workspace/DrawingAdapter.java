@@ -18,8 +18,7 @@ import drawing.drawing.database.Drawing;
 import drawing.drawing.storage.Storage;
 
 /**
- * VectorDrawing for FretX
- * Created by pandor on 17/01/18 20:21.
+ * Created by leo on 17/01/18.
  */
 
 public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHolder> {
@@ -27,11 +26,7 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
     private Activity activity;
     private View.OnClickListener onClickListener;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public TextView name;
         public TextView date;
         public ImageView preview;
@@ -45,14 +40,12 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public DrawingAdapter(Activity activity, List<Drawing> drawings, View.OnClickListener onClickListener) {
         this.drawings = drawings;
         this.onClickListener = onClickListener;
         this.activity = activity;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public DrawingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawing_cardview, parent, false);
@@ -61,7 +54,6 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Drawing drawing = drawings.get(position);
@@ -72,7 +64,6 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
             public void onSuccess(Object obj) {
                 Picasso.with(activity).load(obj.toString()).into(holder.preview);
             }
-
             @Override
             public void onFailure(String error) {
 
@@ -80,7 +71,6 @@ public class DrawingAdapter extends RecyclerView.Adapter<DrawingAdapter.ViewHold
         });
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return drawings.size();

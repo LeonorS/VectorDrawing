@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="drawing.drawing">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,38 +14,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="18f55b43960f7ef021b49910e1a2f6f44c6d1533" />
+
         <activity
             android:name=".splashscreen.SplashScreen"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".login.Login"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".personalization.Personalization"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".vectordrawing.VectorDrawing"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".workspace.Workspace"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".profile.Profile"
             android:screenOrientation="landscape"/>
     </application>
-
 </manifest>

@@ -23,6 +23,10 @@ import drawing.drawing.vectordrawing.VectorDrawing;
 
 import static drawing.drawing.vectordrawing.VectorDrawing.DRAWING_NAME;
 
+/**
+ * Created by leo on 17/01/18.
+ */
+
 public class Workspace extends AppCompatActivity {
     private static final String TAG = "KJKP6_WORKSPACE";
     private FloatingActionButton fab;
@@ -34,7 +38,6 @@ public class Workspace extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workspace);
-
         recyclerView = findViewById(R.id.rec_view);
         fab = findViewById(R.id.fab);
     }
@@ -42,7 +45,6 @@ public class Workspace extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -59,7 +61,6 @@ public class Workspace extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(drawingAdapter);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy){
@@ -67,7 +68,6 @@ public class Workspace extends AppCompatActivity {
                 if (dy > 0  || dy < 0 && fab.isShown())
                     fab.hide();
             }
-
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE){
@@ -76,13 +76,11 @@ public class Workspace extends AppCompatActivity {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(Workspace.this, VectorDrawing.class);
                 startActivity(myIntent);
-                //dont call finish on this one
             }
         });
     }
@@ -98,15 +96,11 @@ public class Workspace extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.action_profile:
                 Intent myIntent = new Intent(Workspace.this, Profile.class);
                 startActivity(myIntent);
                 return true;
-
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }
