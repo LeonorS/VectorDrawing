@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.R;
 import drawing.drawing.workspace.Workspace;
 import drawing.drawing.database.Database;
@@ -21,7 +22,7 @@ import drawing.drawing.login.Login;
 import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.CrashAnalyticsHelper;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends BaseActivity {
     private static final String TAG = "KJKP6_SPLASH_SCREEN";
     private static final int SPLASH_SCREEN_DELAY = 2000;
 

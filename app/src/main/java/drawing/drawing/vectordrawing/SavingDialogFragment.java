@@ -16,7 +16,7 @@ import android.widget.EditText;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.messaging.CustomProgressDialog;
-import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.messaging.MessagingHandler;
 import drawing.drawing.model.Model;
 import drawing.drawing.storage.Storage;
 
@@ -30,7 +30,6 @@ public class SavingDialogFragment extends DialogFragment {
     private Model model;
     private OnSaveListener listener;
     private EditText edt;
-    private MessagingInterface messagingInterface;
     private boolean override;
     private int remaining;
     private boolean errorHappened;
@@ -40,12 +39,11 @@ public class SavingDialogFragment extends DialogFragment {
         void onCancel();
     }
 
-    public static SavingDialogFragment newInstance(Model model, Bitmap preview, @Nullable OnSaveListener listener, MessagingInterface messagingInterface) {
+    public static SavingDialogFragment newInstance(Model model, Bitmap preview, @Nullable OnSaveListener listener) {
         SavingDialogFragment dialog = new SavingDialogFragment();
         dialog.model = model;
         dialog.preview = preview;
         dialog.listener = listener;
-        dialog.messagingInterface = messagingInterface;
         return dialog;
     }
 
@@ -80,7 +78,7 @@ public class SavingDialogFragment extends DialogFragment {
                 if (name.isEmpty())
                     return;
                 if (!override && Database.getInstance().getUser().isOverwriting(name)) {
-                    messagingInterface.show(CustomProgressDialog.DialogType.WARNING,
+                    MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.WARNING,
                             "A file with this name already exist",
                             "Reclick save to overwrite, else click cancel");
                     override = true;
@@ -88,7 +86,7 @@ public class SavingDialogFragment extends DialogFragment {
                 }
                 errorHappened = false;
                 remaining = 2;
-                messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
+                MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
                 Database.getInstance().getUser().addDrawing(name);
                 Storage.getInstance().setModel(getActivity(), name, model, new Storage.OnStorageCompleteListener() {
                     @Override
@@ -125,10 +123,10 @@ public class SavingDialogFragment extends DialogFragment {
         if (!errorHappened && error) {
             Log.d(TAG, "saving failed: " + message);
             errorHappened = true;
-            messagingInterface.show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
+            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
         } else if (!errorHappened && remaining == 0) {
             Log.d(TAG, "dismiss");
-            messagingInterface.dismiss();
+            MessagingHandler.getInstance().dismiss();
             if (listener != null) {
                 listener.onSave(message);
             }

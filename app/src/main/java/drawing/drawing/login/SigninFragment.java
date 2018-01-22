@@ -46,7 +46,6 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.EditTextWithDrawable;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
@@ -71,12 +70,10 @@ public class SigninFragment extends Fragment {
     private TextView register;
     private TextView forgot;
     private View root;
-    private MessagingInterface messagingInterface;
 
-    public static SigninFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
+    public static SigninFragment newInstance(LoginInterface loginInterface) {
         SigninFragment fragment = new SigninFragment();
         fragment.loginInterface = loginInterface;
-        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 
@@ -197,7 +194,7 @@ public class SigninFragment extends Fragment {
             public void onClick(View v){
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment registerFragment = RegisterFragment.newInstance(loginInterface, messagingInterface);
+                Fragment registerFragment = RegisterFragment.newInstance(loginInterface);
                 fragmentTransaction.replace(R.id.container, registerFragment, "selection");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commitAllowingStateLoss();
@@ -209,7 +206,7 @@ public class SigninFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment signinFragment = ForgotPasswordFragment.newInstance(loginInterface, messagingInterface);
+                Fragment signinFragment = ForgotPasswordFragment.newInstance(loginInterface);
                 fragmentTransaction.replace(R.id.container, signinFragment, "selection");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commitAllowingStateLoss();

@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,8 +23,9 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.messaging.CustomProgressDialog;
-import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.messaging.MessagingHandler;
 import drawing.drawing.profile.Profile;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
@@ -41,13 +41,13 @@ import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.POINT_ACTI
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SEG_ACTION;
 import static drawing.drawing.vectordrawing.DrawingView.DrawingAction.SELECT_ACTION;
 
-public class VectorDrawing extends AppCompatActivity implements ControllerActivityInterface {
+public class VectorDrawing extends BaseActivity implements ControllerActivityInterface {
     public static final String DRAWING_NAME = "drawingName";
     private static final String TAG = "KJKP6_VECTOR_DRAWING";
     private static final int SIZE = 125;
     private String name;
-    private MessagingInterface messagingInterface;
     private Controller controller;
+    private DrawingView drawingView;
     private int remaining;
     private boolean errorHappened;
     private Handler handler;
@@ -57,35 +57,12 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vector_drawing);
         handler = new Handler();
-        messagingInterface = CustomProgressDialog.newInstance(getFragmentManager());
-        final DrawingView drawingView = findViewById(R.id.drawingSpace);
+        drawingView = findViewById(R.id.drawingSpace);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.containsKey(DRAWING_NAME)) {
             name = bundle.getString(DRAWING_NAME);
             Log.d(TAG, "Loading file: " + name);
             setTitle(name);
-            messagingInterface.show(PROGRESS, "Loading saved work");
-            Storage.getInstance().getModel(name, new Storage.OnStorageCompleteListener() {
-                @Override
-                public void onSuccess(Object obj) {
-                    Model model = (Model) obj;
-                    final User user = Database.getInstance().getUser();
-                    model.setPrecision(user.point_margin, user.segment_margin);
-                    controller = new Controller(model, drawingView, VectorDrawing.this);
-                    drawingView.invalidate();
-                    messagingInterface.dismiss();
-                }
-                @Override
-                public void onFailure(String error) {
-                    finish();
-                }
-            });
-        } else {
-            final Model model = new Model();
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            model.setSize(metrics.widthPixels, metrics.heightPixels);
-            controller = new Controller(model, drawingView, this);
         }
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_edit));
@@ -172,6 +149,38 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (controller == null) {
+            if (name != null) {
+                MessagingHandler.getInstance().show(PROGRESS, "Loading saved work");
+                Storage.getInstance().getModel(name, new Storage.OnStorageCompleteListener() {
+                    @Override
+                    public void onSuccess(Object obj) {
+                        Log.d(TAG, "Loading file succeeded");
+                        Model model = (Model) obj;
+                        final User user = Database.getInstance().getUser();
+                        model.setPrecision(user.point_margin, user.segment_margin);
+                        controller = new Controller(model, drawingView, VectorDrawing.this);
+                        drawingView.invalidate();
+                        MessagingHandler.getInstance().dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Log.e(TAG, "Loading file failed");
+                        finish();
+                    }
+                });
+            } else {
+                Log.d(TAG, "Creating new model");
+                final Model model = new Model();
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                model.setSize(metrics.widthPixels, metrics.heightPixels);
+                controller = new Controller(model, drawingView, this);
+            }
+        }
+
         if (controller != null)
             controller.updatePrecision();
     }
@@ -241,7 +250,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
         errorHappened = false;
         remaining = 2;
         if (name != null) {
-            messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
+            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Saving");
             Storage.OnStorageCompleteListener listener = new Storage.OnStorageCompleteListener() {
                 @Override
                 public void onSuccess(Object obj) {
@@ -279,7 +288,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                     public void onCancel() {}
                 };
             }
-            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), listener, messagingInterface);
+            SavingDialogFragment savingDialog = SavingDialogFragment.newInstance(controller.getModel(), controller.getView().getPreview(), listener);
             savingDialog.show(getSupportFragmentManager(), "saving");
         }
     }
@@ -291,7 +300,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
         if (!errorHappened && error) {
             Log.d(TAG, "saving failed: " + message);
             errorHappened = true;
-            messagingInterface.show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
+            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.FAIL, "Saving failed", message);
         } else if (!errorHappened && remaining == 0) {
             if (exit) {
                 Log.d(TAG, "finish");
@@ -303,7 +312,7 @@ public class VectorDrawing extends AppCompatActivity implements ControllerActivi
                 }, 500);
             } else {
                 Log.d(TAG, "dismiss");
-                messagingInterface.dismiss();
+                MessagingHandler.getInstance().dismiss();
             }
 
         }

@@ -1,9 +1,11 @@
 package drawing.drawing.messaging;
 
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,14 @@ import android.widget.TextView;
 import drawing.drawing.R;
 
 import static android.view.View.GONE;
-import static drawing.drawing.messaging.CustomProgressDialog.DialogType.INFO;
 import static drawing.drawing.messaging.CustomProgressDialog.DialogType.PROGRESS;
 
 /**
  * Created by leo on 18/01/18.
  */
 
-public class CustomProgressDialog extends DialogFragment implements MessagingInterface {
+public class CustomProgressDialog extends DialogFragment {
     private static final String TAG = "KJKP6_PROGRESS_DIALOG";
-    private FragmentManager fragmentManager;
     private String line1;
     private String line2;
     private DialogType type;
@@ -40,16 +40,21 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
     }
     private DialogType currentType = PROGRESS;
 
-    public static MessagingInterface newInstance(FragmentManager fragmentManager) {
+    public static CustomProgressDialog newInstance() {
         CustomProgressDialog dialog = new CustomProgressDialog();
-        dialog.fragmentManager = fragmentManager;
+        dialog.setCancelable(false);
         return dialog;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_info, container, false);
+        return inflater.inflate(R.layout.dialog_info, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         progressBar = view.findViewById(R.id.progress);
         singleLayout = view.findViewById(R.id.single);
         dualLayout = view.findViewById(R.id.dual);
@@ -59,48 +64,37 @@ public class CustomProgressDialog extends DialogFragment implements MessagingInt
         singleLayout.setVisibility(View.VISIBLE);
         dualLayout.setVisibility(GONE);
         progressBar.setVisibility(View.VISIBLE);
-        setCancelable(false);
-        show(type, line1, line2);
-        return view;
+        updateContent();
     }
 
     //==============================================================================================
-    public void show(DialogType type, String line1, String line2) {
+    void show(FragmentManager fragmentManager, DialogType type, String line1, String line2) {
         this.line1 = line1;
         this.line2 = line2;
         this.type = type;
         //Todo change this to allow the Show/Hide
-        if (!isAdded())
-            show(fragmentManager, "info");
-        else {
-            if (line2 != null) {
-                dualTxt1.setText(line1);
-                dualTxt2.setText(line2);
-                setDualLine();
-            } else {
-                singleTxt.setText(line1);
-                setSingleLine();
-            }
 
-            setType(type);
+        if (!isAdded()) {
+            Log.d(TAG, "create dialog");
+            super.show(fragmentManager, "messaging");
+        }
+        else {
+            Log.d(TAG, "update existing dialog");
+            updateContent();
         }
     }
 
-    public void show(DialogType type, String line1) {
-        show(type, line1, null);
-    }
+    private void updateContent() {
+        if (line2 != null) {
+            dualTxt1.setText(line1);
+            dualTxt2.setText(line2);
+            setDualLine();
+        } else {
+            singleTxt.setText(line1);
+            setSingleLine();
+        }
 
-    public void show(String line1, String line2) {
-        show(INFO, line1, null);
-    }
-
-    public void show(String line1) {
-        show(INFO, line1, null);
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
+        setType(type);
     }
 
     private void setSingleLine() {

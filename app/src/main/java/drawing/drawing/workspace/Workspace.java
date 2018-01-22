@@ -2,7 +2,6 @@ package drawing.drawing.workspace;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Map;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.profile.Profile;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
@@ -23,7 +23,7 @@ import drawing.drawing.vectordrawing.VectorDrawing;
 
 import static drawing.drawing.vectordrawing.VectorDrawing.DRAWING_NAME;
 
-public class Workspace extends AppCompatActivity {
+public class Workspace extends BaseActivity {
     private static final String TAG = "KJKP6_WORKSPACE";
     private FloatingActionButton fab;
     private RecyclerView recyclerView;

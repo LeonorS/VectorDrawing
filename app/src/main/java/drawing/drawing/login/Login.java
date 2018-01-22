@@ -35,9 +35,10 @@ import com.google.firebase.auth.UserInfo;
 
 import java.util.List;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.R;
 import drawing.drawing.messaging.CustomProgressDialog;
-import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.messaging.MessagingHandler;
 import drawing.drawing.workspace.Workspace;
 import drawing.drawing.database.Database;
 import drawing.drawing.database.User;
@@ -45,23 +46,20 @@ import drawing.drawing.database.UserListener;
 import drawing.drawing.personalization.Personalization;
 import drawing.drawing.utils.CrashAnalyticsHelper;
 
-public class Login extends AppCompatActivity implements LoginInterface {
+public class Login extends BaseActivity implements LoginInterface {
     private final static String TAG = "KJKP6_LOGIN";
     private final static String LAST_USED_KEY = "last_used";
     private FragmentManager fragmentManager;
     private Fragment fragment;
     private static int remainingProvider;
-    private MessagingInterface messageInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "OnCreate");
-        messageInterface = CustomProgressDialog.newInstance(getFragmentManager());
         setContentView(R.layout.activity_login);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragment = SigninFragment.newInstance(this, messageInterface);
+        fragment = SigninFragment.newInstance(this);
         fragmentTransaction.add(R.id.container, fragment, "selection");
         fragmentTransaction.commit();
     }
@@ -151,7 +149,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     private UserListener userDataCheckListener = new UserListener() {
         @Override
         public void onUpdate(User user) {
-            messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Retrieving account...");
+            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Retrieving account...");
             FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
             if (fUser == null) {
                 Log.e(TAG, "firebase user null after Auth");
@@ -159,11 +157,12 @@ public class Login extends AppCompatActivity implements LoginInterface {
             }
             Database.getInstance().removeUserListener(this);
             if (user == null) {
-                messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Creating account...");
+                MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Creating account...");
                 Log.w(TAG, "user " + fUser.getUid() + " is new");
                 Database.getInstance().addUserListenerWithoutNotifying(userDataCreateListener);
                 Database.getInstance().setUser(new User(fUser.getDisplayName(), fUser.getEmail()));
             } else {
+                MessagingHandler.getInstance().dismiss();
                 Log.w(TAG, "user is old");
                 Intent i = new Intent(Login.this, Workspace.class);
                 startActivity(i);
@@ -182,8 +181,10 @@ public class Login extends AppCompatActivity implements LoginInterface {
             }
             Database.getInstance().removeUserListener(this);
             if (user == null) {
+                MessagingHandler.getInstance().dismiss();
                 Log.w(TAG, "user creation failed");
             } else {
+                MessagingHandler.getInstance().dismiss();
                 Log.w(TAG, "user " + fUser.getUid() + " is created");
                 onSuccessfulUserData();
             }
@@ -201,7 +202,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
     }
 
     public void signinWithAuthCredential(AuthCredential credential) {
-        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
+        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -215,13 +216,13 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "signInWithCredential:failure", e);
                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
+                        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
                     }
                 });
     }
 
     public void signinWithEmailAndPassword(String email, String password) {
-        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
+        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Signing in...");
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -235,13 +236,13 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "signinUserWithEmail:failure", e);
                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
+                        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.FAIL, "Sign in failed", e.getMessage());
                     }
                 });
     }
 
     public void registerWithEmailAndPassword(String email, String password) {
-        messageInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Registering...");
+        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Registering...");
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
@@ -256,7 +257,7 @@ public class Login extends AppCompatActivity implements LoginInterface {
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "createUserWithEmail:failure", e);
                         Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                        messageInterface.show(CustomProgressDialog.DialogType.FAIL, "Registration failed", e.getMessage());
+                        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.FAIL, "Registration failed", e.getMessage());
                     }
                 });
     }

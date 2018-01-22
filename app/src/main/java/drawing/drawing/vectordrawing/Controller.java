@@ -31,6 +31,7 @@ public class Controller implements ControllerViewInterface {
         this.controllerActivityInterface = controllerActivityInterface;
         this.drawingView = drawingView;
         drawingView.setController(this);
+        drawingView.invalidate();
     }
 
     //==============================================================================================

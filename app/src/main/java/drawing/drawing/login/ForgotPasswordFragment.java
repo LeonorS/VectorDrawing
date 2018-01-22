@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import drawing.drawing.R;
 import drawing.drawing.messaging.CustomProgressDialog;
-import drawing.drawing.messaging.MessagingInterface;
+import drawing.drawing.messaging.MessagingHandler;
 import drawing.drawing.utils.NetworkHelper;
 
 
@@ -34,12 +34,10 @@ public class ForgotPasswordFragment extends Fragment {
     private Button recover;
     private EditText emailEdittext;
     private String email;
-    private MessagingInterface messagingInterface;
 
-    public static ForgotPasswordFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
+    public static ForgotPasswordFragment newInstance(LoginInterface loginInterface) {
         ForgotPasswordFragment fragment = new ForgotPasswordFragment();
         fragment.loginInterface = loginInterface;
-        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 
@@ -73,7 +71,7 @@ public class ForgotPasswordFragment extends Fragment {
             return;
         }
 
-        messagingInterface.show(CustomProgressDialog.DialogType.PROGRESS, "Sending email...", null);
+        MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.PROGRESS, "Sending email...", null);
         try {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.useAppLanguage();
@@ -84,19 +82,19 @@ public class ForgotPasswordFragment extends Fragment {
                             Log.d(TAG, "Email sent to " + email);
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            Fragment signinFragment = SigninFragment.newInstance(loginInterface, messagingInterface);
+                            Fragment signinFragment = SigninFragment.newInstance(loginInterface);
                             fragmentTransaction.replace(R.id.container, signinFragment, "selection");
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commitAllowingStateLoss();
                             loginInterface.setCurrentFragment(signinFragment);
-                            messagingInterface.show(CustomProgressDialog.DialogType.SUCCESS, "Email sent!");
+                            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.SUCCESS, "Email sent!");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.w(TAG, "Email not sent: " + e.getMessage());
-                            messagingInterface.show(CustomProgressDialog.DialogType.SUCCESS, "Email not sent!", e.getMessage());
+                            MessagingHandler.getInstance().show(CustomProgressDialog.DialogType.SUCCESS, "Email not sent!", e.getMessage());
                         }
                     });
         } catch (IllegalArgumentException e) {

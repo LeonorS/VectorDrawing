@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.R;
 import drawing.drawing.workspace.Workspace;
 
@@ -15,7 +16,7 @@ import drawing.drawing.workspace.Workspace;
  * Created by leo on 16/01/18.
  */
 
-public class Personalization extends AppCompatActivity implements PersonalizationListener {
+public class Personalization extends BaseActivity implements PersonalizationListener {
     public static final String OUTSIDE_WORKFLOW = "outsideWorkflow";
     private static final String TAG = "KJKP6_PERSONALIZATION";
     private FragmentManager fragmentManager;

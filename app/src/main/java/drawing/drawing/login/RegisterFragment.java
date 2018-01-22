@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import drawing.drawing.messaging.MessagingInterface;
 import drawing.drawing.utils.EditTextWithDrawable;
 import drawing.drawing.utils.NetworkHelper;
 import drawing.drawing.R;
@@ -40,12 +39,10 @@ public class RegisterFragment extends Fragment {
     private String email;
     private String username;
     private String password;
-    private MessagingInterface messagingInterface;
 
-    public static RegisterFragment newInstance(LoginInterface loginInterface, MessagingInterface messagingInterface) {
+    public static RegisterFragment newInstance(LoginInterface loginInterface) {
         RegisterFragment fragment = new RegisterFragment();
         fragment.loginInterface = loginInterface;
-        fragment.messagingInterface = messagingInterface;
         return fragment;
     }
 

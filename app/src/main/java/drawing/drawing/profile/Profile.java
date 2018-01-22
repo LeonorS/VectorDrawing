@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import drawing.drawing.BaseActivity;
 import drawing.drawing.R;
 import drawing.drawing.database.Database;
 import drawing.drawing.login.Login;
@@ -30,7 +31,7 @@ import drawing.drawing.personalization.Personalization;
 
 import static drawing.drawing.personalization.Personalization.OUTSIDE_WORKFLOW;
 
-public class Profile extends AppCompatActivity {
+public class Profile extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
